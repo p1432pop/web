@@ -3,8 +3,10 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from './Header';
 import Main from './Main';
 import Ranking from './Ranking';
+import Statistics from './Statistics';
+import ERoutes from './ERoutes';
 
-function App() {
+export default function App() {
   return (
     <div className='App'>
       <BrowserRouter>
@@ -12,10 +14,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Main />}></Route>
           <Route path="/ranking" element={<Ranking />}></Route>
+          <Route path="/routes" element={<ERoutes />}></Route>
+          <Route path="/statistics" element={<Statistics />}></Route>
+          statistics
         </Routes>
       </BrowserRouter>
     </div>
   );
-}
-
-export default App;
+};
