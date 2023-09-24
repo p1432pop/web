@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import './App.css';
 import Header from './Header';
 import Main from './Main';
 import Ranking from './Ranking';
@@ -16,7 +17,6 @@ export default function App() {
           <Route path="/ranking" element={<Ranking />}></Route>
           <Route path="/routes" element={<ERoutes />}></Route>
           <Route path="/statistics" element={<Statistics />}></Route>
-          statistics
         </Routes>
       </BrowserRouter>
     </div>
