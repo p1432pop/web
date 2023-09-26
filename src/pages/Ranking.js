@@ -3,7 +3,7 @@ import React from 'react';
 export default function Ranking(props) {
 	return (
 		<>
-			<h3>메인2</h3>
+			<h3>랭킹</h3>
 		</>
 	);
 };
