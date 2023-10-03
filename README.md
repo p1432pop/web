@@ -27,3 +27,4 @@
  - 2023/09/16 ~
 ## Reference
  - [라우터 설정](https://goddaehee.tistory.com/305)
+ - Eternal Return and all related logos are trademarks of Nimble Neuron, inc. or its affiliates.
