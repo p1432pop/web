@@ -1,5 +1,6 @@
 import React from 'react';
-import item from '../assets/item';
+import item1 from '../assets/item';
+import item from '../assets/weapon';
 import Tooltip from '@mui/material/Tooltip';
 import Button from '@mui/material/Button';
 export default function Guide(props) {
@@ -10,10 +11,10 @@ export default function Guide(props) {
 				<Tooltip key={it.code} title={
 					<div>
 						{it.name}
-						<img src={name(it.armorType, it.name)} alt='imag' width='128' height='71'/>
+						<img src={name(it.itemType, it.weaponType, it.name)} alt='imag' width='128' height='71'/>
 					</div>
 				}>
-					<img src={name(it.armorType, it.name)} alt='imag'  width='128' height='71' style={{backgroundColor: backcolor(it.itemGrade), margin: '4px'}}/>
+					<img src={name(it.itemType, it.weaponType, it.name)} alt='imag'  width='128' height='71' style={{backgroundColor: backcolor(it.itemGrade), margin: '4px'}}/>
 				</Tooltip>
 				)
 		})
@@ -22,8 +23,8 @@ export default function Guide(props) {
 	const datas = () => {
 		console.log(item)
 	}
-	const name = (armorType, Name) => {
-		return '/image/Armor/' + armorType + '/' + Name + '.png';
+	const name = (itemType, armorType, Name) => {
+		return '/image/' + itemType+ '/' + armorType + '/' + Name + '.png';
 	}
 	const backcolor = (a) => {
 		if (a === 'Uncommon') return 'green';
