@@ -2,7 +2,8 @@ const request = require('request');
 const express = require('express');
 const path = require('path');
 const app = express();
-require('dotenv').config();
+const dotenv = require('dotenv');
+dotenv.config();
 
 const http = require('http').createServer(app);
 http.listen(8080, function(){
@@ -16,16 +17,35 @@ const URL = encodeURI('https://open-api.bser.io/v1/rank/top/19/3');
 
 const mysql = require('mysql2');
 const connection = mysql.createConnection({
-    host : 'localhost',
+    host : process.env.DB_HOST,
     user : process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: 'test'
+    database: process.env.DB_NAME
 })
-connection.connect();
-connection.query('select * from 메뉴', (error, rows, fields) => {
-    if (error) throw error;
-    console.log(rows);
-})
+
+const q = async () => {
+    await axios.get(URL, {
+        headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': process.env.BSER_API_KEY
+        }
+    }).then((result) => {
+        res.send(result.data.topRanks[0])
+        connection.connect((err) => {
+            if (err) {
+                throw err;
+            } 
+            else {
+                let sql = "insert into Ranking values"
+                connection.query("(usernum, nickname, ranking, id)", function(err, rows, fields) {
+                    console.log(rows);
+                });
+            }
+        });
+    });
+}
+
+q();
 
 app.get('/rank', async (req, res) => {
     console.log(1);
