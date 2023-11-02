@@ -24,7 +24,7 @@ export default function Guide(props) {
 		console.log(item)
 	}
 	const name = (itemType, armorType, Name) => {
-		return '/image/' + itemType+ '/' + armorType + '/' + Name + '.png';
+		return `/image/${itemType}/${armorType}/${Name}.png`;	
 	}
 	const backcolor = (a) => {
 		if (a === 'Uncommon') return 'green';

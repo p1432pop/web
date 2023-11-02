@@ -12,11 +12,12 @@ import FiberNewIcon from '@mui/icons-material/FiberNew';
 
 export default function Main(props) {
 	const mainImage = {
-		position: 'relative',
-		left: `calc(50% - 1280px)`,
-		width: '2560px',
-		height: '1080px',
-		backgroundImage: `url('${mainimage}')`,
+		//backgroundImage: `url('${mainimage}')`,
+		width: '100vw',
+		height: '100vh',
+		backgroundRepeat: 'no-repeat',
+		backgroundPosition: 'center',
+		backgroundSize: 'cover'
 	}
 	const patchNotes = () => {
 		let arr = [];
@@ -34,39 +35,37 @@ export default function Main(props) {
 		<div>
 			<div style={mainImage}>
 				<div>
-					<div>
-						<Box sx={{display: 'flex', alignItems: 'center', position: 'absolute', top: '25%', left: `calc(50% - 300px)`, width: 600, height: 60, backgroundColor: 'white'}}>
-							<InputBase
-								sx={{ml: 3, minWidth: '520px'}}
-								placeholder="플레이어 검색"
-								inputProps={{'aria-label': '플레이어 검색'}}
-								onKeyDown={(ev) => {
-									if (ev.key === 'Enter') {
-										console.log(ev.target.value);
-									}
-								}}
-							/>
-							<IconButton type="button" sx={{p: '10px'}} aria-label="search">
-								<SearchIcon sx={{color:'black'}}/>
-							</IconButton>
-						</Box>
-					</div>
-					<div>
-						<Box sx={{position: 'absolute',top: '40%',left: `calc(20%)`,width: 210,height: 210,backgroundColor: 'white',}}>
-							<div>
-								<Stack style={{paddingLeft: '20px'}} spacing={2}>
-									<div style={{paddingTop: '16px'}}>
-										- 최근 패치 노트
-									</div>
-									<Stack direction="row" spacing={0.5}>
-										<Link href="https://playeternalreturn.com/posts/news/1447" underline='none'>1.5 패치 노트 보기</Link>
-										<FiberNewIcon style={{height: '21px'}}/>
-									</Stack>
-									{patchNotes()}
+					<Box sx={{display: 'flex', alignItems: 'center', position: 'absolute', top: '25%', left: `calc(50% - 300px)`, width: 600, height: 60, backgroundColor: 'white'}}>
+						<InputBase
+							sx={{ml: 3, minWidth: '520px'}}
+							placeholder="플레이어 검색"
+							inputProps={{'aria-label': '플레이어 검색'}}
+							onKeyDown={(ev) => {
+								if (ev.key === 'Enter') {
+									console.log(ev.target.value);
+								}
+							}}
+						/>
+						<IconButton type="button" sx={{p: '10px'}} aria-label="search">
+							<SearchIcon sx={{color:'black'}}/>
+						</IconButton>
+					</Box>
+				</div>
+				<div>
+					<Box sx={{position: 'absolute',top: '40%',left: '20%',width: 210,height: 210,backgroundColor: 'white',}}>
+						<div>
+							<Stack style={{paddingLeft: '20px'}} spacing={2}>
+								<div style={{paddingTop: '16px'}}>
+									- 최근 패치 노트
+								</div>
+								<Stack direction="row" spacing={0.5}>
+									<Link href="https://playeternalreturn.com/posts/news/1447" underline='none'>1.5 패치 노트 보기</Link>
+									<FiberNewIcon style={{height: '21px'}}/>
 								</Stack>
-							</div>
-						</Box>
-					</div>
+								{patchNotes()}
+							</Stack>
+						</div>
+					</Box>
 				</div>
 			</div>
 			<div>
