@@ -8,7 +8,7 @@ export default function ERoutes(props) {
 	}
 	return (
 		<div>
-			<img src={mainimage} alt='im' style={{display: 'block', margin: 'auto'}}></img>
+			
 		</div>
 	);
 };

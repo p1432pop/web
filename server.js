@@ -40,12 +40,12 @@ const task = cron.schedule("0 * * * *", async () => { // 랭킹 정보 갱신
             else {
                 let data = result.data.topRanks;
                 let sql = ''
-                for (item of data) {
+                for (let item of data) {
                     sql += `select exists (select * from User where userNum = ${item.userNum}) as result;`
                 }
                 con.query(sql, function(err, rows, fields) {
                     let sql2 = ''
-                    for (idx in rows) {
+                    for (let idx in rows) {
                         if (rows[idx][0].result === 1) {
                             // 해당 유저 정보 업데이트
                             sql2+= `insert into Ranking values (${data[idx].userNum}, ${data[idx].rank}, ${data[idx].mmr});`
