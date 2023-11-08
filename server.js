@@ -3,11 +3,18 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const dotenv = require('dotenv');
-const cron = require('node-cron')
+const cron = require('node-cron');
+const fs = require('fs');
 dotenv.config();
 
-const http = require('http').createServer(app);
-http.listen(8080, function(){
+const option = {
+    ca: fs.readFileSync(process.env.CA),
+    key: fs.readFileSync(process.env.KEY),
+    cert: fs.readFileSync(process.env.CERT)
+};
+const https = require('https').createServer(option, app);
+
+https.listen(8080, function(){
     console.log('listening in 8080');
 });
 
