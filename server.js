@@ -7,21 +7,30 @@ const cron = require('node-cron');
 const fs = require('fs');
 dotenv.config();
 
-const option = {
-    ca: fs.readFileSync(process.env.CA),
-    key: fs.readFileSync(process.env.KEY),
-    cert: fs.readFileSync(process.env.CERT)
-};
-const https = require('https').createServer(option, app);
+const production = false;
 
-https.listen(8080, function(){
-    console.log('listening in 8080');
-});
+if (production) {
+    const option = {
+        ca: fs.readFileSync(process.env.CA),
+        key: fs.readFileSync(process.env.KEY),
+        cert: fs.readFileSync(process.env.CERT)
+    };
+    const https = require('https').createServer(option, app);
+    https.listen(8080, () => {
+        console.log('listening in 8080 https');
+    });
+}
+else {
+    const http = require('http').createServer(app);
+    http.listen(8080, () => {
+        console.log('listening in 8080 http');
+    })
+}
 
 app.use(express.static(path.join(__dirname, './build')));
 
 const axios = require('axios');
-const URL = encodeURI('https://open-api.bser.io/v1/rank/top/19/3');
+const URL = encodeURI('https://open-api.bser.io/v1/rank/top/21/3');
 
 const mysql = require('mysql2');
 const pool = mysql.createPool({
@@ -33,7 +42,8 @@ const pool = mysql.createPool({
     multipleStatements: true
 })
 
-const task = cron.schedule("0 * * * *", async () => { // 랭킹 정보 갱신
+const task = cron.schedule("13 * * * *", async () => { // 랭킹 정보 갱신
+    console.log(1);
     await axios.get(URL, {
         headers: {
             'Content-Type': 'application/json',
@@ -71,25 +81,20 @@ const task = cron.schedule("0 * * * *", async () => { // 랭킹 정보 갱신
             }
         });
     })
-}, {scheduled: false})
+})
 
-app.get('/rank/:id', (req, res) => {
-    const id = req.params.id;
-    if(id>=1 && id<=10) { // 정상적인 주소로 접근
-        pool.getConnection((err, con) => {
-            if (err) throw err;
-            else {
-                let sql = 'select * from Ranking inner join User on Ranking.userNum = User.userNum order by Ranking.ranking'
-                con.query(sql, function(err, rows, fields) {
-                    res.send(rows);
-                    con.release();
-                })
-            }
-        })
-    }
-    else { // 예외 처리
-        
-    }
+task.start()
+app.get('/rank', (req, res) => {
+    pool.getConnection((err, con) => {
+        if (err) throw err;
+        else {
+            let sql = 'select * from Ranking inner join User on Ranking.userNum = User.userNum order by Ranking.ranking'
+            con.query(sql, function(err, rows, fields) {
+                res.send(rows);
+                con.release();
+            })
+        }
+    })
 })
 
 app.get('*', function(req, res){
