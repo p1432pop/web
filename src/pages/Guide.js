@@ -17,7 +17,7 @@ const CustomWidthTooltip = styled(({ className, ...props }) => (
   ))({
 	[`& .${tooltipClasses.tooltip}`]: {
 	  maxWidth: 600,
-	  backgroundColor: 'black'
+	  padding: 0
 	},
   });
 export default function Guide(props) {
@@ -78,11 +78,11 @@ export default function Guide(props) {
 				arr.push(
 					<CustomWidthTooltip key={it.code} title={
 						<>
-							<div style={{display: 'flex', flexDirection: 'row'}}>
+							<div style={{display: 'flex', flexDirection: 'row', background: `linear-gradient(90deg, ${backcolorrgba(it.itemGrade)}`}}>
 								<div>
 									<p style={{fontWeight: 'bold', fontSize: '24px'}}>{it.name}</p>
-									<p style={{fontSize: '20px', color: backcolor(it.itemGrade)}}>{grade(it.itemGrade)}</p>
-									<p style={{fontSize: '20px'}}>{type(it.consumableType)}</p>
+									<p style={{fontWeight: 'bold', fontSize: '20px', color: backcolor(it.itemGrade)}}>{grade(it.itemGrade)}</p>
+									<p style={{fontWeight: 'bold', fontSize: '20px'}}>{type(it.consumableType)}</p>
 								</div>
 								<img src={name(it.code, it.itemType, it.name)} alt='imag' width='256' height='142'/>
 							</div>
@@ -128,6 +128,13 @@ export default function Guide(props) {
 		else if (a === 'Legend') return 'yellow';
 		else return 'gray';
 	}
+	const backcolorrgba = (a) => {
+		if (a === 'Uncommon') return 'rgba(0,255,0,0) 0%, rgba(0,255,0,1) 100%)';
+		else if (a === 'Rare') return 'rgba(0,0,255,0) 0%, rgba(0,0,255,1) 100%)';
+		else if (a === 'Epic') return 'rgba(255,0,255,0) 0%, rgba(255,0,255,1) 100%)';
+		else if (a === 'Legend') return 'rgba(255,255,0,0) 0%, rgba(255,255,0,1) 100%)';
+		else return 'rgba(20,20,20,0) 0%, rgba(20,20,20,1) 100%)';
+	}
 	const recover = (hp, sp) => {
 		if (hp > 0) return `체력 재생 + ${hp}`;
 		else return `스태미나 재생 + ${sp}`;
@@ -138,27 +145,27 @@ export default function Guide(props) {
 		else if (sp > 0) return '15초에 걸쳐 스태미나를 회복합니다.';
 	}
 	return (
-		<>
-		<div style={{display: 'flex', flexDirection: 'row'}}>
-			<div style={{backgroundColor: 'gray'}}>
-				<FormControl>
-					<RadioGroup
-						defaultValue="all"
-						name="radio-buttons-group"
-					>
-						{radiodatas()}
-					</RadioGroup>
-				</FormControl>
-			</div>
-			<div style={{maxWidth: '410px', overflow: 'auto', backgroundColor: "rgb(45, 45, 45)"}}>
-				{items()}
-			</div>
-			<div>
-				{view ? 
-				<img src={name(view.code, 1, 1)} alt="img" width='128' height='71'/> 
-				: ''}
+		<div style={{maxWidth: '1080px', width: '100%', margin: 'auto'}}>
+			<div style={{display: 'flex', flexDirection: 'row'}}>
+				<div style={{background: "gray"}}>
+					<FormControl>
+						<RadioGroup
+							defaultValue="all"
+							name="radio-buttons-group"
+						>
+							{radiodatas()}
+						</RadioGroup>
+					</FormControl>
+				</div>
+				<div style={{maxWidth: '410px', overflow: 'auto', backgroundColor: "rgb(45, 45, 45)"}}>
+					{items()}
+				</div>
+				<div>
+					{view ? 
+					<img src={name(view.code, 1, 1)} alt="img" width='128' height='71'/> 
+					: ''}
+				</div>
 			</div>
 		</div>
-		</>
 	);
 };

@@ -8,6 +8,7 @@ import Ranking from './pages/Ranking';
 import Statistics from './pages/Statistics';
 import ERoutes from './pages/ERoutes';
 import Guide from './pages/Guide';
+import Player from './pages/Player';
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
           <Route path="/routes" element={<ERoutes />}></Route>
           <Route path="/statistics" element={<Statistics />}></Route>
           <Route path="/guide" element={<Guide />}></Route>
+          <Route path="/player/:nickname" element={<Player />}></Route>
         </Routes>
         <Footer />
       </BrowserRouter>

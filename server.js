@@ -42,7 +42,7 @@ const pool = mysql.createPool({
     multipleStatements: true
 })
 
-const task = cron.schedule("13 * * * *", async () => { // 랭킹 정보 갱신
+const task = cron.schedule("32 * * * *", async () => { // 랭킹 정보 갱신
     console.log(1);
     await axios.get(URL, {
         headers: {
@@ -65,11 +65,11 @@ const task = cron.schedule("13 * * * *", async () => { // 랭킹 정보 갱신
                     for (let idx in rows) {
                         if (rows[idx][0].result === 1) {
                             // 해당 유저 정보 업데이트
-                            sql2+= `insert into Ranking values (${data[idx].userNum}, ${data[idx].rank}, ${data[idx].mmr});`
+                            sql2+= `insert into Ranking2 values (${data[idx].userNum}, ${data[idx].rank}, ${data[idx].mmr});`
                         }
                         else {
                             sql2+= `insert into User values (${data[idx].userNum}, '${data[idx].nickname}');`
-                            sql2+= `insert into Ranking values (${data[idx].userNum}, ${data[idx].rank}, ${data[idx].mmr});`
+                            sql2+= `insert into Ranking2 values (${data[idx].userNum}, ${data[idx].rank}, ${data[idx].mmr});`
                         }
                     }
                     con.query(sql2, function(err, rows, fields) {
@@ -81,14 +81,14 @@ const task = cron.schedule("13 * * * *", async () => { // 랭킹 정보 갱신
             }
         });
     })
-})
+}, {scheduled: false})
 
-task.start()
-app.get('/rank', (req, res) => {
+app.get('/rank/:season', (req, res) => {
     pool.getConnection((err, con) => {
         if (err) throw err;
         else {
-            let sql = 'select * from Ranking inner join User on Ranking.userNum = User.userNum order by Ranking.ranking'
+            let season = req.params.season
+            let sql = `select * from Ranking${season} inner join User on Ranking${season}.userNum = User.userNum order by Ranking${season}.ranking`
             con.query(sql, function(err, rows, fields) {
                 res.send(rows);
                 con.release();
