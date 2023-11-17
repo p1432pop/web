@@ -6,9 +6,12 @@ import InputBase from '@mui/material/InputBase';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
+import { useDispatch, useSelector } from 'react-redux';
+import { setPage, setSeason} from '../rankSlice';
 
 export default function Header(props) {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const headerButtons = () => {
 		let arr = [];
 		let Links = [
@@ -24,7 +27,7 @@ export default function Header(props) {
 		return arr;
 	}
     return (
-		<div style={{backgroundColor: 'black', height: '64px', width: '100%', justifyContent: "center", display: 'flex'}}>
+		<div style={{backgroundColor: 'black', height: '64px', width: '100%', justifyContent: "center", display: 'flex', marginBottom: '16px'}}>
 			<div style={{maxWidth: '1080px', width: '100%', alignItems: 'center', display: 'flex'}}>
 				<Stack direction="row" spacing={2} width="100%">
 					<Button LinkComponent={Link} to="/" sx={{m: 1, color: 'white', fontSize: '18px', textTransform: 'none'}} size="large">Lumia.kr</Button>

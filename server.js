@@ -30,7 +30,9 @@ else {
 app.use(express.static(path.join(__dirname, './build')));
 
 const axios = require('axios');
-const URL = encodeURI('https://open-api.bser.io/v1/rank/top/21/3');
+const URL = encodeURI('https://open-api.bser.io/v1/user/stats/661111/21');
+const URL2 = encodeURI('https://open-api.bser.io/v1/user/stats/1553415/19');
+const URL3 = encodeURI('https://open-api.bser.io/v1/rank/top/19/3');
 
 const mysql = require('mysql2');
 const pool = mysql.createPool({
@@ -42,22 +44,66 @@ const pool = mysql.createPool({
     multipleStatements: true
 })
 
-const task = cron.schedule("32 * * * *", async () => { // 랭킹 정보 갱신
+const options = {
+    headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': process.env.BSER_API_KEY
+    }
+}
+const q = async () => {
+    await axios.all([axios.get(URL2, options), axios.get(URL3, options)]).then(
+        axios.spread((res1) => {
+            //console.log(res1.data.userStats[0].characterStats[0])
+            console.log(res1.data)
+            /*for(let i=0; i<10; i++) {
+                console.log(res1.data.topRanks[i])
+            }*/
+        })
+    )
+}
+
+const task = cron.schedule("40 12 * * * *", async () => { // 랭킹 정보 갱신
     console.log(1);
-    await axios.get(URL, {
+    await axios.get(URL3, {
         headers: {
             'Content-Type': 'application/json',
             'x-api-key': process.env.BSER_API_KEY
         }
     }).then((result) => {
-        pool.getConnection((err, con) => {
+        pool.getConnection(async (err, con) => {
             if (err) {
                 throw err;
             }
             else {
                 let data = result.data.topRanks;
-                let sql = ''
-                for (let item of data) {
+                let URLS = [];
+                for (let i=120; i<160; i++) {
+                    URLS.push(encodeURI(`https://open-api.bser.io/v1/user/stats/${data[i].userNum}/19`))
+                }
+                await axios.all(URLS.map((endpoint) => axios.get(endpoint, options))).then(
+                    axios.spread((...res1) => {
+                        //console.log(res1.data.userStats[0].characterStats[0])
+                        sql = ''
+                        for(item of res1) {
+                            let col = item.data.userStats[0]
+                            sql+=`insert into Ranking1 values (${col.userNum}, '${col.nickname}', ${col.rank}, ${col.mmr}, ${col.totalGames}, ${col.top1}, ${col.top3}, ${col.averageRank}, ${col.averageKills}`
+                            console.log(item.data.userStats[0])
+                            for(stats of col.characterStats) {
+                                sql+= `,${stats.characterCode}, ${stats.totalGames}`
+                            }
+                            for(let i=0; i<3-col.characterStats.length; i++) {
+                                sql+= ', null, null';
+                            }
+                            sql+=');'
+                        }
+                        con.query(sql, function(err, rows, fields) {
+                            con.release()
+                            console.log(sql)
+                            console.log(err)
+                        })
+                    })
+                )
+                /*for (let item of data) {
                     sql += `select exists (select * from User where userNum = ${item.userNum}) as result;`
                 }
                 con.query(sql, function(err, rows, fields) {
@@ -77,11 +123,11 @@ const task = cron.schedule("32 * * * *", async () => { // 랭킹 정보 갱신
                         console.log(sql2)
                         console.log(err)
                     })
-                });
+                });*/
             }
         });
     })
-}, {scheduled: false})
+}, {scheduled: true})
 
 app.get('/rank/:season', (req, res) => {
     pool.getConnection((err, con) => {
@@ -91,6 +137,7 @@ app.get('/rank/:season', (req, res) => {
             let sql = `select * from Ranking${season} inner join User on Ranking${season}.userNum = User.userNum order by Ranking${season}.ranking`
             con.query(sql, function(err, rows, fields) {
                 res.send(rows);
+                console.log('send')
                 con.release();
             })
         }
