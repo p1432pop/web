@@ -132,6 +132,17 @@ export default function Ranking(props) {
 			return 'image/tier/Gold.png';
 		}
 	}
+	const avatarImage = (code1, code2, code3) => {
+		let arr = [];
+		arr.push(<Avatar src={`image/CharacterIcon/${code1}.png`} />)
+		if(code2 !== null) {
+			arr.push(<Avatar src={`image/CharacterIcon/${code2}.png`} />)
+		}
+		if(code3 !== null) {
+			arr.push(<Avatar src={`image/CharacterIcon/${code3}.png`} />)
+		}
+		return arr;
+	}
 	return (
 		<>
 			<div style={{maxWidth: '1080px', width: '100%', margin: 'auto'}}>
@@ -174,20 +185,30 @@ export default function Ranking(props) {
 								>
 									<StyledTableCell align="center">{(value.page-1)*100+1+idx}</StyledTableCell>
 									<StyledTableCell align="center">
-										<Link to={`/player/${row.nickname}`}>{row.nickname}</Link>
+										<Link style={{textDecoration: 'none'}} to={`/player/${row.nickname}`}>{row.nickname}</Link>
 									</StyledTableCell>
 									<StyledTableCell align="center">
 										<div style={{alignItems: "center", display: "flex", justifyContent: "center"}}>
-											<Avatar alt="img" src={tier_img(row.mmr, (value.page-1)*100+1+idx)} />{tier(row.mmr, (value.page-1)*100+1+idx)}
+											<Avatar src={tier_img(row.mmr, (value.page-1)*100+1+idx)} />{tier(row.mmr, (value.page-1)*100+1+idx)}
 										</div>
 									</StyledTableCell>
 									<StyledTableCell align="center">{row.mmr >= 6000 ? row.mmr - 6000 : row.mmr%250}</StyledTableCell>
+									<StyledTableCell align="center">{(row.top1*100).toFixed(1)}%</StyledTableCell>
+									<StyledTableCell align="center">{(row.top3*100).toFixed(1)}%</StyledTableCell>
+									<StyledTableCell align="center">{row.totalGames}</StyledTableCell>
+									<StyledTableCell align="center">{(row.averageRank).toFixed(1)}</StyledTableCell>
+									<StyledTableCell align="center">{(row.averageKills).toFixed(2)}</StyledTableCell>
+									<StyledTableCell align="center">
+										<div style={{alignItems: "center", display: "flex", justifyContent: "left"}}>
+											{avatarImage(row.characterCode1, row.characterCode2, row.characterCode3)}
+										</div>
+									</StyledTableCell>
 								</StyledTableRow>
 							))}
 						</TableBody>
 					</Table>
 				</TableContainer>
-				<Pagination style={{justifyContent: 'center', display: 'flex'}} count={10} variant="outlined" page={value.page} shape="rounded" size="large" onChange={pageHandler} />
+				<Pagination style={{justifyContent: 'center', display: 'flex', paddingTop: '16px'}} count={10} variant="outlined" page={value.page} shape="rounded" size="large" onChange={pageHandler} />
 			</div >
 		</>
 	);

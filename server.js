@@ -6,7 +6,6 @@ const dotenv = require('dotenv');
 const cron = require('node-cron');
 const fs = require('fs');
 dotenv.config();
-
 const production = false;
 
 if (production) {
@@ -32,7 +31,7 @@ app.use(express.static(path.join(__dirname, './build')));
 const axios = require('axios');
 const URL = encodeURI('https://open-api.bser.io/v1/user/stats/661111/21');
 const URL2 = encodeURI('https://open-api.bser.io/v1/user/stats/1553415/19');
-const URL3 = encodeURI('https://open-api.bser.io/v1/rank/top/19/3');
+const URL3 = encodeURI('https://open-api.bser.io/v2/data/3046038497');
 
 const mysql = require('mysql2');
 const pool = mysql.createPool({
@@ -51,7 +50,7 @@ const options = {
     }
 }
 const q = async () => {
-    await axios.all([axios.get(URL2, options), axios.get(URL3, options)]).then(
+    await axios.all([axios.get(URL3, options), axios.get(URL2, options)]).then(
         axios.spread((res1) => {
             //console.log(res1.data.userStats[0].characterStats[0])
             console.log(res1.data)
@@ -61,7 +60,53 @@ const q = async () => {
         })
     )
 }
-
+async function getRanking(season) {
+    const URI = encodeURI(`https://open-api.bser.io/v1/rank/top/${season}/3`);
+    await axios.get(URI, options).then((result) => {
+        pool.getConnection((err, con) => {
+            if (err) throw err;
+            else {
+                let data = result.data.topRanks;
+                let URIS = [];
+                for (let i=0; i<1000; i++) {
+                    URIS.push(encodeURI(`https://open-api.bser.io/v1/user/stats/${data[i].userNum}/${season}`))
+                }
+                let currentUriIndex = 0;
+                let sql = ''
+                let intervalID = setInterval(async () => {
+                    let targetURIS = URIS.slice(currentUriIndex*40, (currentUriIndex+1)*40)
+                    await axios.all(targetURIS.map((endpoint) => axios.get(endpoint, options))).then(
+                        axios.spread((...res) => {
+                            for(let item of res) {
+                                let col = item.data.userStats[0]
+                                sql+=`insert into Ranking2 values (${col.userNum}, '${col.nickname}', ${col.rank}, ${col.mmr}, ${col.totalGames}, ${col.top1}, ${col.top3}, ${col.averageRank}, ${col.averageKills}`
+                                for(let stats of col.characterStats) {
+                                    sql+= `,${stats.characterCode}, ${stats.totalGames}`
+                                }
+                                for(let i=0; i<3-col.characterStats.length; i++) {
+                                    sql+= ', null, null';
+                                }
+                                sql+=');'
+                            }
+                            currentUriIndex++;
+                            console.log(currentUriIndex)
+                            console.log(sql)
+                            if (currentUriIndex>=25) {
+                                clearInterval(intervalID)
+                                con.query(sql, function(err, rows, fields) {
+                                    con.release()
+                                    console.log(sql)
+                                    console.log(err)
+                                })
+                            }
+                        })
+                    )
+                }, 2000)
+            }
+        })
+    })
+}
+//getRanking(21);
 const task = cron.schedule("40 12 * * * *", async () => { // 랭킹 정보 갱신
     console.log(1);
     await axios.get(URL3, {
@@ -83,12 +128,12 @@ const task = cron.schedule("40 12 * * * *", async () => { // 랭킹 정보 갱�
                 await axios.all(URLS.map((endpoint) => axios.get(endpoint, options))).then(
                     axios.spread((...res1) => {
                         //console.log(res1.data.userStats[0].characterStats[0])
-                        sql = ''
-                        for(item of res1) {
+                        let sql = ''
+                        for(let item of res1) {
                             let col = item.data.userStats[0]
                             sql+=`insert into Ranking1 values (${col.userNum}, '${col.nickname}', ${col.rank}, ${col.mmr}, ${col.totalGames}, ${col.top1}, ${col.top3}, ${col.averageRank}, ${col.averageKills}`
                             console.log(item.data.userStats[0])
-                            for(stats of col.characterStats) {
+                            for(let stats of col.characterStats) {
                                 sql+= `,${stats.characterCode}, ${stats.totalGames}`
                             }
                             for(let i=0; i<3-col.characterStats.length; i++) {
@@ -127,17 +172,17 @@ const task = cron.schedule("40 12 * * * *", async () => { // 랭킹 정보 갱�
             }
         });
     })
-}, {scheduled: true})
+}, {scheduled: false})
 
 app.get('/rank/:season', (req, res) => {
     pool.getConnection((err, con) => {
         if (err) throw err;
         else {
             let season = req.params.season
-            let sql = `select * from Ranking${season} inner join User on Ranking${season}.userNum = User.userNum order by Ranking${season}.ranking`
+            let sql = `select * from Ranking${season} order by mmr desc, nickname`
             con.query(sql, function(err, rows, fields) {
                 res.send(rows);
-                console.log('send')
+                console.log(rows)
                 con.release();
             })
         }
