@@ -1,0 +1,33 @@
+.name {
+    background-color: red;
+}
+.container {
+    max-width: 1080px;
+    height: 100vh;
+    margin: auto;
+    background-color: gray;
+}
+.topContent {
+    background-image: url('../assets/1080.png');
+    height: 608px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.searchBox {
+    display: flex;
+    align-items: center;
+    width: 400px;
+    height: 50px;
+    padding: 4px;
+    background-color: white;
+}
+.input {
+    width: 100%;
+    margin-left: 24px;
+}
+.patchBox {
+    width: 240px;
+    height: 240px;
+    background-color: aqua;
+}

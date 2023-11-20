@@ -182,7 +182,7 @@ app.get('/rank/:season', (req, res) => {
             let sql = `select * from Ranking${season} order by mmr desc, nickname`
             con.query(sql, function(err, rows, fields) {
                 res.send(rows);
-                console.log(rows)
+                console.log('send')
                 con.release();
             })
         }
