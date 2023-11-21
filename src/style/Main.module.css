@@ -8,7 +8,7 @@
     background-color: gray;
 }
 .topContent {
-    background-image: url('../assets/1080.png');
+    /*background-image: url('../assets/1080.png');*/
     height: 608px;
     display: flex;
     align-items: center;

@@ -1,0 +1,27 @@
+.container {
+    max-width: 1080px;
+    margin: auto;
+}
+.avatarBox {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+.flexCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.topContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.mx {
+    margin-right: 4px;
+    margin-left: 4px;
+}
+.my {
+    margin-top: 16px;
+    margin-bottom: 16px;
+}

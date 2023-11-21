@@ -1,9 +1,6 @@
 import React from 'react';
-import mainimage from '../assets/1080.png';
-
 import { useNavigate } from 'react-router-dom';
-import styles from '../style/Main.module.css';
-import Box from '@mui/material/Box';
+
 import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
 import Stack from '@mui/material/Stack';
@@ -11,6 +8,8 @@ import Link from '@mui/material/Link';
 
 import SearchIcon from '@mui/icons-material/Search';
 import FiberNewIcon from '@mui/icons-material/FiberNew';
+
+import styles from '../style/Main.module.css';
 
 export default function Main(props) {
 	const navigate = useNavigate();

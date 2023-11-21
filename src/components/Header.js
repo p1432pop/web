@@ -1,13 +1,13 @@
 import React from 'react';
-import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
+import Button from '@mui/material/Button';
 import InputBase from '@mui/material/InputBase';
-import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
-import { useDispatch, useSelector } from 'react-redux';
-import { setPage, setSeason} from '../rankSlice';
+
+import styles from '../style/Header.module.css';
 
 export default function Header(props) {
 	const navigate = useNavigate();
@@ -15,43 +15,41 @@ export default function Header(props) {
 	const headerButtons = () => {
 		let arr = [];
 		let Links = [
+			{to: "/", text: "Lumia.kr"},
 			{to: "/", text: "메인"},
 			{to: "/ranking", text: "랭킹"},
 			{to: "/guide", text: "가이드"},
-			{to: "/statistics", text: "통계"},
-			{to: "/routes", text: "루트"},
+			{to: "/statistics", text: "통계"}
 		]
 		for (let i=0; i<Links.length; i++) {
-			arr.push(<Button key={i} LinkComponent={Link} to={Links[i].to} sx={{m: 1, color: 'white', fontSize: '18px'}} size="large">{Links[i].text}</Button>);
+			arr.push(<Button className={styles.buttonContent} key={i} LinkComponent={Link} to={Links[i].to} size="large">{Links[i].text}</Button>);
 		}
 		return arr;
 	}
+	const onChange = (ev) => {
+		if(ev.key === 'Enter') {
+			navigate(`/player/${ev.target.value}`, {
+				state: {
+					nickname: ev.target.value
+				}
+			});
+		}
+	}
     return (
-		<div style={{backgroundColor: 'black', height: '64px', width: '100%', justifyContent: "center", display: 'flex', marginBottom: '16px'}}>
-			<div style={{maxWidth: '1080px', width: '100%', alignItems: 'center', display: 'flex'}}>
-				<Stack direction="row" spacing={2} width="100%">
-					<Button LinkComponent={Link} to="/" sx={{m: 1, color: 'white', fontSize: '18px', textTransform: 'none'}} size="large">Lumia.kr</Button>
+		<div className={styles.container}>
+			<div className={styles.containerContent}>
+				<div className={styles.buttonBox}>
 					{headerButtons()}
-				</Stack>
-				<Box sx={{display: 'flex', alignItems: 'center', width: 400, height: 50, backgroundColor: 'white'}}>
-					<InputBase
-						sx={{ml: 3, width: '100%'}}
+				</div>
+				<div className={styles.searchBox}>
+					<InputBase className={styles.input}
 						placeholder="플레이어 검색"
-						inputProps={{'aria-label': '플레이어 검색'}}
-						onKeyDown={(ev) => {
-							if (ev.key === 'Enter') {
-								navigate(`/player/${ev.target.value}`, {
-									state: {
-										nickname: ev.target.value
-									}
-								});
-							}
-						}}
+						onKeyDown={(ev) => onChange(ev)}
 					/>
-					<IconButton type="submit" sx={{p: '10px'}} aria-label="search">
+					<IconButton type="submit">
 						<SearchIcon sx={{color:'black'}}/>
 					</IconButton>
-				</Box>
+				</div>
 			</div>
 		</div>
     );

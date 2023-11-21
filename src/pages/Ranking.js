@@ -19,6 +19,8 @@ import FormControl from '@mui/material/FormControl';
 import TableContainer from '@mui/material/TableContainer';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 
+import styles from '../style/Ranking.module.css';
+
 export default function Ranking(props) {
 	const value = useSelector((state) => state.rank);
     const dispatch = useDispatch();
@@ -26,9 +28,11 @@ export default function Ranking(props) {
 		[`&.${tableCellClasses.head}`]: {
 		  	backgroundColor: theme.palette.common.black,
 		  	color: theme.palette.common.white,
+			textAlign: 'center'
 		},
 		[`&.${tableCellClasses.body}`]: {
 		  	fontSize: 16,
+			textAlign: 'center'
 		},
 	}));
 	  
@@ -134,24 +138,23 @@ export default function Ranking(props) {
 	}
 	const avatarImage = (code1, code2, code3) => {
 		let arr = [];
-		arr.push(<Avatar src={`image/CharacterIcon/${code1}.png`} />)
+		arr.push(<Avatar className={styles.mx} src={`image/CharacterIcon/${code1}.png`} />)
 		if(code2 !== null) {
-			arr.push(<Avatar src={`image/CharacterIcon/${code2}.png`} />)
+			arr.push(<Avatar className={styles.mx} src={`image/CharacterIcon/${code2}.png`} />)
 		}
 		if(code3 !== null) {
-			arr.push(<Avatar src={`image/CharacterIcon/${code3}.png`} />)
+			arr.push(<Avatar className={styles.mx} src={`image/CharacterIcon/${code3}.png`} />)
 		}
 		return arr;
 	}
 	return (
 		<>
-			<div style={{maxWidth: '1080px', width: '100%', margin: 'auto'}}>
-				<div>
-					<Box sx={{ minWidth: 120 }}>
+			<div className={styles.container}>
+				<div className={styles.topContent}>
+					<div>정규시즌{value.season} 랭킹</div>
+					<Box sx={{ width: 300 }}>
 						<FormControl fullWidth>
 							<Select
-							labelId="demo-simple-select-label"
-							id="demo-simple-select"
 							defaultValue={2}
 							onChange={seasonHandler}
 							>
@@ -161,20 +164,20 @@ export default function Ranking(props) {
 						</FormControl>
 					</Box>
 				</div>
-				<TableContainer component={Paper}>
-					<Table sx={{ minWidth: 650 }} aria-label="simple table">
+				<TableContainer className={styles.my} component={Paper}>
+					<Table>
 						<TableHead>
 							<TableRow>
-								<StyledTableCell align="center">순위</StyledTableCell>
-								<StyledTableCell align="center">플레이어</StyledTableCell>
-								<StyledTableCell align="center">티어</StyledTableCell>
-								<StyledTableCell align="center">RP</StyledTableCell>
-								<StyledTableCell align="center">승률</StyledTableCell>
-								<StyledTableCell align="center">TOP 3</StyledTableCell>
-								<StyledTableCell align="center">게임 수</StyledTableCell>
-								<StyledTableCell align="center">평균 순위</StyledTableCell>
-								<StyledTableCell align="center">평균 킬</StyledTableCell>
-								<StyledTableCell align="center">모스트 실험체</StyledTableCell>
+								<StyledTableCell>순위</StyledTableCell>
+								<StyledTableCell>플레이어</StyledTableCell>
+								<StyledTableCell>티어</StyledTableCell>
+								<StyledTableCell>RP</StyledTableCell>
+								<StyledTableCell>승률</StyledTableCell>
+								<StyledTableCell>TOP 3</StyledTableCell>
+								<StyledTableCell>게임 수</StyledTableCell>
+								<StyledTableCell>평균 순위</StyledTableCell>
+								<StyledTableCell>평균 킬</StyledTableCell>
+								<StyledTableCell>모스트 실험체</StyledTableCell>
 							</TableRow>
 						</TableHead>
 						<TableBody>
@@ -183,23 +186,23 @@ export default function Ranking(props) {
 								key={idx}
 								sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
 								>
-									<StyledTableCell align="center">{(value.page-1)*100+1+idx}</StyledTableCell>
-									<StyledTableCell align="center">
+									<StyledTableCell>{(value.page-1)*100+1+idx}</StyledTableCell>
+									<StyledTableCell>
 										<Link style={{textDecoration: 'none'}} to={`/player/${row.nickname}`}>{row.nickname}</Link>
 									</StyledTableCell>
-									<StyledTableCell align="center">
-										<div style={{alignItems: "center", display: "flex", justifyContent: "center"}}>
-											<Avatar src={tier_img(row.mmr, (value.page-1)*100+1+idx)} />{tier(row.mmr, (value.page-1)*100+1+idx)}
+									<StyledTableCell>
+										<div className={styles.avatarBox}>
+											<Avatar className={styles.mx} src={tier_img(row.mmr, (value.page-1)*100+1+idx)} />{tier(row.mmr, (value.page-1)*100+1+idx)}
 										</div>
 									</StyledTableCell>
-									<StyledTableCell align="center">{row.mmr >= 6000 ? row.mmr - 6000 : row.mmr%250}</StyledTableCell>
-									<StyledTableCell align="center">{(row.top1*100).toFixed(1)}%</StyledTableCell>
-									<StyledTableCell align="center">{(row.top3*100).toFixed(1)}%</StyledTableCell>
-									<StyledTableCell align="center">{row.totalGames}</StyledTableCell>
-									<StyledTableCell align="center">{(row.averageRank).toFixed(1)}</StyledTableCell>
-									<StyledTableCell align="center">{(row.averageKills).toFixed(2)}</StyledTableCell>
-									<StyledTableCell align="center">
-										<div style={{alignItems: "center", display: "flex", justifyContent: "left"}}>
+									<StyledTableCell>{row.mmr >= 6000 ? row.mmr - 6000 : row.mmr%250}</StyledTableCell>
+									<StyledTableCell>{(row.top1*100).toFixed(1)}%</StyledTableCell>
+									<StyledTableCell>{(row.top3*100).toFixed(1)}%</StyledTableCell>
+									<StyledTableCell>{row.totalGames}</StyledTableCell>
+									<StyledTableCell>{(row.averageRank).toFixed(1)}</StyledTableCell>
+									<StyledTableCell>{(row.averageKills).toFixed(2)}</StyledTableCell>
+									<StyledTableCell>
+										<div className={styles.avatarBox}>
 											{avatarImage(row.characterCode1, row.characterCode2, row.characterCode3)}
 										</div>
 									</StyledTableCell>
@@ -208,7 +211,7 @@ export default function Ranking(props) {
 						</TableBody>
 					</Table>
 				</TableContainer>
-				<Pagination style={{justifyContent: 'center', display: 'flex', paddingTop: '16px'}} count={10} variant="outlined" page={value.page} shape="rounded" size="large" onChange={pageHandler} />
+				<Pagination className={styles.flexCenter} count={10} variant="outlined" page={value.page} shape="rounded" size="large" onChange={pageHandler} />
 			</div >
 		</>
 	);

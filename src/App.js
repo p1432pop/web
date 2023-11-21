@@ -6,7 +6,6 @@ import Footer from './components/Footer';
 import Main from './pages/Main';
 import Ranking from './pages/Ranking';
 import Statistics from './pages/Statistics';
-import ERoutes from './pages/ERoutes';
 import Guide from './pages/Guide';
 import Player from './pages/Player';
 
@@ -18,7 +17,6 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Main />}></Route>
           <Route path="/ranking" element={<Ranking />}></Route>
-          <Route path="/routes" element={<ERoutes />}></Route>
           <Route path="/statistics" element={<Statistics />}></Route>
           <Route path="/guide" element={<Guide />}></Route>
           <Route path="/player/:nickname" element={<Player />}></Route>

@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
 
-//const response = await axios.get('rank/2')
+const response = await axios.get('rank/2')
 
 export const loadSeason = createAsyncThunk(
   "load/Season",
@@ -14,11 +14,12 @@ export const rankSlice = createSlice({
   name: "rank",
   // 초깃값
   initialState: {
-    //data: response.data,
-    data: 1,
+    data: response.data,
+    //data: 1,
     page: 1,
-    //current: response.data.slice(0, 100)
-    current: 1
+    season: 2,
+    current: response.data.slice(0, 100)
+    //current: 1
   },
   // 리듀서
   reducers: {
@@ -33,6 +34,7 @@ export const rankSlice = createSlice({
       state.data = action.payload.data;
       state.page = 1
       state.current = action.payload.data.slice(0, 100);
+      state.season = action.meta.arg;
     })
   }
 });
