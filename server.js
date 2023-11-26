@@ -31,7 +31,7 @@ app.use(express.static(path.join(__dirname, './build')));
 const axios = require('axios');
 const URL = encodeURI('https://open-api.bser.io/v1/user/stats/661111/21');
 const URL2 = encodeURI('https://open-api.bser.io/v1/user/stats/1553415/19');
-const URL3 = encodeURI('https://open-api.bser.io/v1/games/30672638');
+const URL3 = encodeURI('https://open-api.bser.io/v1/user/games/862271');
 
 const mysql = require('mysql2');
 const pool = mysql.createPool({
@@ -52,54 +52,75 @@ const options = {
 const q = async () => {
     await axios.all([axios.get(URL3, options), axios.get(URL2, options)]).then(
         axios.spread((res1) => {
-            let data = res1.data.userGames[0];
-            let abc = []
-            abc.push(data.userNum)
-            abc.push(data.gameId)
-            abc.push(data.characterNum)
-            abc.push(data.characterLevel)
-            abc.push(data.gameRank)
-            abc.push(data.playerKill)
-            abc.push(data.playerAssistant)
-            abc.push(data.monsterKill)
-            abc.push(data.bestWeapon)
-            abc.push(data.bestWeaponLevel)
-            abc.push(data.masteryLevel)
-            abc.push(data.equipment)
-            abc.push(data.startDtm)
-            abc.push(data.duration)
-            abc.push(data.mmrBefore)
-            abc.push(data.mmrGain)
-            abc.push(data.mmrAfter)
-            abc.push(data.preMade)
-            abc.push(data.victory)
-            abc.push(data.damageToPlayer)
-            abc.push(data.damageFromPlayer)
-            abc.push(data.damageToMonster)
-            abc.push(data.damageFromMonster)
-            abc.push(data.killMonsters)
-            abc.push(data.healAmount)
-            abc.push(data.teamRecover)
-            abc.push(data.addSurveillanceCamera)
-            abc.push(data.addTelephotoCamera)
-            abc.push(data.removeSurveillanceCamera)
-            abc.push(data.removeTelephotoCamera)
-            abc.push(data.giveUp)
-            abc.push(data.matchSize)
-            abc.push(data.teamKill)
-            abc.push(data.accountLevel)
-            abc.push(data.traitFirstCore)
-            abc.push(data.traitFirstSub)
-            abc.push(data.traitSecondSub)
-            abc.push(data.escapeState)
-            abc.push(data.tacticalSkillGroup)
-            abc.push(data.tacticalSkillLevel)
-            abc.push(data.totalGainVFCredit)
-            console.log(JSON.stringify(abc[38]))
+            let sql = ''
+            for(data of res1.data.userGames) {
+                sql += "insert into season2 values ("
+                let abc = []
+                abc.push(data.userNum)
+                abc.push(data.gameId)
+                abc.push(data.characterNum)
+                abc.push(data.characterLevel)
+                abc.push(data.gameRank)
+                abc.push(data.playerKill)
+                abc.push(data.playerAssistant)
+                abc.push(data.monsterKill)
+                abc.push(data.bestWeapon)
+                abc.push(data.bestWeaponLevel)
+                abc.push(JSON.stringify(data.masteryLevel))
+                abc.push(JSON.stringify(data.equipment))
+                abc.push(data.startDtm)
+                abc.push(data.duration)
+                abc.push(data.mmrBefore)
+                abc.push(data.mmrGain)
+                abc.push(data.mmrAfter)
+                abc.push(data.victory)
+                abc.push(data.damageToPlayer)
+                abc.push(data.damageFromPlayer)
+                abc.push(data.damageToMonster)
+                abc.push(data.damageFromMonster)
+                abc.push(JSON.stringify(data.killMonsters))
+                abc.push(data.healAmount)
+                abc.push(data.teamRecover)
+                abc.push(data.addSurveillanceCamera)
+                abc.push(data.addTelephotoCamera)
+                abc.push(data.removeSurveillanceCamera)
+                abc.push(data.removeTelephotoCamera)
+                abc.push(data.giveUp)
+                abc.push(data.matchSize)
+                abc.push(data.teamKill)
+                abc.push(data.accountLevel)
+                abc.push(data.traitFirstCore)
+                abc.push(JSON.stringify(data.traitFirstSub))
+                abc.push(JSON.stringify(data.traitSecondSub))
+                abc.push(data.escapeState)
+                abc.push(data.tacticalSkillGroup)
+                abc.push(data.tacticalSkillLevel)
+                abc.push(data.totalGainVFCredit)
+                for (item of abc) {
+                    if (typeof item === "string") {
+                        sql+=`'${item}', `
+                    }
+                    else {
+                        sql+=`${item},`
+                    }
+                }
+                sql = sql.slice(0, -1);
+                sql+=');'
+            }
+            pool.getConnection((err, con) => {
+                if (err) throw err;
+                else {
+                    con.query(sql, function(err, rows, fields) {
+                        con.release()
+                        console.log(sql)
+                        console.log(err)
+                    })
+                }
+            })
         })
     )
 }
-q();
+//q();
 async function getRanking(season) {
     const URI = encodeURI(`https://open-api.bser.io/v1/rank/top/${season}/3`);
     await axios.get(URI, options).then((result) => {
@@ -229,6 +250,22 @@ app.get('/rank/:season', (req, res) => {
     })
 })
 
+app.get('/play/:nickname', (req, res) => {
+    let nickname = req.params.season
+    console.log(nickname)
+    pool.getConnection((err, con) => {
+        if (err) throw err;
+        else {
+            let userNum = 862271;
+            let sql = `select * from season2 where userNum = ${userNum}`;
+            con.query(sql, function(Err, rows, fields) {
+                res.send(rows);
+                console.log('send');
+                con.release();
+            })
+        }
+    })
+})
 app.get('*', function(req, res){
     res.sendFile( path.join(__dirname, './build/index.html') )
 });

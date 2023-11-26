@@ -56,11 +56,11 @@ export default function Ranking(props) {
 	};
 	const avatarImage = (codes) => {
 		let arr = [];
-		for (let code of codes) {
-			if (code) {
-				arr.push(<Avatar className={styles.mx} src={`image/CharacterIcon/${code}.png`} />)
+		codes.forEach((code, index) => {
+			if(code) {
+				arr.push(<Avatar key={index} className={styles.mx} src={`image/CharacterIcon/${code}.png`} />)
 			}
-		}
+		})
 		return arr;
 	}
 	return (
