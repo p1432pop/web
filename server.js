@@ -7,7 +7,7 @@ const cron = require('node-cron');
 const fs = require('fs');
 dotenv.config();
 const production = false;
-
+const season2 = "2023-11-09-16-00-00"
 if (production) {
     const option = {
         ca: fs.readFileSync(process.env.CA),
@@ -31,9 +31,9 @@ app.use(express.static(path.join(__dirname, './build')));
 const axios = require('axios');
 const URL = encodeURI('https://open-api.bser.io/v1/user/stats/661111/21');
 const URL2 = encodeURI('https://open-api.bser.io/v1/user/stats/1553415/19');
-const URL3 = encodeURI('https://open-api.bser.io/v1/user/games/862271');
+const URL3 = encodeURI('https://open-api.bser.io/v1/user/games/1128103?next=27190093');
 
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
 const pool = mysql.createPool({
     host : process.env.DB_HOST,
     user : process.env.DB_USER,
@@ -49,11 +49,135 @@ const options = {
         'x-api-key': process.env.BSER_API_KEY
     }
 }
-const q = async () => {
-    await axios.all([axios.get(URL3, options), axios.get(URL2, options)]).then(
+const q = async (nickname) => {
+    const result = await axios.get(encodeURI(`https://open-api.bser.io/v1/user/nickname?query=${nickname}`), options) //존재하는 닉네임인지 API 서버에 확인
+    if (result.data.code === 200) { // 유효한 닉네임
+        const userNum = result.data.user.userNum;
+        const con = await pool.getConnection();
+        let sql = `select updated from User where userNum = ${userNum}`;
+        let [rows] = await con.query(sql);
+        if (rows[0] === undefined) { // DB에 없는 유저인 경우
+            sql = `insert into User values (${userNum}, '${nickname}', now())`;
+            const result2 = await axios.get(encodeURI(`https://open-api.bser.io/v1/user/games/${userNum}`), options)
+            let next = result2.data.next
+            console.log(next)
+        }
+        else { // DB에 있는 유저인 경우
+            let result2 = await axios.get(encodeURI(`https://open-api.bser.io/v1/user/games/${userNum}`), options)
+            let next = result2.data.next
+            let gameIds = []
+            for (let game of result2.data.userGames) {
+                if (game.matchingMode === 3 && game.gameId !==0) {
+                    gameIds.push(game.gameId)
+                }
+            }
+            while (next !== undefined) {
+                result2 = await axios.get(encodeURI(`https://open-api.bser.io/v1/user/games/${userNum}?next=${next}`), options)
+                if(result2.data.next === undefined) {
+                    console.log(next)
+                }
+                next = result2.data.next
+                for (let game of result2.data.userGames) {
+                    if (game.matchingMode === 3 && game.gameId !==0) {
+                        gameIds.push(game.gameId)
+                    }
+                }
+            }
+            let URIS = [];
+            for (let gameId of gameIds) {
+                URIS.push(encodeURI(`https://open-api.bser.io/v1/games/${gameId}`))
+            }
+            console.log(URIS)
+            let lastIndex = parseInt((URIS.length-1) / 40) + 1;
+            let sql = []
+            console.log(URIS.length)
+            console.log(new Date())
+            for (let i=0; i<lastIndex; i++) {
+                let targetURIS = URIS.slice(i*40, (i+1)*40)
+                await axios.all(targetURIS.map((endpoint) => axios.get(endpoint, options))).then(
+                    axios.spread((...res) => {
+                        res.forEach((item, index) => {
+                            item.data.userGames.forEach((data) => {
+                                let sql2 = ''
+                                sql2 += "insert into season2 values ("
+                                let abc = []
+                                abc.push(data.userNum)
+                                abc.push(data.gameId)
+                                abc.push(data.characterNum)
+                                abc.push(data.characterLevel)
+                                abc.push(data.gameRank)
+                                abc.push(data.playerKill)
+                                abc.push(data.playerAssistant)
+                                abc.push(data.monsterKill)
+                                abc.push(data.bestWeapon)
+                                abc.push(data.bestWeaponLevel)
+                                abc.push(JSON.stringify(data.masteryLevel))
+                                abc.push(JSON.stringify(data.equipment))
+                                abc.push(data.startDtm)
+                                abc.push(data.duration)
+                                abc.push(data.mmrBefore)
+                                abc.push(data.mmrGain)
+                                abc.push(data.mmrAfter)
+                                abc.push(data.victory)
+                                abc.push(data.damageToPlayer)
+                                abc.push(data.damageFromPlayer)
+                                abc.push(data.damageToMonster)
+                                abc.push(data.damageFromMonster)
+                                abc.push(JSON.stringify(data.killMonsters))
+                                abc.push(data.healAmount)
+                                abc.push(data.teamRecover)
+                                abc.push(data.addSurveillanceCamera)
+                                abc.push(data.addTelephotoCamera)
+                                abc.push(data.removeSurveillanceCamera)
+                                abc.push(data.removeTelephotoCamera)
+                                abc.push(data.giveUp)
+                                abc.push(data.matchSize)
+                                abc.push(data.teamKill)
+                                abc.push(data.accountLevel)
+                                abc.push(data.traitFirstCore)
+                                abc.push(JSON.stringify(data.traitFirstSub))
+                                abc.push(JSON.stringify(data.traitSecondSub))
+                                abc.push(data.escapeState)
+                                abc.push(data.tacticalSkillGroup)
+                                abc.push(data.tacticalSkillLevel)
+                                abc.push(data.totalGainVFCredit)
+                                for (let it of abc) {
+                                    if (typeof it === "string") {
+                                        sql2+=`'${it}', `
+                                    }
+                                    else {
+                                        sql2+=`${it},`
+                                    }
+                                }
+                                sql2 = sql2.slice(0, -1);
+                                sql2+=');'
+                                if (sql2.includes('undefined')) {
+                                    console.log(data.gameId, data.userNum, index)
+                                }
+                                sql.push(sql2)
+                            })
+                        })
+                        console.log(new Date());
+                        console.log(res.length);
+                    })
+                )
+            }
+            let sql2 = ''
+            sql.forEach((item) => sql2+=item)
+            const [err, rows] = await con.query(sql2)
+            console.log(err, rows)
+        }
+        console.log('end')
+        con.release()
+    }
+    else { // 유효하지 않은 닉네임
+        console.log("유효하지 않은 닉네임")
+    }
+    /*await axios.all([axios.get(URL3, options), axios.get(URL2, options)]).then(
         axios.spread((res1) => {
+            console.log(res1.data.next)
             let sql = ''
-            for(data of res1.data.userGames) {
+            for(let data of res1.data.userGames) {
                 sql += "insert into season2 values ("
                 let abc = []
                 abc.push(data.userNum)
@@ -96,7 +220,7 @@ const q = async () => {
                 abc.push(data.tacticalSkillGroup)
                 abc.push(data.tacticalSkillLevel)
                 abc.push(data.totalGainVFCredit)
-                for (item of abc) {
+                for (let item of abc) {
                     if (typeof item === "string") {
                         sql+=`'${item}', `
                     }
@@ -118,9 +242,9 @@ const q = async () => {
                 }
             })
         })
-    )
+    )*/
 }
-//q();
+q("한동그라미");
 async function getRanking(season) {
     const URI = encodeURI(`https://open-api.bser.io/v1/rank/top/${season}/3`);
     await axios.get(URI, options).then((result) => {
