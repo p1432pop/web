@@ -26,13 +26,9 @@ export default function Header(props) {
 		}
 		return arr;
 	}
-	const onChange = (ev) => {
+	const onChange = async (ev) => {
 		if(ev.key === 'Enter') {
-			navigate(`/player/${ev.target.value}`, {
-				state: {
-					nickname: ev.target.value
-				}
-			});
+			navigate(`/player/${ev.target.value}`);
 		}
 	}
     return (

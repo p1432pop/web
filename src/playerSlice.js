@@ -15,18 +15,23 @@ export const updatePlayer = createAsyncThunk(
 )
 
 export const playerSlice = createSlice({
-  name: "player",
+  name: "play",
   // 초깃값
   initialState: {
-    data: 1
+    data: 1,
+    onload: false
   },
   // 리듀서
   reducers: {
+    setOnload(state, action) {
+      
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(loadPlayer.fulfilled, (state, action) => {
       //state.data = action.payload.data;
       console.log(action);
+      onload = true
     })
   }
 });
