@@ -179,9 +179,6 @@ const q = async (nickname) => {
     }
     else { // 유효하지 않은 닉네임
         console.log("유효하지 않은 닉네임")
-        res.JSON({
-            code: "404"
-        })
     }
 }
 //q("한동그라미")
@@ -222,7 +219,7 @@ async function updateRanking(season) {
     }, 1000)
 }
 //updateRanking(21);
-const task = cron.schedule("40 12 * * * *", updateRanking(21), {scheduled: false})
+const task = cron.schedule("40 12 * * * *", () => {updateRanking(21)}, {scheduled: false})
 
 app.get('/rank/:season', async (req, res) => {
     const con = await pool.getConnection();

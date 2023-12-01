@@ -15,11 +15,14 @@ export const updatePlayer = createAsyncThunk(
 )
 
 export const playerSlice = createSlice({
-  name: "play",
+  name: "player",
   // 초깃값
   initialState: {
     data: 1,
-    onload: false
+    loading: 0,
+    onload: false,
+    characterCode: 6,
+    nickname: "아낌없이담는라면"
   },
   // 리듀서
   reducers: {
@@ -30,8 +33,14 @@ export const playerSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(loadPlayer.fulfilled, (state, action) => {
       //state.data = action.payload.data;
-      console.log(action);
-      onload = true
+      state.onload = true;
+      state.loading = action.payload.status;
+      console.log(action.payload.status);
+      console.log(1);
+    }).addCase(loadPlayer.rejected, (state, action) => {
+      state.onload = true;
+      console.log(action)
+      state.loading = 404
     })
   }
 });
