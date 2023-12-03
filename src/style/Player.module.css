@@ -1,13 +1,12 @@
 .container {
     max-width: 1080px;
     margin: auto;
-    background-color: gray;
+    background-color: white;
 }
 .flexCenter {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 300px;
 }
 .content {
     display: flex;
@@ -37,4 +36,39 @@
 }
 .notAllowedButton {
     cursor: not-allowed;
+}
+.tier {
+    background-color: white;
+}
+.avatarTier {
+    height: 160px
+}
+.avatarChar {
+    height: 64px;
+    width: 64px;
+    border: 1px solid black;
+}
+.smallAvatar {
+    width: 22px;
+    height: 22px;
+    border: 1px solid black;
+    font-size: 14px;
+    color: black;
+    background-color: white;
+}
+.gameContainer {
+    display: flex;
+}
+.redIcon {
+    color: red;
+}
+.blueIcon {
+    color: blue;
+}
+.blackIcon {
+    color: black;
+}
+.itemImg {
+    border: 1px solid black;
+    width: 40px
 }

@@ -18,11 +18,15 @@ export const playerSlice = createSlice({
   name: "player",
   // 초깃값
   initialState: {
-    data: 1,
+    games: undefined,
+    state: false,
     loading: 0,
     onload: false,
     characterCode: 6,
-    nickname: "아낌없이담는라면"
+    nickname: "아낌없이담는라면",
+    updated: new Date().toUTCString(),
+    mmr: 4700,
+    level: 0,
   },
   // 리듀서
   reducers: {
@@ -32,11 +36,21 @@ export const playerSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(loadPlayer.fulfilled, (state, action) => {
-      //state.data = action.payload.data;
       state.onload = true;
       state.loading = action.payload.status;
-      console.log(action.payload.status);
-      console.log(1);
+      state.state = action.payload.data.state;
+      state.mmr = action.payload.data.data[0].mmrAfter;
+      state.level = action.payload.data.data[0].accountLevel;
+      state.updated = action.payload.data.updated;
+      state.games = action.payload.data.data.slice(0, 20)
+      for(let game of state.games) {
+        let equip = []
+        let obj = JSON.parse(game.equipment)
+        for(let i=0; i<5; i++) {
+          equip.push(obj[`${i}`])
+        }
+        game.equipment = equip
+      }
     }).addCase(loadPlayer.rejected, (state, action) => {
       state.onload = true;
       console.log(action)

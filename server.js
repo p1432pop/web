@@ -263,14 +263,16 @@ app.get('/play/:nickname', async (req, res) => {
         const [rows2] = await con.query(sql)
         if (now - updated < 5*60*1000) { // 최근 갱신한 경우
             res.json({
-                state: 'new',
-                data: rows2
+                state: false,
+                data: rows2,
+                updated: updated
             })
         }
         else { // 갱신 가능
             res.json({
-                state: 'old',
-                data: rows2
+                state: true,
+                data: rows2,
+                updated: updated
             })
         }   
     }
