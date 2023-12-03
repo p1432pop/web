@@ -30,7 +30,6 @@ export default function Player(props) {
         dispatch(loadPlayer(params.nickname));
     }, [params, dispatch]);
     const itemImg = (list) => {
-        console.log(list)
         let arr = [];
         list.forEach((item)=> {
             arr.push(<img className={styles.itemImg} alt="img" src={`../image/Icon/${item}.png`} />)
@@ -155,7 +154,12 @@ export default function Player(props) {
                                                     <Avatar className={styles.avatarChar} alt="img" src={`../image/CharacterIcon/${game.characterNum}.png`} />
                                                 </Badge>
                                             </StyledTableCell>
-                                            <StyledTableCell>{1}</StyledTableCell>
+                                            <StyledTableCell>
+                                                <Avatar alt="img" src={`../image/Trait/${game.traitFirstCore}.png`} />
+                                                <Avatar alt="img" src={`../image/Trait/${game.traitFirstSub[0]}.png`} />
+                                                <Avatar alt="img" src={`../image/Trait/${game.traitFirstSub[1]}.png`} />
+                                                <Avatar alt="img" src={`../image/Tactical/${game.tacticalSkillGroup}.png`} />
+                                            </StyledTableCell>
                                             <StyledTableCell>{game.teamKill} / {game.playerKill} / {game.playerAssistant}</StyledTableCell>
                                             <StyledTableCell>{game.damageToPlayer}</StyledTableCell>
                                             <StyledTableCell>

@@ -1,7 +1,5 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-
 import Button from '@mui/material/Button';
 import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
@@ -10,8 +8,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import styles from '../style/Header.module.css';
 
 export default function Header(props) {
+	const nickname = useRef('');
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
 	const headerButtons = () => {
 		let arr = [];
 		let Links = [
@@ -26,9 +24,22 @@ export default function Header(props) {
 		}
 		return arr;
 	}
-	const onChange = async (ev) => {
+	const onChange = (ev) => {
 		if(ev.key === 'Enter') {
-			navigate(`/player/${ev.target.value}`);
+			if (ev.target.value.trim().length === 0) {
+				alert("공백 없이 입력해주세요.")
+			}
+			else {
+				navigate(`/player/${ev.target.value}`);
+			}
+		}
+	}
+	const ev = () => {
+		if (nickname.current.value.trim().length === 0) {
+			alert("공백 없이 입력해주세요.")
+		}
+		else {
+			navigate(`/player/${nickname.current.value}`);
 		}
 	}
     return (
@@ -41,8 +52,9 @@ export default function Header(props) {
 					<InputBase className={styles.input}
 						placeholder="플레이어 검색"
 						onKeyDown={(ev) => onChange(ev)}
+						inputRef={nickname}
 					/>
-					<IconButton type="submit">
+					<IconButton type="submit" onClick={ev}>
 						<SearchIcon sx={{color:'black'}}/>
 					</IconButton>
 				</div>
