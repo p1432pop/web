@@ -115,7 +115,7 @@ export default function Ranking(props) {
 									<StyledTableCell>{(row.top1*100).toFixed(1)}%</StyledTableCell>
 									<StyledTableCell>{(row.top3*100).toFixed(1)}%</StyledTableCell>
 									<StyledTableCell>{row.totalGames}</StyledTableCell>
-									<StyledTableCell>{(row.averageRank).toFixed(1)}</StyledTableCell>
+									<StyledTableCell>#{(row.averageRank).toFixed(1)}</StyledTableCell>
 									<StyledTableCell>{(row.averageKills).toFixed(2)}</StyledTableCell>
 									<StyledTableCell>
 										<div className={styles.avatarBox}>

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadPlayer } from '../playerSlice';
+import { loadPlayer, updatePlayer } from '../playerSlice';
 
 import styles from '../style/Player.module.css';
 
@@ -36,46 +36,6 @@ export default function Player(props) {
         })
         return arr;
     }
-    const gameBox = () => {
-        let arr = [];
-        value.games.forEach((game) => {
-            let equip = (JSON.parse(game.equipment))
-            arr.push(
-            <div className={styles.gameContainer}>
-                <div>#{game.gameRank}</div>
-                <div>{parseInt(game.duration/60)}:{game.duration%60}</div>
-                <Badge
-                    overlap="circular"
-                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                    badgeContent={
-                    <Avatar className={styles.smallAvatar}>{game.characterLevel}</Avatar>
-                    }
-                >
-                    <Avatar className={styles.avatarChar} alt="img" src={`../image/CharacterIcon/${game.characterNum}.png`} />
-                </Badge>
-                <div>{new Date(game.startDtm).toLocaleString('ko-KR')}</div>
-                <div>
-                    {game.teamKill} / {game.playerKill} / {game.playerAssistant}
-                </div>
-                <div>
-                딜량 : {game.damageToPlayer}
-                </div>
-                <div>
-                {game.mmrGain > 0 ? <ExpandLessIcon className={styles.redIcon} /> : 
-                (game.mmrGain < 0 ? <ExpandMoreIcon className={styles.blueIcon} /> : <ExpandMoreIcon className={styles.blackIcon} />)}
-                    
-                </div>
-                <div>
-                {game.mmrAfter}
-                    
-                </div>
-                <div>
-                    equip : {equip['0']}
-                </div>
-            </div>)
-        })
-        return arr;
-    }
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
 		[`&.${tableCellClasses.head}`]: {
 		  	backgroundColor: theme.palette.common.black,
@@ -87,7 +47,6 @@ export default function Player(props) {
 			textAlign: 'center'
 		},
 	}));
-	  
 	const StyledTableRow = styled(TableRow)(({ theme }) => ({
 		'&:nth-of-type(odd)': {
 			backgroundColor: theme.palette.action.hover,
@@ -98,7 +57,7 @@ export default function Player(props) {
 		},
 	}));
     if (value.onload) {
-        if (value.loading === 200 || value.loading === 204) {
+        if (value.status === 200) {
             return (
                 <div className={styles.container}>
                     <div className={styles.profile}>
@@ -106,12 +65,18 @@ export default function Player(props) {
                         <div className={styles.profileContent}>
                             <Chip label={`레벨 : ${value.level}`} variant="outlined"/>
                             {params.nickname}
-                            {value.state
-                            ? 
-                            <Button variant="outlined">갱신 가능</Button>
+                            {value.view === 2 || value.view === 3
+                            ?
+                            (value.updateLoading ? 
+                                <CircularProgress />
+                                :
+                                <Button onClick={() => {console.log(value.userNum);
+                                    dispatch(updatePlayer({nickname: params.nickname, userNum: value.userNum, updated: value.updated}))}} variant="outlined">갱신 가능</Button>
+                                )
                             : 
-                            <Button className={styles.notAllowedButton} variant="outlined">갱신 불가</Button>}
-                            최근 갱신 시간 : {value.updated}
+                            <Button className={styles.notAllowedButton} variant="outlined">갱신 불가</Button>
+                            }
+                            최근 갱신 시간 :
                         </div>
                         정규시즌2 랭크 게임에 대한 정보만 제공합니다.
                     </div>
@@ -182,7 +147,7 @@ export default function Player(props) {
                 </div>
             )
         }
-        else if (value.loading === 404) {
+        else if (value.status === 404) {
             return (
                 <div className={styles.container}>
                     <div className={styles.flexCenter}>
@@ -197,12 +162,10 @@ export default function Player(props) {
         }
     }
     return (
-        <>
-            <div className={styles.container}>
-                <CircularProgress />
-                {params.nickname}
-                플레이어를 검색하고 있습니다. 잠시만 기다려 주세요.
-            </div>
-        </>
+        <div className={styles.container}>
+            <CircularProgress />
+            {params.nickname}
+            플레이어를 검색하고 있습니다. 잠시만 기다려 주세요.
+        </div>
     );
 }

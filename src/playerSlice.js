@@ -5,79 +5,95 @@ export const loadPlayer = createAsyncThunk(
     "load/Player",
     (nickname) => {
         return axios.get(`http://localhost:8080/play/${nickname}`);
+        
     }
 )
 export const updatePlayer = createAsyncThunk(
     "update/Player",
-    (nickname) => {
-        return axios.get(`http://localhost:8080/updatePlay/${nickname}`)
+    (data) => {
+        return axios.post(`http://localhost:8080/play`, {
+          nickname: data.nickname,
+          userNum: data.userNum,
+          updated: data.updated
+        })
     }
 )
-
-export const playerSlice = createSlice({
-  name: "player",
-  // 초깃값
-  initialState: {
-    games: [],
-    state: false,
-    loading: 0,
-    onload: false,
-    characterCode: 0,
-    nickname: "",
-    updated: "기록 없음",
-    mmr: 0,
-    level: 0,
-  },
-  // 리듀서
-  reducers: {
-    setOnload(state, action) {
-      
-    }
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(loadPlayer.pending, (state, action) => {
-        state.onload = false;
-        state.games = [];
-        state.state = false;
-        state.loading = 0;
-        state.characterCode = 0;
-        state.nickname = "";
-        state.updated = "기록 없음";
-        state.mmr = 0;
-        state.level = 0;
-      })
-      .addCase(loadPlayer.fulfilled, (state, action) => {
-      console.log(action)
-      state.onload = true;
-      state.loading = action.payload.status;
-      if (state.loading === 200) {
-        state.state = action.payload.data.state;
-        state.mmr = action.payload.data.data[0].mmrAfter;
-        state.level = action.payload.data.data[0].accountLevel;
-        console.log(JSON.parse(action.payload.data.data[0].traitSecondSub)[0])
-        state.updated = action.payload.data.updated;
-        state.games = action.payload.data.data.slice(0, 20)
+function gameSetting(state, data) {
+    state.updated = new Date(data.updated);
+    console.log(data.userNum, 'here')
+    state.userNum = data.userNum;
+    if (data.games.length !== 0) {
+        state.mmr = data.games[0].mmrAfter;
+        state.level = data.games[0].accountLevel;
+        state.characterCode = data.games[0].characterNum
+        state.games = data.games.slice(0, 20)
         for(let game of state.games) {
-          let equip = []
-          let obj = JSON.parse(game.equipment)
-          for(let i=0; i<5; i++) {
-            equip.push(obj[`${i}`])
-          }
-          game.equipment = equip
-          game.traitFirstSub = JSON.parse(game.traitFirstSub)
-          game.traitSecondSub = JSON.parse(game.traitSecondSub)
+            let equip = []
+            let obj = JSON.parse(game.equipment)
+            for(let i=0; i<5; i++) {
+                equip.push(obj[`${i}`])
+            }
+            game.equipment = equip
+            game.traitFirstSub = JSON.parse(game.traitFirstSub)
+            game.traitSecondSub = JSON.parse(game.traitSecondSub)
         }
-      }
-      else if (state.loading === 204) {
-        console.log(204)
-      }
-    }).addCase(loadPlayer.rejected, (state, action) => {
-      state.onload = true;
-      console.log(action)
-      state.loading = 404
-    })
-  }
+    }
+}
+export const playerSlice = createSlice({
+    name: "player",
+    initialState: {
+        games: [],
+        view: 1,
+        status: 200,
+        onload: false,
+        updateLoading: false,
+        userNum: 0,
+        characterCode: 0,
+        updated: undefined,
+        mmr: 0,
+        level: 0,
+    },
+    reducers: {
+    },
+    extraReducers: (builder) => {
+        builder
+        .addCase(loadPlayer.pending, (state, action) => {
+            state.games = [];
+            state.view = 1;
+            state.onload = false;
+            state.updateLoading = false;
+            state.userNum = 0;
+            state.characterCode = 0;
+            state.updated = undefined;
+            state.mmr = 0;
+            state.level = 0;
+        })
+        .addCase(loadPlayer.fulfilled, (state, action) => {
+            state.status = action.payload.status
+            state.onload = true;
+            let data = action.payload.data;
+            state.view = data.view;
+            gameSetting(state, data)
+        })
+        .addCase(loadPlayer.rejected, (state, action) => {
+            state.onload = true;
+            console.log(action)
+            state.status = 404
+        })
+        .addCase(updatePlayer.pending, (state, action) => {
+            console.log(action, 'p');
+            state.updateLoading = true;
+        })
+        .addCase(updatePlayer.fulfilled, (state, action) => {
+            state.updateLoading = false;
+            let data = action.payload.data;
+            state.view = data.view;
+            gameSetting(state, data)
+        })
+        .addCase(updatePlayer.rejected, (state, action) => {
+            console.log(action, 'r');
+        })      
+    }
 });
 
 //export const {} = playerSlice.actions;

@@ -8,6 +8,7 @@ const fs = require('fs');
 dotenv.config();
 const production = false;
 const season2 = new Date("2023-11-09T16:00:00+09:00")
+const LIMIT = 5*60*1000;
 if (production) {
     const option = {
         ca: fs.readFileSync(process.env.CA),
@@ -51,135 +52,20 @@ const options = {
 }
 const q = async (nickname) => {
     const result = await axios.get(encodeURI(`https://open-api.bser.io/v1/user/nickname?query=${nickname}`), options) //존재하는 닉네임인지 API 서버에 확인
-    if (result.data.code === 200) { // 유효한 닉네임
-        const userNum = result.data.user.userNum;
-        const con = await pool.getConnection();
-        let sql = `select updated from User where userNum = ${userNum}`;
-        let [rows] = await con.query(sql);
-        if (rows[0] === undefined) { // DB에 없는 유저인 경우
-            sql = `insert into User values (${userNum}, '${nickname}', now())`;
-            const result2 = await axios.get(encodeURI(`https://open-api.bser.io/v1/user/games/${userNum}`), options)
-            let next = result2.data.next
-            console.log(next)
-        }
-        else { // DB에 있는 유저인 경우
-            let updated = new Date(rows[0])
-            let now = new Date()
-            if (now - updated <= 5*60*1000) { // 최근 갱신한 기록이 있는 경우
-                
-            }
-            else {
-
-            }
-            let result2 = await axios.get(encodeURI(`https://open-api.bser.io/v1/user/games/${userNum}`), options)
-            let next = result2.data.next
-            let gameIds = []
-            for (let game of result2.data.userGames) {
-                if (game.matchingMode === 3 && game.gameId !==0) {
-                    gameIds.push(game.gameId)
-                }
-            }
-            while (next !== undefined) {
-                result2 = await axios.get(encodeURI(`https://open-api.bser.io/v1/user/games/${userNum}?next=${next}`), options)
-                if(result2.data.next === undefined) {
-                    console.log(next)
-                }
-                next = result2.data.next
-                for (let game of result2.data.userGames) {
-                    if (game.matchingMode === 3 && game.gameId !==0) {
-                        gameIds.push(game.gameId)
-                    }
-                }
-            }
-            let URIS = [];
-            for (let gameId of gameIds) {
-                URIS.push(encodeURI(`https://open-api.bser.io/v1/games/${gameId}`))
-            }
-            console.log(URIS)
-            let lastIndex = parseInt((URIS.length-1) / 40) + 1;
-            let sql = []
-            console.log(URIS.length)
-            console.log(new Date())
-            for (let i=0; i<lastIndex; i++) {
-                let targetURIS = URIS.slice(i*40, (i+1)*40)
-                await axios.all(targetURIS.map((endpoint) => axios.get(endpoint, options))).then(
-                    axios.spread((...res) => {
-                        res.forEach((item, index) => {
-                            item.data.userGames.forEach((data) => {
-                                let sql2 = ''
-                                sql2 += "insert into season2 values ("
-                                let abc = []
-                                abc.push(data.userNum)
-                                abc.push(data.gameId)
-                                abc.push(data.characterNum)
-                                abc.push(data.characterLevel)
-                                abc.push(data.gameRank)
-                                abc.push(data.playerKill)
-                                abc.push(data.playerAssistant)
-                                abc.push(data.monsterKill)
-                                abc.push(data.bestWeapon)
-                                abc.push(data.bestWeaponLevel)
-                                abc.push(JSON.stringify(data.masteryLevel))
-                                abc.push(JSON.stringify(data.equipment))
-                                abc.push(data.startDtm)
-                                abc.push(data.duration)
-                                abc.push(data.mmrBefore)
-                                abc.push(data.mmrGain)
-                                abc.push(data.mmrAfter)
-                                abc.push(data.victory)
-                                abc.push(data.damageToPlayer)
-                                abc.push(data.damageFromPlayer)
-                                abc.push(data.damageToMonster)
-                                abc.push(data.damageFromMonster)
-                                abc.push(JSON.stringify(data.killMonsters))
-                                abc.push(data.healAmount)
-                                abc.push(data.teamRecover)
-                                abc.push(data.addSurveillanceCamera)
-                                abc.push(data.addTelephotoCamera)
-                                abc.push(data.removeSurveillanceCamera)
-                                abc.push(data.removeTelephotoCamera)
-                                abc.push(data.giveUp)
-                                abc.push(data.matchSize)
-                                abc.push(data.teamKill)
-                                abc.push(data.accountLevel)
-                                abc.push(data.traitFirstCore)
-                                abc.push(JSON.stringify(data.traitFirstSub))
-                                abc.push(JSON.stringify(data.traitSecondSub))
-                                abc.push(data.escapeState)
-                                abc.push(data.tacticalSkillGroup)
-                                abc.push(data.tacticalSkillLevel)
-                                abc.push(data.totalGainVFCredit)
-                                for (let it of abc) {
-                                    if (typeof it === "string") {
-                                        sql2+=`'${it}', `
-                                    }
-                                    else {
-                                        sql2+=`${it},`
-                                    }
-                                }
-                                sql2 = sql2.slice(0, -1);
-                                sql2+=');'
-                                if (sql2.includes('undefined')) {
-                                    console.log(data.gameId, data.userNum, index)
-                                }
-                                sql.push(sql2)
-                            })
-                        })
-                        console.log(new Date());
-                        console.log(res.length);
-                    })
-                )
-            }
-            let sql2 = ''
-            sql.forEach((item) => sql2+=item)
-            const [err, rows] = await con.query(sql2)
-            console.log(err, rows)
-        }
-        con.release()
+    const userNum = result.data.user.userNum;
+    const con = await pool.getConnection();
+    let sql = `select updated from User where userNum = ${userNum}`;
+    let [rows] = await con.query(sql);
+    if (rows[0] === undefined) { // DB에 없는 유저인 경우
+        sql = `insert into User values (${userNum}, '${nickname}', now())`;
+        const result2 = await axios.get(encodeURI(`https://open-api.bser.io/v1/user/games/${userNum}`), options)
+        let next = result2.data.next
+        console.log(next)
     }
-    else { // 유효하지 않은 닉네임
-        console.log("유효하지 않은 닉네임")
+    else { // DB에 있는 유저인 경우
+        
     }
+    con.release()
 }
 //q("한동그라미")
 
@@ -212,8 +98,7 @@ async function updateRanking(season) {
             console.log(sql)
             clearInterval(intervalID)
             const con = await pool.getConnection();
-            const [err, rows] = await con.query(sql)
-            console.log(err)
+            const [rows] = await con.query(sql)
             con.release()
         }
     }, 1000)
@@ -239,39 +124,165 @@ app.get('/game/:gameId', async (req, res) => {
     res.send(rows)
     con.release()
 })
+
+//const cors = require('cors');
+const bodyParser = require('body-parser')
+app.use(bodyParser.json())
+//app.use(cors());
+
+app.post('/play', async (req, res) => {
+    console.log(req.body)
+    const nickname = req.body.nickname;
+    const userNum = req.body.userNum;
+    let updated = new Date(req.body.updated);
+    let sql = ''
+    if (req.body.updated === undefined) {
+        updated = season2
+        sql = `insert into User values (${userNum}, '${nickname}', now());`;
+    }
+    else {
+        sql = `update User set updated = now() where userNum = ${userNum};`
+    }
+    const con = await pool.getConnection();
+    let result2 = await axios.get(encodeURI(`https://open-api.bser.io/v1/user/games/${userNum}`), options)
+    let next = result2.data.next
+    let games = []
+    for (let game of result2.data.userGames) {
+        if (game.matchingMode === 3 && game.gameId !==0 && game.seasonId === 21) {
+            let endTime = new Date(game.startDtm).setSeconds(game.duration)
+            if (endTime > updated) {
+                games.push(game)
+            }
+            else {
+                next = undefined
+                break
+            }
+        }
+    }
+    while (next !== undefined) {
+        result2 = await axios.get(encodeURI(`https://open-api.bser.io/v1/user/games/${userNum}?next=${next}`), options)
+        if(result2.data.next === undefined) {
+            console.log(next)
+        }
+        next = result2.data.next
+        for (let game of result2.data.userGames) {
+            if (game.matchingMode === 3 && game.gameId !==0 && game.seasonId === 21) {
+                let endTime = new Date(game.startDtm).setSeconds(game.duration)
+                if (endTime > updated) {
+                    games.push(game)
+                }
+                else {
+                    next = undefined
+                    break
+                }
+            }
+        }
+    }
+    for (let game of games) {
+        sql+="insert into season2 values ("
+        let data = []
+        data.push(game.userNum)
+        data.push(game.gameId)
+        data.push(game.characterNum)
+        data.push(game.characterLevel)
+        data.push(game.gameRank)
+        data.push(game.playerKill)
+        data.push(game.playerAssistant)
+        data.push(game.monsterKill)
+        data.push(game.bestWeapon)
+        data.push(game.bestWeaponLevel)
+        data.push(JSON.stringify(game.masteryLevel))
+        data.push(JSON.stringify(game.equipment))
+        data.push(game.startDtm)
+        data.push(game.duration)
+        data.push(game.mmrBefore)
+        data.push(game.mmrGain)
+        data.push(game.mmrAfter)
+        data.push(game.victory)
+        data.push(game.damageToPlayer)
+        data.push(game.damageFromPlayer)
+        data.push(game.damageToMonster)
+        data.push(game.damageFromMonster)
+        data.push(JSON.stringify(game.killMonsters))
+        data.push(game.healAmount)
+        data.push(game.teamRecover)
+        data.push(game.addSurveillanceCamera)
+        data.push(game.addTelephotoCamera)
+        data.push(game.removeSurveillanceCamera)
+        data.push(game.removeTelephotoCamera)
+        data.push(game.giveUp)
+        data.push(game.matchSize)
+        data.push(game.teamKill)
+        data.push(game.accountLevel)
+        data.push(game.traitFirstCore)
+        data.push(JSON.stringify(game.traitFirstSub))
+        data.push(JSON.stringify(game.traitSecondSub))
+        data.push(game.escapeState)
+        data.push(game.tacticalSkillGroup)
+        data.push(game.tacticalSkillLevel)
+        data.push(game.totalGainVFCredit)
+        for (let item of data) {
+            if (typeof item === "string") {
+                sql+=`'${item}', `
+            }
+            else {
+                sql+=`${item},`
+            }
+        }
+        sql = sql.slice(0, -1);
+        sql+=');'
+    }
+    const [rows] = await con.query(sql)
+    sql = `select * from season2 where userNum = ${userNum} order by gameId desc`
+    const [rows2] = await con.query(sql)
+    res.json({
+        view: 1,
+        userNum: userNum,
+        games: rows2,
+        updated: new Date()
+    })
+    con.release()
+})
+
 app.get('/play/:nickname', async (req, res) => {
     const nickname = req.params.nickname;
+    const result = await axios.get(encodeURI(`https://open-api.bser.io/v1/user/nickname?query=${nickname}`), options)
+    const isValidNickname = result.data.code === 200 ? true : false;
+    const userNum = isValidNickname ? result.data.user.userNum : null;
     const con = await pool.getConnection();
     let sql = `select updated from User where nickname = '${nickname}'`;
     const [rows] = await con.query(sql)
-    const result = await axios.get(encodeURI(`https://open-api.bser.io/v1/user/nickname?query=${nickname}`), options)
     if (rows[0] === undefined) { // DB에 없는 유저
-        if (result.data.code === 200) { // 유효한 닉네임
-            res.status(204).send();
-            console.log(204)
+        if (isValidNickname) { // 유효한 닉네임
+            res.json({
+                view: 3,
+                userNum: userNum,
+                games: [],
+                updated: undefined
+            })
         }
-        else {
+        else { // 유효하지 않은 닉네임
             res.status(404).send();
-            console.log(404)
         }
     }
     else { // DB에 있는 유저
         const updated = new Date(rows[0].updated)
         const now = new Date()
-        const userNum = result.data.user.userNum
         sql = `select * from season2 where userNum = ${userNum} order by gameId desc`
-        const [rows2] = await con.query(sql)
-        if (now - updated < 5*60*1000) { // 최근 갱신한 경우
+        const [games] = await con.query(sql)
+        if (now - updated < LIMIT) { // 최근 갱신한 경우
             res.json({
-                state: false,
-                data: rows2,
+                view: 1,
+                userNum: userNum,
+                games: games,
                 updated: updated
             })
         }
         else { // 갱신 가능
             res.json({
-                state: true,
-                data: rows2,
+                view: 2,
+                userNum: userNum,
+                games: games,
                 updated: updated
             })
         }   
@@ -279,5 +290,5 @@ app.get('/play/:nickname', async (req, res) => {
     con.release()
 })
 app.get('*', function(req, res){
-    res.sendFile( path.join(__dirname, './build/index.html') )
+    res.sendFile(path.join(__dirname, './build/index.html'))
 });

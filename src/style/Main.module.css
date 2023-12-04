@@ -3,12 +3,11 @@
 }
 .container {
     max-width: 1080px;
-    height: 100vh;
     margin: auto;
-    background-color: gray;
+    background-color: white;
 }
 .topContent {
-    /*background-image: url('../assets/1080.png');*/
+    background-image: url('../assets/1080.png');
     height: 608px;
     display: flex;
     align-items: center;
@@ -28,6 +27,25 @@
 }
 .patchBox {
     width: 240px;
-    height: 240px;
-    background-color: aqua;
+    height: 100%;
+    background-color: white;
+    border: 1px solid
+}
+.mx {
+    margin-right: 4px;
+    margin-left: 4px;
+}
+.my {
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+.avatarBox {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+.flexCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

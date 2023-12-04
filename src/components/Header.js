@@ -24,7 +24,7 @@ export default function Header(props) {
 		}
 		return arr;
 	}
-	const onChange = (ev) => {
+	const inputBaseHandler = (ev) => {
 		if(ev.key === 'Enter') {
 			if (ev.target.value.trim().length === 0) {
 				alert("공백 없이 입력해주세요.")
@@ -34,7 +34,7 @@ export default function Header(props) {
 			}
 		}
 	}
-	const ev = () => {
+	const buttonHandler = () => {
 		if (nickname.current.value.trim().length === 0) {
 			alert("공백 없이 입력해주세요.")
 		}
@@ -51,10 +51,10 @@ export default function Header(props) {
 				<div className={styles.searchBox}>
 					<InputBase className={styles.input}
 						placeholder="플레이어 검색"
-						onKeyDown={(ev) => onChange(ev)}
+						onKeyDown={(ev) => inputBaseHandler(ev)}
 						inputRef={nickname}
 					/>
-					<IconButton type="submit" onClick={ev}>
+					<IconButton type="submit" onClick={buttonHandler}>
 						<SearchIcon sx={{color:'black'}}/>
 					</IconButton>
 				</div>
