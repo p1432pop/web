@@ -11,6 +11,7 @@ export const loadPlayer = createAsyncThunk(
 export const updatePlayer = createAsyncThunk(
     "update/Player",
     (data) => {
+        console.log(data.updated)
         return axios.post(`/play`, {
           nickname: data.nickname,
           userNum: data.userNum,
@@ -19,7 +20,7 @@ export const updatePlayer = createAsyncThunk(
     }
 )
 function gameSetting(state, data) {
-    state.updated = new Date(data.updated);
+    state.updated = (data.updated);
     console.log(data.userNum, 'here')
     state.userNum = data.userNum;
     if (data.games.length !== 0) {
