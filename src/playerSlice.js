@@ -19,11 +19,18 @@ export const updatePlayer = createAsyncThunk(
         })
     }
 )
+export const loadGame = createAsyncThunk(
+    "load/Game",
+    (gameId) => {
+        return axios.get(`/game/${gameId}`);
+    }
+)
 function gameSetting(state, data) {
     state.updated = (data.updated);
     console.log(data.userNum, 'here')
     state.userNum = data.userNum;
     if (data.games.length !== 0) {
+        state.rank = data.rank;
         state.mmr = data.games[0].mmrAfter;
         state.level = data.games[0].accountLevel;
         state.characterCode = data.games[0].characterNum
@@ -53,6 +60,7 @@ export const playerSlice = createSlice({
         updated: undefined,
         mmr: 0,
         level: 0,
+        rank: 0
     },
     reducers: {
     },
@@ -68,6 +76,7 @@ export const playerSlice = createSlice({
             state.updated = undefined;
             state.mmr = 0;
             state.level = 0;
+            state.rank = 0;
         })
         .addCase(loadPlayer.fulfilled, (state, action) => {
             state.status = action.payload.status
@@ -93,7 +102,16 @@ export const playerSlice = createSlice({
         })
         .addCase(updatePlayer.rejected, (state, action) => {
             console.log(action, 'r');
-        })      
+        })
+        .addCase(loadGame.pending, (state, action) => {
+
+        })
+        .addCase(loadGame.fulfilled, (state, action) => {
+            
+        })
+        .addCase(loadGame.rejected, (state, action) => {
+            
+        })
     }
 });
 

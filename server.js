@@ -9,6 +9,7 @@ dotenv.config();
 const production = false;
 const season2 = new Date("2023-11-09T16:00:00+09:00")
 const LIMIT = 5*60*1000;
+const VALIDATIONCODE = "seoultech"
 if (production) {
     const option = {
         ca: fs.readFileSync(process.env.CA),
@@ -77,7 +78,7 @@ async function updateRanking(season) {
     for (let i=0; i<1000; i++) {
         URIS.push(encodeURI(`https://open-api.bser.io/v1/user/stats/${data[i].userNum}/${season}`))
     }
-    let sql = ''
+    let sql = 'delete from Ranking2;'
     let i = 0
     let intervalID = setInterval(async () => {
         let targetURIS = URIS.slice(i*40, (i+1)*40)
@@ -104,8 +105,8 @@ async function updateRanking(season) {
     }, 1000)
 }
 //updateRanking(21);
-const task = cron.schedule("40 12 * * * *", () => {updateRanking(21)}, {scheduled: false})
-
+const task = cron.schedule("50 17 * * * *", () => {updateRanking(21)}, {scheduled: false})
+app.get('/user/:id/:password')
 app.get('/rank/:season', async (req, res) => {
     const con = await pool.getConnection();
     const season = req.params.season
@@ -235,11 +236,18 @@ app.post('/play', async (req, res) => {
     const [rows] = await con.query(sql)
     sql = `select * from season2 where userNum = ${userNum} order by gameId desc`
     const [rows2] = await con.query(sql)
+    let rank;
+    if (rows2[0].mmrAfter >= 6000) {
+        const result = await axios.get(encodeURI(`https://open-api.bser.io/v1/rank/${userNum}/21/3`), options)
+        rank = result.data.userRank.rank
+        console.log(rank)
+    }
     res.json({
         view: 1,
         userNum: userNum,
         games: rows2,
-        updated: new Date()
+        updated: new Date(),
+        rank: rank
     })
     con.release()
 })
@@ -270,12 +278,18 @@ app.get('/play/:nickname', async (req, res) => {
         const now = new Date()
         sql = `select * from season2 where userNum = ${userNum} order by gameId desc`
         const [games] = await con.query(sql)
+        let rank;
+        if (games[0].mmrAfter >= 6000) {
+            const result = await axios.get(encodeURI(`https://open-api.bser.io/v1/rank/${userNum}/21/3`), options)
+            rank = result.data.userRank.rank
+        }
         if (now - updated < LIMIT) { // 최근 갱신한 경우
             res.json({
                 view: 1,
                 userNum: userNum,
                 games: games,
-                updated: updated
+                updated: updated,
+                rank: rank
             })
         }
         else { // 갱신 가능
@@ -283,12 +297,57 @@ app.get('/play/:nickname', async (req, res) => {
                 view: 2,
                 userNum: userNum,
                 games: games,
-                updated: updated
+                updated: updated,
+                rank: rank
             })
         }   
     }
     con.release()
 })
+
+app.post('/member', async (req, res) => { // 회원가입
+    let id = req.body.id;
+    let password = req.body.password;
+    let validation = req.body.validation;
+    if (validation === VALIDATIONCODE) {
+        const con = await pool.getConnection();
+        let sql = `select id from member where userid = ${id}`
+        const [rows] = await con.query(sql)
+        if (rows[0].id === id) {
+            res.send("중복");
+        }
+        else {
+            sql = `insert into member values (${id}, ${password})`
+            const [rows] = await con.query(sql)
+            res.send("성공");
+        }
+        con.release()
+    }
+    else {
+        res.send("인증 코드가 틀립니다.")
+    }
+})
+
+app.post('/login', async (req, res) => { // 로그인
+    const id = req.body.id;
+    const password = req.body.password;
+    let sql = `select id, password from member where id = ${id}`
+    const con = await pool.getConnection();
+    const [rows] = await con.query(sql)
+    if (rows[0].id === id && rows[0].password === password) { // 로그인 성공
+        
+    }
+    else { // 로그인 실패
+
+    }
+})
+app.post('/logout', async (req, res) => { // 로그아웃
+    
+})
+app.delete('/member', async (req, res) => { // 회원탈퇴
+    let id = req.body.id;
+})
+
 app.get('*', function(req, res){
     res.sendFile(path.join(__dirname, './build/index.html'))
 });

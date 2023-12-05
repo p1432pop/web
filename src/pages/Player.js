@@ -81,7 +81,7 @@ export default function Player(props) {
                         정규시즌2 랭크 게임에 대한 정보만 제공합니다.
                     </div>
                     <div className={styles.tier}>
-                        <img className={styles.avatarTier} src={"../"+getTierImg(value.mmr, 500)} alt='img'/>
+                        <img className={styles.avatarTier} src={"../"+getTierImg(value.mmr, value.rank)} alt='img'/>
                         
                     </div>
                     <div>
