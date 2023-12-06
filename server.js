@@ -9,6 +9,7 @@ dotenv.config();
 const production = false;
 const season2 = new Date("2023-11-09T16:00:00+09:00")
 const LIMIT = 5*60*1000;
+let rankingupdated = new Date("2023-12-07T01:00:00+09:00")
 const VALIDATIONCODE = "seoultech"
 if (production) {
     const option = {
@@ -100,20 +101,22 @@ async function updateRanking(season) {
             clearInterval(intervalID)
             const con = await pool.getConnection();
             const [rows] = await con.query(sql)
+            rankingupdated = new Date()
+            console.log('complete')
             con.release()
         }
     }, 1000)
 }
 //updateRanking(21);
-const task = cron.schedule("50 17 * * * *", () => {updateRanking(21)}, {scheduled: false})
+const task = cron.schedule("0 * * * *", () => {updateRanking(21)}, {scheduled: true})
 app.get('/user/:id/:password')
 app.get('/rank/:season', async (req, res) => {
     const con = await pool.getConnection();
     const season = req.params.season
     const sql = `select * from Ranking${season} order by mmr desc, nickname`
     const [rows] = await con.query(sql);
-    res.send(rows);
-    console.log('send')
+    res.send({data: rows, updated: rankingupdated});
+    console.log('send', rankingupdated)
     con.release()
 })
 

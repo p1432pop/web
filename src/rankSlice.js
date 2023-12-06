@@ -14,11 +14,12 @@ export const rankSlice = createSlice({
   name: "rank",
   // 초깃값
   initialState: {
-    data: response.data,
+    data: response.data.data,
     //data: 1,
     page: 1,
     season: 2,
-    current: response.data.slice(0, 100)
+    current: response.data.data.slice(0, 100),
+    updated: new Date(response.data.updated)
     //current: 1
   },
   // 리듀서
@@ -31,10 +32,11 @@ export const rankSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(loadSeason.fulfilled, (state, action) => {
-      state.data = action.payload.data;
+      state.data = action.payload.data.data;
       state.page = 1
-      state.current = action.payload.data.slice(0, 100);
+      state.current = state.data.slice(0, 100);
       state.season = action.meta.arg;
+      state.updated = new Date(action.payload.data.updated)
     })
   }
 });

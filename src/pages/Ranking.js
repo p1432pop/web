@@ -67,7 +67,7 @@ export default function Ranking(props) {
 		<>
 			<div>
 				<div className={styles.topContent}>
-					<div>정규시즌{value.season} 랭킹</div>
+					<div>정규시즌{value.season} 랭킹 최근 업데이트 : {value.updated.toDateString()}</div>
 					<Box sx={{ width: 300 }}>
 						<FormControl fullWidth>
 							<Select
