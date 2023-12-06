@@ -1,0 +1,37 @@
+.Sheet {
+    text-align: center;
+    width: 109px;
+    padding: 16px;
+}
+.RadioGroup {
+    gap: 12px;
+    padding: 8px;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+.content {
+    display: flex;
+    flex-direction: column;
+}
+.imgsm {
+    width: 64px;
+    height: 35px;
+    margin: 4px;
+}
+.imgmd {
+    width: 256px;
+    height: 142px;
+}
+.itemName {
+    font-weight: 800;
+    font-size: 24px;
+}
+.itemEffect {
+    font-weight: 800;
+    font-size: 20px;
+}
+.itemDetail {
+    font-weight: 200;
+    font-size: 16px;
+    padding: 8px;
+}

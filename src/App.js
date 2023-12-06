@@ -14,13 +14,15 @@ export default function App() {
     <div className='App'>
       <BrowserRouter>
         <Header />
-        <Routes>
-          <Route path="/" element={<Main />}></Route>
-          <Route path="/ranking" element={<Ranking />}></Route>
-          <Route path="/statistics" element={<Statistics />}></Route>
-          <Route path="/guide" element={<Guide />}></Route>
-          <Route path="/player/:nickname" element={<Player />}></Route>
-        </Routes>
+        <div className='Page'>
+          <Routes>
+            <Route path="/" element={<Main />}></Route>
+            <Route path="/ranking" element={<Ranking />}></Route>
+            <Route path="/statistics" element={<Statistics />}></Route>
+            <Route path="/guide" element={<Guide />}></Route>
+            <Route path="/player/:nickname" element={<Player />}></Route>
+          </Routes>
+        </div>
         <Footer />
       </BrowserRouter>
     </div>

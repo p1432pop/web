@@ -1,11 +1,6 @@
 .name {
     background-color: red;
 }
-.container {
-    max-width: 1080px;
-    margin: auto;
-    background-color: white;
-}
 .topContent {
     background-image: url('../assets/1080.png');
     height: 608px;

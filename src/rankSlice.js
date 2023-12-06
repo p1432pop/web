@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
 
-const response = await axios.get('/rank/2')
+const response = await axios.get('http://localhost:8080/rank/2')
 
 export const loadSeason = createAsyncThunk(
   "load/Season",
   (season) => {
-    return axios.get(`/rank/${season}`);
+    return axios.get(`http://localhost:8080/rank/${season}`);
   }
 )
 

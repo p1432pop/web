@@ -65,7 +65,7 @@ export default function Ranking(props) {
 	}
 	return (
 		<>
-			<div className={styles.container}>
+			<div>
 				<div className={styles.topContent}>
 					<div>정규시즌{value.season} 랭킹</div>
 					<Box sx={{ width: 300 }}>

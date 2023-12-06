@@ -59,7 +59,7 @@ export default function Player(props) {
     if (value.onload) {
         if (value.status === 200) {
             return (
-                <div className={styles.container}>
+                <div>
                     <div className={styles.profile}>
                         <img alt="img" src={`../image/CharacterIcon/${value.characterCode}.png`}/>
                         <div className={styles.profileContent}>

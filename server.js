@@ -126,10 +126,10 @@ app.get('/game/:gameId', async (req, res) => {
     con.release()
 })
 
-//const cors = require('cors');
+const cors = require('cors');
 const bodyParser = require('body-parser')
 app.use(bodyParser.json())
-//app.use(cors());
+app.use(cors());
 
 app.post('/play', async (req, res) => {
     console.log(req.body)

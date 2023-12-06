@@ -86,7 +86,7 @@ export default function Main(props) {
 		},
 	}));
 	return (
-		<div className={styles.container}>
+		<div>
 			<div className={styles.topContent}>
 				<div className={styles.searchBox}>
 					<InputBase className={styles.input}

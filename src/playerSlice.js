@@ -4,7 +4,7 @@ import axios from 'axios';
 export const loadPlayer = createAsyncThunk(
     "load/Player",
     (nickname) => {
-        return axios.get(`/play/${nickname}`);
+        return axios.get(`http://localhost:8080/play/${nickname}`);
         
     }
 )
@@ -12,7 +12,7 @@ export const updatePlayer = createAsyncThunk(
     "update/Player",
     (data) => {
         console.log(data.updated)
-        return axios.post(`/play`, {
+        return axios.post(`http://localhost:8080/play`, {
           nickname: data.nickname,
           userNum: data.userNum,
           updated: data.updated
