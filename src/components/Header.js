@@ -17,7 +17,7 @@ export default function Header(props) {
 			{to: "/", text: "메인"},
 			{to: "/ranking", text: "랭킹"},
 			{to: "/guide", text: "가이드"},
-			{to: "/statistics", text: "유저 찾기"}
+			{to: "/community", text: "유저 찾기"}
 		]
 		for (let i=0; i<Links.length; i++) {
 			arr.push(<Button className={styles.buttonContent} key={i} LinkComponent={Link} to={Links[i].to} size="large">{Links[i].text}</Button>);

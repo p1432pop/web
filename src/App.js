@@ -5,7 +5,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Main from './pages/Main';
 import Ranking from './pages/Ranking';
-import Statistics from './pages/Statistics';
+import Community from './pages/Community';
 import Guide from './pages/Guide';
 import Player from './pages/Player';
 import SignUp from './pages/SignUp';
@@ -21,7 +21,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Main />}></Route>
             <Route path="/ranking" element={<Ranking />}></Route>
-            <Route path="/statistics" element={value.login ? <Statistics /> : <SignIn />}></Route>
+            <Route path="/community" element={value.login ? <Community /> : <SignIn />}></Route>
             <Route path="/guide" element={<Guide />}></Route>
             <Route path="/player/:nickname" element={<Player />}></Route>
             <Route path="/signup" element={<SignUp />}></Route>

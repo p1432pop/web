@@ -106,7 +106,7 @@ async function updateRanking(season) {
     }, 1000)
 }
 //updateRanking(21);
-const task = cron.schedule("30 48 * * * *", () => {updateRanking(21)}, {scheduled: true})
+const task = cron.schedule("0 * * * *", () => {updateRanking(21)}, {scheduled: true})
 app.get('/user/:id/:password')
 app.get('/rank/:season', async (req, res) => {
     const con = await pool.getConnection();

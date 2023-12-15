@@ -26,7 +26,7 @@ import IconButton from '@mui/material/IconButton';
 
 import styles from '../style/Community.module.css';
 
-export default function Statistics(props) {
+export default function Community(props) {
 	const [titleError, setTitleError] = useState("")
 	const [contentError, setContentError] = useState("")
 	const [charError, setCharError] = useState("")

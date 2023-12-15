@@ -62,6 +62,7 @@ export default function Player(props) {
     }
     const calTime = (startDtm, duration) => {
         let now = new Date();
+        now.setTime(now.getTime() + 1000)
         let start = new Date(startDtm)
         let time = now - start - duration*1000;
         if (time < 60*1000) {
@@ -78,6 +79,7 @@ export default function Player(props) {
     const calTime2 = () => {
         if (value.updated instanceof Date && !isNaN(value.updated)) {
             let now = new Date();
+            now.setTime(now.getTime() + 1000)
             let time = now - value.updated;
             if (time < 60*1000) {
                 return `${parseInt(time/1000)}초 전`
