@@ -24,10 +24,13 @@
 .profile {
     background-color: white;
     display: flex;
+    
 }
 .profileContent {
     display: flex;
     flex-direction: column;
+    padding: 16px;
+    gap: 2px;
 }
 .notAllowedButton {
     cursor: not-allowed;
@@ -51,6 +54,28 @@
     color: black;
     background-color: white;
 }
+.avatarChar2 {
+    height: 40px;
+    width: 40px;
+    border: 1px solid black;
+    margin: 4px;
+}
+.smallAvatar2 {
+    width: 16px;
+    height: 16px;
+    border: 1px solid black;
+    font-size: 12px;
+    color: black;
+    background-color: white;
+}
+.traitBox {
+    display: flex;
+    flex-wrap: wrap;
+    width: 140px;
+    gap: 4px;
+    justify-content: space-between;
+    margin-left: 16px;
+}
 .gameContainer {
     display: flex;
 }
@@ -63,7 +88,39 @@
 .blackIcon {
     color: black;
 }
+.itemBox {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 138px;
+    gap: 6px;
+    margin-left: 16px;
+}
 .itemImg {
     border: 1px solid black;
     width: 40px
+}
+.nickname {
+    font-weight: 800;
+    font-size: 24px;
+}
+.dataBox {
+    display:flex;
+    flex-direction: column;
+    font-weight: 600;
+    justify-content: space-evenly;
+    margin: 16px;
+}
+.cellBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 160px;
+}
+.cellItem {
+    display: flex;
+    height: 33%;
+    align-items: center;
+    gap: 4px;
 }

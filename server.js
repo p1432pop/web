@@ -9,7 +9,6 @@ dotenv.config();
 const production = false;
 const season2 = new Date("2023-11-09T16:00:00+09:00")
 const LIMIT = 5*60*1000;
-let rankingupdated = new Date("2023-12-07T01:00:00+09:00")
 const VALIDATIONCODE = "seoultech"
 if (production) {
     const option = {
@@ -97,42 +96,41 @@ async function updateRanking(season) {
         }
         i++
         if (i>=25) {
-            console.log(sql)
+            sql+='update ranking_updated set updated = now() where season = 2'
             clearInterval(intervalID)
             const con = await pool.getConnection();
             const [rows] = await con.query(sql)
-            rankingupdated = new Date()
             console.log('complete')
             con.release()
         }
     }, 1000)
 }
 //updateRanking(21);
-const task = cron.schedule("0 * * * *", () => {updateRanking(21)}, {scheduled: true})
+const task = cron.schedule("30 48 * * * *", () => {updateRanking(21)}, {scheduled: true})
 app.get('/user/:id/:password')
 app.get('/rank/:season', async (req, res) => {
     const con = await pool.getConnection();
     const season = req.params.season
     const sql = `select * from Ranking${season} order by mmr desc, nickname`
     const [rows] = await con.query(sql);
-    res.send({data: rows, updated: rankingupdated});
-    console.log('send', rankingupdated)
+    const sql2 = `select updated from ranking_updated where season = ${season}`
+    const [rows2] = await con.query(sql2);
+    res.send({data: rows, updated: rows2[0].updated});
+    console.log('send')
     con.release()
 })
 
 app.get('/game/:gameId', async (req, res) => {
     const gameId = req.params.gameId;
-    const con = await pool.getConnection();
-    let sql = `select * from season2 where gameId = ${gameId}`;
-    const [rows] = await con.query(sql)
-    res.send(rows)
-    con.release()
+    const result = await axios.get(encodeURI(`https://open-api.bser.io/v1/games/${gameId}`), options)
+    res.send(result.data)
+    console.log(gameId)
 })
 
-const cors = require('cors');
+//const cors = require('cors');
 const bodyParser = require('body-parser')
 app.use(bodyParser.json())
-app.use(cors());
+//app.use(cors());
 
 app.post('/play', async (req, res) => {
     console.log(req.body)
@@ -140,7 +138,7 @@ app.post('/play', async (req, res) => {
     const userNum = req.body.userNum;
     let updated = new Date(req.body.updated);
     let sql = ''
-    if (req.body.updated === undefined) {
+    if (req.body.updated === null) {
         updated = season2
         sql = `insert into User values (${userNum}, '${nickname}', now());`;
     }
@@ -240,7 +238,7 @@ app.post('/play', async (req, res) => {
     sql = `select * from season2 where userNum = ${userNum} order by gameId desc`
     const [rows2] = await con.query(sql)
     let rank;
-    if (rows2[0].mmrAfter >= 6000) {
+    if (rows2.length !== 0 && rows2[0].mmrAfter >= 6000) {
         const result = await axios.get(encodeURI(`https://open-api.bser.io/v1/rank/${userNum}/21/3`), options)
         rank = result.data.userRank.rank
         console.log(rank)
@@ -282,7 +280,7 @@ app.get('/play/:nickname', async (req, res) => {
         sql = `select * from season2 where userNum = ${userNum} order by gameId desc`
         const [games] = await con.query(sql)
         let rank;
-        if (games[0].mmrAfter >= 6000) {
+        if (games.length !== 0 && games[0].mmrAfter >= 6000) {
             const result = await axios.get(encodeURI(`https://open-api.bser.io/v1/rank/${userNum}/21/3`), options)
             rank = result.data.userRank.rank
         }
@@ -314,13 +312,14 @@ app.post('/member', async (req, res) => { // 회원가입
     let validation = req.body.validation;
     if (validation === VALIDATIONCODE) {
         const con = await pool.getConnection();
-        let sql = `select id from member where userid = ${id}`
+        let sql = `select id from member where id = '${id}'`
         const [rows] = await con.query(sql)
-        if (rows[0].id === id) {
+        console.log(rows)
+        if (rows.length === 1 && rows[0].id === id) {
             res.send("중복");
         }
         else {
-            sql = `insert into member values (${id}, ${password})`
+            sql = `insert into member values ('${id}', '${password}')`
             const [rows] = await con.query(sql)
             res.send("성공");
         }
@@ -334,21 +333,72 @@ app.post('/member', async (req, res) => { // 회원가입
 app.post('/login', async (req, res) => { // 로그인
     const id = req.body.id;
     const password = req.body.password;
-    let sql = `select id, password from member where id = ${id}`
+    let sql = `select id, password from member where id = '${id}'`
     const con = await pool.getConnection();
     const [rows] = await con.query(sql)
-    if (rows[0].id === id && rows[0].password === password) { // 로그인 성공
-        
+    console.log(rows)
+    if (rows.length === 1 && rows[0].id === id && rows[0].password === password) { // 로그인 성공
+        res.send("성공")
     }
     else { // 로그인 실패
-
+        res.status(404).send()
     }
 })
 app.post('/logout', async (req, res) => { // 로그아웃
     
 })
-app.delete('/member', async (req, res) => { // 회원탈퇴
-    let id = req.body.id;
+app.delete('/member/:id', async (req, res) => { // 회원탈퇴
+    const member_id = req.params.id
+    let sql = `delete from member where id = '${member_id}'`
+    const con = await pool.getConnection();
+    const [rows] = await con.query(sql)
+    res.send('회원 탈퇴')
+})
+app.get('/posts', async (req, res) => { // 모든 게시글 조회
+    let sql = 'select * from post'
+    const con = await pool.getConnection();
+    const [rows] = await con.query(sql)
+    res.send(rows)
+})
+app.get('/posts/:id', async (req, res) => { 
+    const member_id = req.params.id
+    let sql = `select * from post where member_id = '${member_id}'`
+    const con = await pool.getConnection();
+    const [rows] = await con.query(sql)
+    res.send(rows)
+})
+app.post('/posts', async (req, res) => { // 게시글 등록
+    const member_id = req.body.member_id
+    const title = req.body.title
+    const content = req.body.content
+    const char1 = req.body.char1
+    const char2 = req.body.char2
+    const char3 = req.body.char3
+    let sql = `insert into post(member_id, title, content, char1, char2, char3) values ('${member_id}', '${title}', '${content}', ${char1}, ${char2}, ${char3})`
+    const con = await pool.getConnection();
+    const [rows] = await con.query(sql)
+    console.log('게시글 등록')
+    res.send('게시글 등록')
+})
+/* app.put('posts/:num', async (req, res) => { // 게시글 수정
+    const num = req.params.num
+    const title = req.body.title
+    const content = req.body.content
+    const char1 = req.body.char1
+    const char2 = req.body.char2
+    const char3 = req.body.char3
+    let sql = `update post set title='${title}', content='${content}', char1=${char1}, char2=${char2}, char3=${char3} where num = ${num}`
+    const con = await pool.getConnection();
+    const [rows] = await con.query(sql)
+    console.log('게시글 수정')
+}) */
+app.delete('/posts/:num', async (req, res) => { // 게시글 삭제
+    const num = req.params.num
+    let sql = `delete from post where num = ${num}`
+    const con = await pool.getConnection();
+    const [rows] = await con.query(sql)
+    console.log('게시글 삭제')
+    res.send('게시글 삭제')
 })
 
 app.get('*', function(req, res){

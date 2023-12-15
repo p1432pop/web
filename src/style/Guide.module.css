@@ -14,9 +14,8 @@
     flex-direction: column;
 }
 .imgsm {
-    width: 64px;
-    height: 35px;
-    margin: 4px;
+    width: 90px;
+    height: 50px;
 }
 .imgmd {
     width: 256px;
@@ -34,4 +33,13 @@
     font-weight: 200;
     font-size: 16px;
     padding: 8px;
+}
+.itemBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    margin: 4px;
 }

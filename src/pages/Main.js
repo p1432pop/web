@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
+import SignIn from '../components/SignIn';
 import { useSelector } from 'react-redux';
 
 import IconButton from '@mui/material/IconButton';
@@ -13,10 +14,11 @@ import { styled } from '@mui/material/styles';
 import TableRow from '@mui/material/TableRow';
 import TableBody from '@mui/material/TableBody';
 import TableHead from '@mui/material/TableHead';
+import TextField from '@mui/material/TextField';
 import TableContainer from '@mui/material/TableContainer';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import Avatar from '@mui/material/Avatar';
-
+import Grid from '@mui/material/Grid';
 import SearchIcon from '@mui/icons-material/Search';
 import FiberNewIcon from '@mui/icons-material/FiberNew';
 import AddIcon from '@mui/icons-material/Add';
@@ -32,9 +34,9 @@ export default function Main(props) {
 	const patchNotes = () => {
 		let arr = [];
 		let Links = [
+			{url: "https://playeternalreturn.com/posts/news/1480", text: "2023.11.23 - 1.9 패치노트"},
 			{url: "https://playeternalreturn.com/posts/news/1545", text: "2023.11.09 - 1.8 패치노트"},
-			{url: "https://playeternalreturn.com/posts/news/1515", text: "2023.10.26 - 1.7 패치노트"},
-			{url: "https://playeternalreturn.com/posts/news/1480", text: "2023.10.12 - 1.6 패치노트"}
+			{url: "https://playeternalreturn.com/posts/news/1515", text: "2023.10.26 - 1.7 패치노트"}
 		]
 		for (let i=0; i<Links.length; i++) {
 			arr.push(<MuiLink key={i} href={Links[i].url} underline='none'>{Links[i].text}</MuiLink>);
@@ -58,6 +60,9 @@ export default function Main(props) {
 		else {
 			navigate(`/player/${nickname.current.value}`);
 		}
+	}
+	const rankingButtonHandler = () => {
+		navigate('/ranking');
 	}
 	const avatarImage = (codes) => {
 		let arr = [];
@@ -105,18 +110,21 @@ export default function Main(props) {
 						- 최근 패치 노트
 					</div>
 					<Stack direction="row" spacing={0.5}>
-						<MuiLink href="https://playeternalreturn.com/posts/news/1582" underline='none'>2023.11.23 - 1.9 패치노트</MuiLink>
+						<MuiLink href="https://playeternalreturn.com/posts/news/1582" underline='none'>2023.12.07 - 1.10 패치노트</MuiLink>
 						<FiberNewIcon style={{height: '21px'}}/>
 					</Stack>
 					{patchNotes()}
 				</Stack>
+				<div style={{width: '400px'}}>
+					<SignIn />
+				</div>
 			</div>
 			<div>
-			<TableContainer className={styles.my} component={Paper}>
+				<TableContainer className={styles.my} component={Paper}>
 					<Table>
 						<caption>
 							<div className={styles.flexCenter}>
-								<IconButton>
+								<IconButton onClick={rankingButtonHandler}>
 									<AddIcon />
 								</IconButton>
 								더 보기

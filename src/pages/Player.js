@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadPlayer, updatePlayer } from '../playerSlice';
+import { loadPlayer, loadGame, updatePlayer, setOpen } from '../playerSlice';
 
 import styles from '../style/Player.module.css';
 
@@ -22,13 +22,37 @@ import TableBody from '@mui/material/TableBody';
 import TableHead from '@mui/material/TableHead';
 import Table from '@mui/material/Table';
 import Paper from '@mui/material/Paper';
+import Tooltip from '@mui/material/Tooltip';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 export default function Player(props) {
     const value = useSelector((state) => state.player);
+
     const params = useParams();
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(loadPlayer(params.nickname));
     }, [params, dispatch]);
+    const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        maxHeight: '90%',
+        overflowY: 'auto',
+        transform: 'translate(-50%, -50%)',
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+        width: '1080px'
+      };
+    const openModal = (gameId) => {
+        dispatch(loadGame(gameId))
+    }
+    const closeModal = () => {
+        dispatch(setOpen())
+    }
     const itemImg = (list) => {
         let arr = [];
         list.forEach((item)=> {
@@ -36,15 +60,55 @@ export default function Player(props) {
         })
         return arr;
     }
+    const calTime = (startDtm, duration) => {
+        let now = new Date();
+        let start = new Date(startDtm)
+        let time = now - start - duration*1000;
+        if (time < 60*1000) {
+            return `${parseInt(time/1000)}초 전`
+        }
+        if (time < 60*60*1000) {
+            return `${parseInt(time/1000/60)}분 전`
+        }
+        if (time < 24*60*60*1000) {
+            return `${parseInt(time/1000/60/60)}시간 전`
+        }
+        return `${parseInt(time/1000/60/60/24)}일 전`
+    }
+    const calTime2 = () => {
+        if (value.updated instanceof Date && !isNaN(value.updated)) {
+            let now = new Date();
+            let time = now - value.updated;
+            if (time < 60*1000) {
+                return `${parseInt(time/1000)}초 전`
+            }
+            if (time < 60*60*1000) {
+                return `${parseInt(time/1000/60)}분 전`
+            }
+            if (time < 24*60*60*1000) {
+                return `${parseInt(time/1000/60/60)}시간 전`
+            }
+            return `${parseInt(time/1000/60/60/24)}일 전`
+        }
+        return '기록 없음'
+    }
+    const getTime = (startDtm, duration) => {
+        let date = new Date(startDtm)
+        let time_zone = 9*60*60*1000;
+        date.setTime(date.getTime() + duration*1000 + time_zone)
+        return date.toISOString().replace('T', ' ').slice(0, -5);
+    }
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
 		[`&.${tableCellClasses.head}`]: {
 		  	backgroundColor: theme.palette.common.black,
 		  	color: theme.palette.common.white,
-			textAlign: 'center'
+			textAlign: 'center',
+            fontWeight: 600
 		},
 		[`&.${tableCellClasses.body}`]: {
 		  	fontSize: 16,
-			textAlign: 'center'
+			textAlign: 'center',
+            fontWeight: 600
 		},
 	}));
 	const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -61,10 +125,17 @@ export default function Player(props) {
             return (
                 <div>
                     <div className={styles.profile}>
+                        {value.characterCode !== 0
+                        ?
                         <img alt="img" src={`../image/CharacterIcon/${value.characterCode}.png`}/>
+                        :
+                        <AccountCircleIcon style={{fontSize: '160px'}}></AccountCircleIcon>
+                        }
                         <div className={styles.profileContent}>
                             <Chip label={`레벨 : ${value.level}`} variant="outlined"/>
-                            {params.nickname}
+                            <div className={styles.nickname}>
+                                {params.nickname}
+                            </div>
                             {value.view === 2 || value.view === 3
                             ?
                             (value.updateLoading ? 
@@ -76,16 +147,16 @@ export default function Player(props) {
                             : 
                             <Button className={styles.notAllowedButton} variant="outlined">갱신 불가</Button>
                             }
-                            최근 갱신 시간 :
+                            최근 갱신 시간 : {calTime2()}
                         </div>
-                        정규시즌2 랭크 게임에 대한 정보만 제공합니다.
-                    </div>
-                    <div className={styles.tier}>
+                        <div style={{margin: 'auto'}}>
+                            정규 시즌 2에 대한 정보만 제공합니다.
+                        </div>
                         <img className={styles.avatarTier} src={"../"+getTierImg(value.mmr, value.rank)} alt='img'/>
-                        
-                    </div>
-                    <div>
-                        통계
+                        <div className={styles.dataBox}>
+                            <div>{value.mmr >= 0 ? `${value.mmr}RP` : '기록 없음'}</div>
+                            <div>{getTierName(value.mmr, value.rank)}</div>
+                        </div>
                     </div>
                     <div>
                         <TableContainer component={Paper}>
@@ -120,10 +191,20 @@ export default function Player(props) {
                                                 </Badge>
                                             </StyledTableCell>
                                             <StyledTableCell>
-                                                <Avatar alt="img" src={`../image/Trait/${game.traitFirstCore}.png`} />
-                                                <Avatar alt="img" src={`../image/Trait/${game.traitFirstSub[0]}.png`} />
-                                                <Avatar alt="img" src={`../image/Trait/${game.traitFirstSub[1]}.png`} />
-                                                <Avatar alt="img" src={`../image/Tactical/${game.tacticalSkillGroup}.png`} />
+                                                <div className={styles.traitBox}>
+                                                    <Avatar alt="img" src={`../image/Trait/${game.traitFirstCore}.png`} />
+                                                    <Avatar alt="img" src={`../image/Trait/${game.traitFirstSub[0]}.png`} />
+                                                    <Avatar alt="img" src={`../image/Trait/${game.traitFirstSub[1]}.png`} />
+                                                    <Avatar alt="img" src={`../image/Trait/${game.traitSecondSub[0]}.png`} />
+                                                    <Avatar alt="img" src={`../image/Trait/${game.traitSecondSub[1]}.png`} />
+                                                    <Badge
+                                                        overlap="circular"
+                                                        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                                                        badgeContent={<Avatar className={styles.smallAvatar}>{game.tacticalSkillLevel}</Avatar>}
+                                                    >
+                                                        <Avatar alt="img" src={`../image/Tactical/${game.tacticalSkillGroup}.png`} />
+                                                    </Badge>
+                                                </div>
                                             </StyledTableCell>
                                             <StyledTableCell>{game.teamKill} / {game.playerKill} / {game.playerAssistant}</StyledTableCell>
                                             <StyledTableCell>{game.damageToPlayer}</StyledTableCell>
@@ -131,16 +212,123 @@ export default function Player(props) {
                                                 <div className={styles.flexCenter}>
                                                     {game.mmrAfter}
                                                     {game.mmrGain > 0 ? <ExpandLessIcon className={styles.redIcon} /> : 
-                                                    (game.mmrGain < 0 ? <ExpandMoreIcon className={styles.blueIcon} /> : <ExpandMoreIcon className={styles.blackIcon} />)}
+                                                    (game.mmrGain < 0 ? <ExpandMoreIcon className={styles.blueIcon} /> : <ExpandLessIcon className={styles.blackIcon} />)}
                                                     {Math.abs(game.mmrGain)}
                                                 </div>
                                             </StyledTableCell>  
-                                            <StyledTableCell>{itemImg(game.equipment)}</StyledTableCell>
-                                            <StyledTableCell>{parseInt(game.duration/60)}:{game.duration%60}</StyledTableCell>
-                                            <StyledTableCell>+</StyledTableCell>
+                                            <StyledTableCell>
+                                                <div className={styles.itemBox}>
+                                                    {itemImg(game.equipment)}
+                                                </div>
+                                            </StyledTableCell>
+                                            <StyledTableCell>
+                                                {parseInt(game.duration/60)}:{game.duration%60}<br />
+                                                <Tooltip title={getTime(game.startDtm, game.duration)}>
+                                                    {calTime(game.startDtm, game.duration)}
+                                                </Tooltip>
+                                            </StyledTableCell>
+                                            <StyledTableCell onClick={()=>openModal(game.gameId)}>+</StyledTableCell>
                                         </StyledTableRow>
                                     ))}
                                 </TableBody>
+                                {value.open ? 
+                                <Modal
+                                    open={value.open}
+                                    onClose={closeModal}
+                                >
+                                    <Box sx={style}>
+                                        <Table>
+                                            <TableHead>
+                                                <TableRow>
+                                                    <StyledTableCell>#</StyledTableCell>
+                                                    <StyledTableCell>실험체</StyledTableCell>
+                                                    <StyledTableCell>Trait/Tactical</StyledTableCell>
+                                                    <StyledTableCell>플레이어</StyledTableCell>
+                                                    <StyledTableCell>TK / K / A</StyledTableCell>
+                                                    <StyledTableCell>딜량</StyledTableCell>
+                                                    <StyledTableCell>크레딧</StyledTableCell>
+                                                    <StyledTableCell>아이템</StyledTableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {value.userGames.map((team, idx) => (
+                                                <StyledTableRow>
+                                                    <StyledTableCell>
+                                                        #{team[0].gameRank}
+                                                    </StyledTableCell>
+                                                    <StyledTableCell>
+                                                        <div className={styles.cellBox}>
+                                                            {team.map((player, idx2) => (
+                                                                    <Badge
+                                                                        overlap="circular"
+                                                                        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                                                                        badgeContent={<Avatar className={styles.smallAvatar2}>{player.characterLevel}</Avatar>}
+                                                                    >
+                                                                        <Avatar className={styles.avatarChar2} alt="img" src={`../image/CharacterIcon/${player.characterNum}.png`} />
+                                                                    </Badge>
+                                                            ))}
+                                                        </div>
+                                                    </StyledTableCell>
+                                                    <StyledTableCell>
+                                                        <div className={styles.cellBox}>
+                                                            {team.map((player, idx2) => (
+                                                                <div className={styles.cellItem}>
+                                                                    <Avatar alt="img" src={`../image/Trait/${player.traitFirstCore}.png`} />
+                                                                    <Badge
+                                                                        overlap="circular"
+                                                                        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                                                                        badgeContent={<Avatar className={styles.smallAvatar2}>{player.tacticalSkillLevel}</Avatar>}
+                                                                    >
+                                                                        <Avatar alt="img" src={`../image/Tactical/${player.tacticalSkillGroup}.png`} />
+                                                                    </Badge>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </StyledTableCell>
+                                                    <StyledTableCell>
+                                                        <div className={styles.cellBox}>
+                                                            {team.map((player, idx2) => (
+                                                                <div className={styles.cellItem}>{player.nickname}</div>
+                                                            ))}
+                                                        </div>
+                                                    </StyledTableCell>
+                                                    <StyledTableCell>
+                                                        <div className={styles.cellBox}>
+                                                            {team.map((player, idx2) => (
+                                                                <div className={styles.cellItem}>{player.teamKill} / {player.playerKill} / {player.playerAssistant}</div>
+                                                            ))}
+                                                        </div>
+                                                    </StyledTableCell>
+                                                    <StyledTableCell>
+                                                        <div className={styles.cellBox}>
+                                                            {team.map((player, idx2) => (
+                                                                <div className={styles.cellItem}>{player.damageToPlayer}</div>
+                                                            ))}
+                                                        </div>
+                                                    </StyledTableCell>
+                                                    <StyledTableCell>
+                                                        <div className={styles.cellBox}>
+                                                            {team.map((player, idx2) => (
+                                                                <div className={styles.cellItem}>{player.totalGainVFCredit}</div>
+                                                            ))}
+                                                        </div>
+                                                    </StyledTableCell>
+                                                    <StyledTableCell>
+                                                        <div className={styles.cellBox}>
+                                                            {team.map((player, idx2) => (
+                                                                <div className={styles.cellItem}>{itemImg(player.equipment)}</div>
+                                                            ))}
+                                                        </div>
+                                                    </StyledTableCell>
+                                                </StyledTableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </Box>
+                                </Modal>
+                                :
+                                null
+                                }
                             </Table>
                         </TableContainer>
                     </div>

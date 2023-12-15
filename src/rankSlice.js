@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
 
-const response = await axios.get('http://localhost:8080/rank/2')
+const response = await axios.get('/rank/2')
 
 export const loadSeason = createAsyncThunk(
   "load/Season",
   (season) => {
-    return axios.get(`http://localhost:8080/rank/${season}`);
+    return axios.get(`/rank/${season}`);
   }
 )
 
@@ -37,6 +37,7 @@ export const rankSlice = createSlice({
       state.current = state.data.slice(0, 100);
       state.season = action.meta.arg;
       state.updated = new Date(action.payload.data.updated)
+      console.log(action.payload.data.updated)
     })
   }
 });

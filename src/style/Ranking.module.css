@@ -7,11 +7,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-bottom: 16px;
 }
 .topContent {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-top: 16px;
+    padding-left: 16px;
 }
 .mx {
     margin-right: 4px;

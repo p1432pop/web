@@ -73,7 +73,10 @@ export default function Guide(props) {
 								</div>
 							</>
 						}>
-							<img className={styles.imgsm} src={name(it.code)} alt='img' style={{backgroundColor: backcolor(it.itemGrade)}}/>
+							<div className={styles.itemBox}>
+								<img className={styles.imgsm} src={name(it.code)} alt='img' style={{backgroundColor: backcolor(it.itemGrade)}}/>
+								{it.name}
+							</div>
 						</CustomWidthTooltip>
 					)
 				}
@@ -97,7 +100,10 @@ export default function Guide(props) {
 								</div>
 							</>
 						}>
-							<img className={styles.imgsm} src={name(it.code)} alt='img' style={{backgroundColor: backcolor(it.itemGrade)}}/>
+							<div className={styles.itemBox}>
+								<img className={styles.imgsm} src={name(it.code)} alt='img' style={{backgroundColor: backcolor(it.itemGrade)}}/>
+								{it.name}
+							</div>
 						</CustomWidthTooltip>
 					)
 				}
@@ -123,7 +129,10 @@ export default function Guide(props) {
 								</div>
 							</>
 						}>
-							<img className={styles.imgsm} src={name(it.code)} alt='img' style={{backgroundColor: backcolor(it.itemGrade)}}/>
+							<div className={styles.itemBox}>
+								<img className={styles.imgsm} src={name(it.code)} alt='img' style={{backgroundColor: backcolor(it.itemGrade)}}/>
+								{it.name}
+							</div>
 						</CustomWidthTooltip>
 					)
 				}
@@ -133,13 +142,13 @@ export default function Guide(props) {
 	}
 	return (
 		<div className={styles.content}>
-			<div style={{margin: '16px'}}>최근 업데이트 : 2023/12/07</div>
+			<div style={{margin: '16px'}}>최근 업데이트 : 2023/12/15</div>
 			<div>
 				<RadioGroup defaultValue="Weapon" className={styles.RadioGroup} onChange={radioHandler} value={view}>
 					{radiodatas()}
 				</RadioGroup>
 			</div>
-			<div>
+			<div style={{display: 'flex', flexWrap: 'wrap'}}>
 				{items()}
 			</div>
 		</div>

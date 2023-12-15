@@ -71,16 +71,16 @@ export const getTierName = (mmr, idx) => {
         return '브론즈 4';
     }
     else if (mmr >= 750) {
-        return '브론즈 1';
+        return '아이언 1';
     }
     else if (mmr >= 500) {
-        return '브론즈 2';
+        return '아이언 2';
     }
     else if (mmr >= 250) {
-        return '브론즈 3';
+        return '아이언 3';
     }
     else if (mmr >= 0) {
-        return '브론즈 4';
+        return '아이언 4';
     }
     else {
         return '언랭크';

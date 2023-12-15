@@ -4,7 +4,7 @@ import axios from 'axios';
 export const loadPlayer = createAsyncThunk(
     "load/Player",
     (nickname) => {
-        return axios.get(`http://localhost:8080/play/${nickname}`);
+        return axios.get(`/play/${nickname}`);
         
     }
 )
@@ -12,7 +12,7 @@ export const updatePlayer = createAsyncThunk(
     "update/Player",
     (data) => {
         console.log(data.updated)
-        return axios.post(`http://localhost:8080/play`, {
+        return axios.post(`/play`, {
           nickname: data.nickname,
           userNum: data.userNum,
           updated: data.updated
@@ -26,7 +26,7 @@ export const loadGame = createAsyncThunk(
     }
 )
 function gameSetting(state, data) {
-    state.updated = (data.updated);
+    state.updated = new Date(data.updated);
     console.log(data.userNum, 'here')
     state.userNum = data.userNum;
     if (data.games.length !== 0) {
@@ -58,11 +58,18 @@ export const playerSlice = createSlice({
         userNum: 0,
         characterCode: 0,
         updated: undefined,
-        mmr: 0,
+        mmr: -1,
         level: 0,
-        rank: 0
+        rank: 0,
+        userGames: [],
+        open: false
     },
     reducers: {
+        setOpen(state, action) {
+            state.open = false;
+            console.log(1)
+            state.userGames = []
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -74,7 +81,7 @@ export const playerSlice = createSlice({
             state.userNum = 0;
             state.characterCode = 0;
             state.updated = undefined;
-            state.mmr = 0;
+            state.mmr = -1;
             state.level = 0;
             state.rank = 0;
         })
@@ -104,10 +111,28 @@ export const playerSlice = createSlice({
             console.log(action, 'r');
         })
         .addCase(loadGame.pending, (state, action) => {
-
+            console.log('pending')
         })
         .addCase(loadGame.fulfilled, (state, action) => {
-            
+            state.userGames = action.payload.data.userGames.sort((a, b) => {
+                if (a.gameRank > b.gameRank) return 1;
+                else if (a.gameRank < b.gameRank) return -1;
+                else return 0;
+            })
+            for(let player of state.userGames) {
+                let equip = []
+                for(let i=0; i<5; i++) {
+                    equip.push(player.equipment[`${i}`])
+                }
+                player.equipment = equip
+            }
+            let result = []
+            for(let i=0; i<state.userGames.length; i+=3) {
+                const team = state.userGames.slice(i, i+3);
+                result.push(team)
+            }state.userGames = result;
+            state.open = true;
+            console.log(state.userGames)
         })
         .addCase(loadGame.rejected, (state, action) => {
             
@@ -115,6 +140,6 @@ export const playerSlice = createSlice({
     }
 });
 
-//export const {} = playerSlice.actions;
+export const {setOpen} = playerSlice.actions;
 
 export default playerSlice.reducer;
