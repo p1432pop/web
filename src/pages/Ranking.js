@@ -1,50 +1,50 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
-import { useDispatch, useSelector } from 'react-redux';
-import { loadSeason, setPage } from '../rankSlice';
+import { useDispatch, useSelector } from "react-redux";
+import { loadSeason, setPage } from "../app/rankSlice";
 
-import { getTierImg, getTierName } from '../utils/tier';
+import { getTierImg, getTierName } from "../utils/tier";
 
-import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import Paper from '@mui/material/Paper';
-import Avatar from '@mui/material/Avatar';
-import Select from '@mui/material/Select';
-import { styled } from '@mui/material/styles';
-import MenuItem from '@mui/material/MenuItem';
-import TableRow from '@mui/material/TableRow';
-import TableBody from '@mui/material/TableBody';
-import TableHead from '@mui/material/TableHead';
-import Pagination from '@mui/material/Pagination';
-import FormControl from '@mui/material/FormControl';
-import TableContainer from '@mui/material/TableContainer';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import Box from "@mui/material/Box";
+import Table from "@mui/material/Table";
+import Paper from "@mui/material/Paper";
+import Avatar from "@mui/material/Avatar";
+import Select from "@mui/material/Select";
+import { styled } from "@mui/material/styles";
+import MenuItem from "@mui/material/MenuItem";
+import TableRow from "@mui/material/TableRow";
+import TableBody from "@mui/material/TableBody";
+import TableHead from "@mui/material/TableHead";
+import Pagination from "@mui/material/Pagination";
+import FormControl from "@mui/material/FormControl";
+import TableContainer from "@mui/material/TableContainer";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 
-import styles from '../style/Ranking.module.css';
+import styles from "../style/Ranking.module.css";
 
 export default function Ranking(props) {
 	const value = useSelector((state) => state.rank);
-    const dispatch = useDispatch();
+	const dispatch = useDispatch();
 	const StyledTableCell = styled(TableCell)(({ theme }) => ({
 		[`&.${tableCellClasses.head}`]: {
-		  	backgroundColor: theme.palette.common.black,
-		  	color: theme.palette.common.white,
-			textAlign: 'center'
+			backgroundColor: theme.palette.common.black,
+			color: theme.palette.common.white,
+			textAlign: "center",
 		},
 		[`&.${tableCellClasses.body}`]: {
-		  	fontSize: 16,
-			textAlign: 'center'
+			fontSize: 16,
+			textAlign: "center",
 		},
 	}));
-	  
+
 	const StyledTableRow = styled(TableRow)(({ theme }) => ({
-		'&:nth-of-type(odd)': {
+		"&:nth-of-type(odd)": {
 			backgroundColor: theme.palette.action.hover,
 		},
 		// hide last border
-		'&:last-child td, &:last-child th': {
-		  	border: 0,
+		"&:last-child td, &:last-child th": {
+			border: 0,
 		},
 	}));
 
@@ -57,23 +57,28 @@ export default function Ranking(props) {
 	const avatarImage = (codes) => {
 		let arr = [];
 		codes.forEach((code, index) => {
-			if(code) {
-				arr.push(<Avatar key={index} className={styles.mx} src={`image/CharacterIcon/${code}.png`} />)
+			if (code) {
+				arr.push(<Avatar key={index} className={styles.mx} src={`image/CharacterIcon/${code}.png`} />);
 			}
-		})
+		});
 		return arr;
-	}
+	};
+	const getTime = (time) => {
+		let date = new Date(time);
+		let time_zone = 9 * 60 * 60 * 1000;
+		date.setTime(date.getTime() + time_zone);
+		return date.toISOString().replace("T", " ").slice(0, -5);
+	};
 	return (
 		<>
 			<div>
 				<div className={styles.topContent}>
-					<div>정규시즌{value.season} 랭킹 최근 업데이트 : {value.updated.toDateString()}</div>
+					<div>
+						정규시즌{value.season} 랭킹 최근 업데이트 : {getTime(value.updated)}
+					</div>
 					<Box sx={{ width: 300 }}>
 						<FormControl fullWidth>
-							<Select
-							defaultValue={2}
-							onChange={seasonHandler}
-							>
+							<Select defaultValue={2} onChange={seasonHandler}>
 								<MenuItem value={2}>정규시즌2</MenuItem>
 								<MenuItem value={1}>정규시즌1</MenuItem>
 							</Select>
@@ -99,28 +104,33 @@ export default function Ranking(props) {
 						<TableBody>
 							{value.current.map((row, idx) => (
 								<StyledTableRow
-								key={idx}
-								sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+									key={idx}
+									sx={{
+										"&:last-child td, &:last-child th": {
+											border: 0,
+										},
+									}}
 								>
-									<StyledTableCell>{(value.page-1)*100+1+idx}</StyledTableCell>
+									<StyledTableCell>{(value.page - 1) * 100 + 1 + idx}</StyledTableCell>
 									<StyledTableCell>
-										<Link style={{textDecoration: 'none'}} to={`/player/${row.nickname}`}>{row.nickname}</Link>
+										<Link style={{ textDecoration: "none" }} to={`/player/${row.nickname}`}>
+											{row.nickname}
+										</Link>
 									</StyledTableCell>
 									<StyledTableCell>
 										<div className={styles.avatarBox}>
-											<Avatar className={styles.mx} src={getTierImg(row.mmr, (value.page-1)*100+1+idx)} />{getTierName(row.mmr, (value.page-1)*100+1+idx)}
+											<Avatar className={styles.mx} src={getTierImg(row.mmr, (value.page - 1) * 100 + 1 + idx)} />
+											{getTierName(row.mmr, (value.page - 1) * 100 + 1 + idx)}
 										</div>
 									</StyledTableCell>
-									<StyledTableCell>{row.mmr >= 6000 ? row.mmr - 6000 : row.mmr%250}</StyledTableCell>
-									<StyledTableCell>{(row.top1*100).toFixed(1)}%</StyledTableCell>
-									<StyledTableCell>{(row.top3*100).toFixed(1)}%</StyledTableCell>
+									<StyledTableCell>{row.mmr >= 6000 ? row.mmr - 6000 : row.mmr % 250}</StyledTableCell>
+									<StyledTableCell>{(row.top1 * 100).toFixed(1)}%</StyledTableCell>
+									<StyledTableCell>{(row.top3 * 100).toFixed(1)}%</StyledTableCell>
 									<StyledTableCell>{row.totalGames}</StyledTableCell>
-									<StyledTableCell>#{(row.averageRank).toFixed(1)}</StyledTableCell>
-									<StyledTableCell>{(row.averageKills).toFixed(2)}</StyledTableCell>
+									<StyledTableCell>#{row.averageRank.toFixed(1)}</StyledTableCell>
+									<StyledTableCell>{row.averageKills.toFixed(2)}</StyledTableCell>
 									<StyledTableCell>
-										<div className={styles.avatarBox}>
-											{avatarImage([row.characterCode1, row.characterCode2, row.characterCode3])}
-										</div>
+										<div className={styles.avatarBox}>{avatarImage([row.characterCode1, row.characterCode2, row.characterCode3])}</div>
 									</StyledTableCell>
 								</StyledTableRow>
 							))}
@@ -128,7 +138,7 @@ export default function Ranking(props) {
 					</Table>
 				</TableContainer>
 				<Pagination className={styles.flexCenter} count={10} variant="outlined" page={value.page} shape="rounded" size="large" onChange={pageHandler} />
-			</div >
+			</div>
 		</>
 	);
-};
+}
