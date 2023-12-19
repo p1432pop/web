@@ -36,7 +36,13 @@
 ## 배포
 
 -   [Lumia.kr](https://lumia.kr)
--   회원가입을 위한 인증 코드 "seoultech"
+-   회원가입을 위한 인증 코드 : seoultech
+-   테스트용 계정 - 1
+-   ID : test123
+-   PASSWORD : test1234@
+-   테스트용 계정 - 2
+-   ID : test1231
+-   PASSWORD : test1234@
 
 ## 디렉터리 구조
 
