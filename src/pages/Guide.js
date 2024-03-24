@@ -153,7 +153,7 @@ export default function Guide(props) {
 	};
 	return (
 		<div className={styles.content}>
-			<div style={{ margin: "16px" }}>최근 업데이트 : 2023/12/15</div>
+			<div style={{ margin: "16px" }}>최근 업데이트 : 2024/03/20</div>
 			<div>
 				<RadioGroup defaultValue="Weapon" className={styles.RadioGroup} onChange={radioHandler} value={view}>
 					{radiodatas()}

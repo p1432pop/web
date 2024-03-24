@@ -18,7 +18,6 @@ export default function Header(props) {
 			{ to: "/", text: "메인" },
 			{ to: "/ranking", text: "랭킹" },
 			{ to: "/guide", text: "가이드" },
-			{ to: "/community", text: "유저 찾기" },
 		];
 		for (let i = 0; i < Links.length; i++) {
 			arr.push(
@@ -34,7 +33,7 @@ export default function Header(props) {
 			if (ev.target.value.trim().length === 0) {
 				alert("공백 없이 입력해주세요.");
 			} else {
-				navigate(`/player/${ev.target.value}`);
+				navigate(`/players/${ev.target.value}`);
 			}
 		}
 	};
@@ -42,7 +41,7 @@ export default function Header(props) {
 		if (nickname.current.value.trim().length === 0) {
 			alert("공백 없이 입력해주세요.");
 		} else {
-			navigate(`/player/${nickname.current.value}`);
+			navigate(`/players/${nickname.current.value}`);
 		}
 	};
 	return (

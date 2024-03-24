@@ -12,7 +12,7 @@ dotenv.config();
 const season2 = new Date("2023-11-09T16:00:00+09:00");
 const LIMIT = 5 * 60 * 1000;
 const VALIDATIONCODE = "seoultech";
-const production = true;
+const production = false;
 
 if (production) {
 	const option = {
@@ -25,8 +25,8 @@ if (production) {
 		console.log("listening in 8080 https");
 	});
 } else {
-	const cors = require("cors");
-	app.use(cors());
+	/* const cors = require("cors");
+	app.use(cors()); */
 	const http = require("http").createServer(app);
 	http.listen(8080, () => {
 		console.log("listening in 8080 http");

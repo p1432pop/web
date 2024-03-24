@@ -127,9 +127,9 @@ export default function Player(props) {
 											console.log(value.userNum);
 											dispatch(
 												updatePlayer({
-													nickname: params.nickname,
+													nickname: value.nickname,
 													userNum: value.userNum,
-													updated: value.updated,
+													lastGameId: value.lastGameId,
 												})
 											);
 										}}
@@ -145,7 +145,7 @@ export default function Player(props) {
 							)}
 							최근 갱신 시간 : {calTime2()}
 						</div>
-						<div style={{ margin: "auto" }}>정규 시즌 2에 대한 정보만 제공합니다.</div>
+						<div style={{ margin: "auto" }}>정규 시즌 3에 대한 정보만 제공합니다.</div>
 						<img className={styles.avatarTier} src={"../" + getTierImg(value.mmr, value.rank)} alt="img" />
 						<div className={styles.dataBox}>
 							<div>{value.mmr >= 0 ? `${value.mmr}RP` : "기록 없음"}</div>

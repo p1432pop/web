@@ -69,18 +69,35 @@ export default function Ranking(props) {
 		date.setTime(date.getTime() + time_zone);
 		return date.toISOString().replace("T", " ").slice(0, -5);
 	};
+	const seasonMenu = () => {
+		let arr = [];
+		for (let i = 11; i >= 0; i--) {
+			if (i >= 9) {
+				arr.push(<MenuItem key={i} value={i * 2 + 1}>{`정규 시즌 ${i - 8}`}</MenuItem>);
+			} else {
+				arr.push(<MenuItem key={i} value={i * 2 + 1}>{`EA 시즌${i + 1}`}</MenuItem>);
+			}
+		}
+		return arr;
+	};
+	const title = (season) => {
+		if (season >= 19) {
+			return `정규 시즌 ${Math.floor(season / 2) - 8}`;
+		} else {
+			return `EA 시즌 ${Math.floor(season / 2) + 1}`;
+		}
+	};
 	return (
 		<>
 			<div>
 				<div className={styles.topContent}>
 					<div>
-						정규시즌{value.season} 랭킹 최근 업데이트 : {getTime(value.updated)}
+						{title(value.season)} 랭킹 최근 업데이트 : {getTime(value.updated)}
 					</div>
 					<Box sx={{ width: 300 }}>
 						<FormControl fullWidth>
-							<Select defaultValue={2} onChange={seasonHandler}>
-								<MenuItem value={2}>정규시즌2</MenuItem>
-								<MenuItem value={1}>정규시즌1</MenuItem>
+							<Select defaultValue={23} onChange={seasonHandler}>
+								{seasonMenu()}
 							</Select>
 						</FormControl>
 					</Box>
@@ -113,7 +130,7 @@ export default function Ranking(props) {
 								>
 									<StyledTableCell>{(value.page - 1) * 100 + 1 + idx}</StyledTableCell>
 									<StyledTableCell>
-										<Link style={{ textDecoration: "none" }} to={`/player/${row.nickname}`}>
+										<Link style={{ textDecoration: "none" }} to={`/players/${row.nickname}`}>
 											{row.nickname}
 										</Link>
 									</StyledTableCell>

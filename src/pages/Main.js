@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 
-import SignIn from "../components/SignIn";
 import { useSelector } from "react-redux";
 
 import IconButton from "@mui/material/IconButton";
@@ -33,16 +32,16 @@ export default function Main(props) {
 		let arr = [];
 		let Links = [
 			{
-				url: "https://playeternalreturn.com/posts/news/1582",
-				text: "2023.11.23 - 1.9 패치노트",
+				url: "https://playeternalreturn.com/posts/news/1765",
+				text: "2024.02.29 - 1.16 패치노트",
 			},
 			{
-				url: "https://playeternalreturn.com/posts/news/1545",
-				text: "2023.11.09 - 1.8 패치노트",
+				url: "https://playeternalreturn.com/posts/news/1749",
+				text: "2024.02.22 - 1.15.1 패치노트",
 			},
 			{
-				url: "https://playeternalreturn.com/posts/news/1515",
-				text: "2023.10.26 - 1.7 패치노트",
+				url: "https://playeternalreturn.com/posts/news/1727",
+				text: "2024.02.15 - 1.15 패치노트",
 			},
 		];
 		for (let i = 0; i < Links.length; i++) {
@@ -59,7 +58,7 @@ export default function Main(props) {
 			if (ev.target.value.trim().length === 0) {
 				alert("공백 없이 입력해주세요.");
 			} else {
-				navigate(`/player/${ev.target.value}`);
+				navigate(`/players/${ev.target.value}`);
 			}
 		}
 	};
@@ -67,7 +66,7 @@ export default function Main(props) {
 		if (nickname.current.value.trim().length === 0) {
 			alert("공백 없이 입력해주세요.");
 		} else {
-			navigate(`/player/${nickname.current.value}`);
+			navigate(`/players/${nickname.current.value}`);
 		}
 	};
 	const rankingButtonHandler = () => {
@@ -113,16 +112,13 @@ export default function Main(props) {
 				<Stack spacing={2}>
 					<div>- 최근 패치 노트</div>
 					<Stack direction="row" spacing={0.5}>
-						<MuiLink href="https://playeternalreturn.com/posts/news/1612" underline="none">
-							2023.12.07 - 1.10 패치노트
+						<MuiLink href="https://playeternalreturn.com/posts/news/1792" underline="none">
+							2024.03.14 - 1.17 패치노트
 						</MuiLink>
 						<FiberNewIcon style={{ height: "21px" }} />
 					</Stack>
 					{patchNotes()}
 				</Stack>
-				<div style={{ width: "400px" }}>
-					<SignIn />
-				</div>
 			</div>
 			<div>
 				<TableContainer className={styles.my} component={Paper}>
@@ -152,7 +148,7 @@ export default function Main(props) {
 								<StyledTableRow key={idx}>
 									<StyledTableCell>{(value.page - 1) * 100 + 1 + idx}</StyledTableCell>
 									<StyledTableCell>
-										<RouterLink style={{ textDecoration: "none" }} to={`/player/${row.nickname}`}>
+										<RouterLink style={{ textDecoration: "none" }} to={`/players/${row.nickname}`}>
 											{row.nickname}
 										</RouterLink>
 									</StyledTableCell>

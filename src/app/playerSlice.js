@@ -2,21 +2,23 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const loadPlayer = createAsyncThunk("load/Player", (nickname) => {
-	return axios.get(`/play/${nickname}`);
+	return axios.get(`http://localhost:8080/player/${nickname}/23`);
 });
 export const updatePlayer = createAsyncThunk("update/Player", (data) => {
-	return axios.post(`/play`, {
+	return axios.post(`http://localhost:8080/player`, {
 		nickname: data.nickname,
 		userNum: data.userNum,
-		updated: data.updated,
+		lastGameId: data.lastGameId,
 	});
 });
 export const loadGame = createAsyncThunk("load/Game", (gameId) => {
-	return axios.get(`/game/${gameId}`);
+	return axios.get(`http://localhost:8080/game/${gameId}`);
 });
 function gameSetting(state, data) {
 	state.updated = new Date(data.updated);
 	state.userNum = data.userNum;
+	state.nickname = data.nickname;
+	state.lastGameId = data.lastGameId;
 	if (data.games.length !== 0) {
 		state.rank = data.rank;
 		state.mmr = data.games[0].mmrAfter;
@@ -44,6 +46,8 @@ export const playerSlice = createSlice({
 		onload: false,
 		updateLoading: false,
 		userNum: 0,
+		nickname: "",
+		lastGameId: 0,
 		characterCode: 0,
 		updated: undefined,
 		mmr: -1,
@@ -80,8 +84,8 @@ export const playerSlice = createSlice({
 				gameSetting(state, data);
 			})
 			.addCase(loadPlayer.rejected, (state, action) => {
-				state.onload = true;
 				state.status = 404;
+				state.onload = true;
 			})
 			.addCase(updatePlayer.pending, (state, action) => {
 				state.updateLoading = true;
@@ -89,10 +93,13 @@ export const playerSlice = createSlice({
 			.addCase(updatePlayer.fulfilled, (state, action) => {
 				state.updateLoading = false;
 				let data = action.payload.data;
+				console.log(action.payload.data);
 				state.view = data.view;
 				gameSetting(state, data);
 			})
-			.addCase(updatePlayer.rejected, (state, action) => {})
+			.addCase(updatePlayer.rejected, (state, action) => {
+				state.updateLoading = false;
+			})
 			.addCase(loadGame.pending, (state, action) => {})
 			.addCase(loadGame.fulfilled, (state, action) => {
 				state.userGames = action.payload.data.userGames.sort((a, b) => {

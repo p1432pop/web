@@ -12,17 +12,17 @@
 		"markingType": "None",
 		"craftAnimTrigger": "craftFood",
 		"stackable": 6,
-		"initialCount": 3,
+		"initialCount": 2,
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 1,
 		"makeMaterial1": 0,
 		"makeMaterial2": 0,
 		"heal": 0,
 		"hpRecover": 0,
-		"spRecover": 200,
+		"spRecover": 300,
 		"attackPowerByBuff": 0,
 		"defenseByBuff": 0,
 		"skillAmpByBuff": 0,
@@ -30,7 +30,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 302101,
@@ -49,13 +50,13 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 1,
 		"makeMaterial1": 0,
 		"makeMaterial2": 0,
 		"heal": 0,
 		"hpRecover": 0,
-		"spRecover": 200,
+		"spRecover": 300,
 		"attackPowerByBuff": 0,
 		"defenseByBuff": 0,
 		"skillAmpByBuff": 0,
@@ -63,7 +64,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 302103,
@@ -82,13 +84,13 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 1,
 		"makeMaterial1": 0,
 		"makeMaterial2": 0,
 		"heal": 0,
 		"hpRecover": 0,
-		"spRecover": 200,
+		"spRecover": 300,
 		"attackPowerByBuff": 0,
 		"defenseByBuff": 0,
 		"skillAmpByBuff": 0,
@@ -96,7 +98,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 302104,
@@ -115,13 +118,13 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 1,
 		"makeMaterial1": 0,
 		"makeMaterial2": 0,
 		"heal": 0,
 		"hpRecover": 0,
-		"spRecover": 200,
+		"spRecover": 300,
 		"attackPowerByBuff": 0,
 		"defenseByBuff": 0,
 		"skillAmpByBuff": 0,
@@ -129,7 +132,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 302107,
@@ -144,17 +148,17 @@
 		"markingType": "None",
 		"craftAnimTrigger": "craftFood",
 		"stackable": 6,
-		"initialCount": 1,
+		"initialCount": 2,
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 1,
 		"makeMaterial1": 0,
 		"makeMaterial2": 0,
 		"heal": 0,
 		"hpRecover": 0,
-		"spRecover": 200,
+		"spRecover": 300,
 		"attackPowerByBuff": 0,
 		"defenseByBuff": 0,
 		"skillAmpByBuff": 0,
@@ -162,7 +166,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 302108,
@@ -181,13 +186,13 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 1,
 		"makeMaterial1": 0,
 		"makeMaterial2": 0,
 		"heal": 0,
 		"hpRecover": 0,
-		"spRecover": 200,
+		"spRecover": 300,
 		"attackPowerByBuff": 0,
 		"defenseByBuff": 0,
 		"skillAmpByBuff": 0,
@@ -195,7 +200,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 302201,
@@ -210,11 +216,11 @@
 		"markingType": "None",
 		"craftAnimTrigger": "craftFood",
 		"stackable": 6,
-		"initialCount": 2,
+		"initialCount": 3,
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 302102,
 		"makeMaterial2": 401107,
@@ -228,7 +234,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 302215,
@@ -243,11 +250,11 @@
 		"markingType": "None",
 		"craftAnimTrigger": "craftFood",
 		"stackable": 6,
-		"initialCount": 2,
+		"initialCount": 3,
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 302102,
 		"makeMaterial2": 302101,
@@ -261,7 +268,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 302216,
@@ -276,11 +284,11 @@
 		"markingType": "None",
 		"craftAnimTrigger": "craftFood",
 		"stackable": 6,
-		"initialCount": 2,
+		"initialCount": 3,
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 302102,
 		"makeMaterial2": 302103,
@@ -294,7 +302,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 302209,
@@ -313,7 +322,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 302101,
 		"makeMaterial2": 302107,
@@ -327,7 +336,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 302211,
@@ -346,7 +356,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 302101,
 		"makeMaterial2": 302108,
@@ -360,7 +370,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 302213,
@@ -379,7 +390,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 302107,
 		"makeMaterial2": 302104,
@@ -393,7 +404,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 302217,
@@ -412,7 +424,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 302104,
 		"makeMaterial2": 302103,
@@ -426,7 +438,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 302218,
@@ -445,7 +458,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 302104,
 		"makeMaterial2": 302108,
@@ -459,7 +472,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 302214,
@@ -478,7 +492,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 302108,
 		"makeMaterial2": 301119,
@@ -492,7 +506,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 302219,
@@ -507,11 +522,11 @@
 		"markingType": "None",
 		"craftAnimTrigger": "craftFood",
 		"stackable": 6,
-		"initialCount": 2,
+		"initialCount": 3,
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 302102,
 		"makeMaterial2": 302107,
@@ -525,7 +540,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 302220,
@@ -540,11 +556,11 @@
 		"markingType": "None",
 		"craftAnimTrigger": "craftFood",
 		"stackable": 6,
-		"initialCount": 2,
+		"initialCount": 3,
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 302102,
 		"makeMaterial2": 302104,
@@ -558,7 +574,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 302221,
@@ -577,7 +594,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 302101,
 		"makeMaterial2": 302104,
@@ -591,7 +608,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 302222,
@@ -610,7 +628,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 302101,
 		"makeMaterial2": 302103,
@@ -624,7 +642,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 302223,
@@ -643,7 +662,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 302107,
 		"makeMaterial2": 302103,
@@ -657,7 +676,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 302314,
@@ -676,7 +696,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 302201,
 		"makeMaterial2": 302104,
@@ -690,7 +710,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 302301,
@@ -709,7 +730,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 302305,
 		"makeMaterial2": 401107,
@@ -723,7 +744,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 302303,
@@ -742,7 +764,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 302305,
 		"makeMaterial2": 205102,
@@ -756,7 +778,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 302305,
@@ -775,7 +798,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 302102,
 		"makeMaterial2": 301116,
@@ -789,7 +812,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 302307,
@@ -808,7 +832,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 302209,
 		"makeMaterial2": 302104,
@@ -822,7 +846,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 302310,
@@ -841,7 +866,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 302201,
 		"makeMaterial2": 301119,
@@ -855,7 +880,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 302308,
@@ -874,7 +900,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 302201,
 		"makeMaterial2": 302103,
@@ -888,7 +914,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 302302,
@@ -907,7 +934,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 302201,
 		"makeMaterial2": 302101,
@@ -921,7 +948,110 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
+	},
+	{
+		"code": 302312,
+		"name": "셀레네의눈물",
+		"modeType": 0,
+		"itemType": "Consume",
+		"consumableType": "SpecialBeverage",
+		"consumableTag": "None",
+		"itemGrade": "Legend",
+		"isCompletedItem": true,
+		"alertInSpectator": true,
+		"markingType": "None",
+		"craftAnimTrigger": "craftFood",
+		"stackable": 6,
+		"initialCount": 3,
+		"itemUsableType": "ALL",
+		"itemUsableValueList": 0,
+		"exclusiveProducer": 0,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
+		"manufacturableType": 0,
+		"makeMaterial1": 302102,
+		"makeMaterial2": 401209,
+		"heal": 0,
+		"hpRecover": 0,
+		"spRecover": 0,
+		"attackPowerByBuff": 0,
+		"defenseByBuff": 0,
+		"skillAmpByBuff": 0,
+		"skillAmpRatioByBuff": 0,
+		"addStateCode": 503502,
+		"isVPadQuickSlotItem": false,
+		"restoreItemWhenResurrected": true,
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": false
+	},
+	{
+		"code": 301305,
+		"name": "성수",
+		"modeType": 0,
+		"itemType": "Consume",
+		"consumableType": "SpecialBeverage",
+		"consumableTag": "None",
+		"itemGrade": "Legend",
+		"isCompletedItem": true,
+		"alertInSpectator": true,
+		"markingType": "None",
+		"craftAnimTrigger": "craftFood",
+		"stackable": 6,
+		"initialCount": 3,
+		"itemUsableType": "ALL",
+		"itemUsableValueList": 0,
+		"exclusiveProducer": 0,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
+		"manufacturableType": 0,
+		"makeMaterial1": 302102,
+		"makeMaterial2": 401304,
+		"heal": 0,
+		"hpRecover": 0,
+		"spRecover": 0,
+		"attackPowerByBuff": 0,
+		"defenseByBuff": 0,
+		"skillAmpByBuff": 0,
+		"skillAmpRatioByBuff": 0,
+		"addStateCode": 503501,
+		"isVPadQuickSlotItem": false,
+		"restoreItemWhenResurrected": true,
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": false
+	},
+	{
+		"code": 301329,
+		"name": "대환단",
+		"modeType": 0,
+		"itemType": "Consume",
+		"consumableType": "SpecialFood",
+		"consumableTag": "None",
+		"itemGrade": "Legend",
+		"isCompletedItem": true,
+		"alertInSpectator": true,
+		"markingType": "None",
+		"craftAnimTrigger": "craftFood",
+		"stackable": 6,
+		"initialCount": 3,
+		"itemUsableType": "ALL",
+		"itemUsableValueList": 0,
+		"exclusiveProducer": 0,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
+		"manufacturableType": 0,
+		"makeMaterial1": 302102,
+		"makeMaterial2": 401208,
+		"heal": 0,
+		"hpRecover": 0,
+		"spRecover": 0,
+		"attackPowerByBuff": 0,
+		"defenseByBuff": 0,
+		"skillAmpByBuff": 0,
+		"skillAmpRatioByBuff": 0,
+		"addStateCode": 503503,
+		"isVPadQuickSlotItem": false,
+		"restoreItemWhenResurrected": true,
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": false
 	},
 	{
 		"code": 301110,
@@ -940,7 +1070,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 1,
 		"makeMaterial1": 0,
 		"makeMaterial2": 0,
@@ -954,7 +1084,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301102,
@@ -973,7 +1104,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 1,
 		"makeMaterial1": 0,
 		"makeMaterial2": 0,
@@ -987,7 +1118,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301104,
@@ -1006,7 +1138,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 1,
 		"makeMaterial1": 0,
 		"makeMaterial2": 0,
@@ -1020,7 +1152,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301106,
@@ -1039,7 +1172,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 1,
 		"makeMaterial1": 0,
 		"makeMaterial2": 0,
@@ -1053,7 +1186,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301111,
@@ -1072,12 +1206,12 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 1,
 		"makeMaterial1": 0,
 		"makeMaterial2": 0,
 		"heal": 0,
-		"hpRecover": 250,
+		"hpRecover": 300,
 		"spRecover": 0,
 		"attackPowerByBuff": 0,
 		"defenseByBuff": 0,
@@ -1086,7 +1220,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301113,
@@ -1105,7 +1240,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 1,
 		"makeMaterial1": 0,
 		"makeMaterial2": 0,
@@ -1119,7 +1254,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301116,
@@ -1138,7 +1274,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 1,
 		"makeMaterial1": 0,
 		"makeMaterial2": 0,
@@ -1152,7 +1288,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301119,
@@ -1171,7 +1308,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 1,
 		"makeMaterial1": 0,
 		"makeMaterial2": 0,
@@ -1185,7 +1322,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301218,
@@ -1204,7 +1342,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 301116,
 		"makeMaterial2": 205102,
@@ -1218,7 +1356,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301206,
@@ -1237,7 +1376,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 302108,
 		"makeMaterial2": 108101,
@@ -1251,7 +1390,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301237,
@@ -1270,7 +1410,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 302103,
 		"makeMaterial2": 301119,
@@ -1284,7 +1424,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301222,
@@ -1303,7 +1444,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 0,
 		"makeMaterial2": 0,
@@ -1317,7 +1458,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301224,
@@ -1325,7 +1467,7 @@
 		"modeType": 0,
 		"itemType": "Consume",
 		"consumableType": "Food",
-		"consumableTag": "None",
+		"consumableTag": "Meat",
 		"itemGrade": "Uncommon",
 		"isCompletedItem": true,
 		"alertInSpectator": false,
@@ -1336,7 +1478,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 301106,
 		"makeMaterial2": 301111,
@@ -1350,106 +1492,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
-	},
-	{
-		"code": 301243,
-		"name": "레어스테이크",
-		"modeType": 0,
-		"itemType": "Consume",
-		"consumableType": "Food",
-		"consumableTag": "None",
-		"itemGrade": "Uncommon",
-		"isCompletedItem": true,
-		"alertInSpectator": false,
-		"markingType": "None",
-		"craftAnimTrigger": "craftFood",
-		"stackable": 10,
-		"initialCount": 3,
-		"itemUsableType": "ALL",
-		"itemUsableValueList": 0,
-		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
-		"manufacturableType": 0,
-		"makeMaterial1": 301111,
-		"makeMaterial2": 401215,
-		"heal": 0,
-		"hpRecover": 500,
-		"spRecover": 0,
-		"attackPowerByBuff": 0,
-		"defenseByBuff": 0,
-		"skillAmpByBuff": 0,
-		"skillAmpRatioByBuff": 0,
-		"addStateCode": 0,
-		"isVPadQuickSlotItem": false,
-		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
-	},
-	{
-		"code": 301244,
-		"name": "메로구이",
-		"modeType": 0,
-		"itemType": "Consume",
-		"consumableType": "Food",
-		"consumableTag": "Fish",
-		"itemGrade": "Uncommon",
-		"isCompletedItem": true,
-		"alertInSpectator": false,
-		"markingType": "None",
-		"craftAnimTrigger": "craftFood",
-		"stackable": 10,
-		"initialCount": 3,
-		"itemUsableType": "ALL",
-		"itemUsableValueList": 0,
-		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
-		"manufacturableType": 0,
-		"makeMaterial1": 301104,
-		"makeMaterial2": 401215,
-		"heal": 0,
-		"hpRecover": 500,
-		"spRecover": 0,
-		"attackPowerByBuff": 0,
-		"defenseByBuff": 0,
-		"skillAmpByBuff": 0,
-		"skillAmpRatioByBuff": 0,
-		"addStateCode": 0,
-		"isVPadQuickSlotItem": false,
-		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
-	},
-	{
-		"code": 301245,
-		"name": "구운감자",
-		"modeType": 0,
-		"itemType": "Consume",
-		"consumableType": "Food",
-		"consumableTag": "None",
-		"itemGrade": "Uncommon",
-		"isCompletedItem": true,
-		"alertInSpectator": false,
-		"markingType": "None",
-		"craftAnimTrigger": "craftFood",
-		"stackable": 10,
-		"initialCount": 3,
-		"itemUsableType": "ALL",
-		"itemUsableValueList": 0,
-		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
-		"manufacturableType": 0,
-		"makeMaterial1": 301102,
-		"makeMaterial2": 401215,
-		"heal": 0,
-		"hpRecover": 500,
-		"spRecover": 0,
-		"attackPowerByBuff": 0,
-		"defenseByBuff": 0,
-		"skillAmpByBuff": 0,
-		"skillAmpRatioByBuff": 0,
-		"addStateCode": 0,
-		"isVPadQuickSlotItem": false,
-		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301239,
@@ -1464,11 +1508,11 @@
 		"markingType": "None",
 		"craftAnimTrigger": "craftFood",
 		"stackable": 4,
-		"initialCount": 2,
+		"initialCount": 3,
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 301110,
 		"makeMaterial2": 302102,
@@ -1482,7 +1526,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301328,
@@ -1501,7 +1546,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 301113,
 		"makeMaterial2": 302216,
@@ -1515,7 +1560,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301317,
@@ -1534,7 +1580,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 301218,
 		"makeMaterial2": 112104,
@@ -1548,7 +1594,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301311,
@@ -1567,7 +1614,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 301119,
 		"makeMaterial2": 301206,
@@ -1581,7 +1628,42 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
+	},
+	{
+		"code": 301316,
+		"name": "후라이드치킨",
+		"modeType": 0,
+		"itemType": "Consume",
+		"consumableType": "Food",
+		"consumableTag": "None",
+		"itemGrade": "Common",
+		"isCompletedItem": true,
+		"alertInSpectator": false,
+		"markingType": "None",
+		"craftAnimTrigger": "craftFood",
+		"stackable": 4,
+		"initialCount": 2,
+		"itemUsableType": "ALL",
+		"itemUsableValueList": 0,
+		"exclusiveProducer": 0,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
+		"manufacturableType": 1,
+		"makeMaterial1": 0,
+		"makeMaterial2": 0,
+		"heal": 0,
+		"hpRecover": 700,
+		"spRecover": 0,
+		"attackPowerByBuff": 0,
+		"defenseByBuff": 0,
+		"skillAmpByBuff": 0,
+		"skillAmpRatioByBuff": 0,
+		"addStateCode": 0,
+		"isVPadQuickSlotItem": true,
+		"restoreItemWhenResurrected": true,
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301315,
@@ -1600,7 +1682,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 301206,
 		"makeMaterial2": 302101,
@@ -1614,7 +1696,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301325,
@@ -1633,12 +1716,12 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 301102,
 		"makeMaterial2": 301206,
 		"heal": 0,
-		"hpRecover": 622,
+		"hpRecover": 630,
 		"spRecover": 0,
 		"attackPowerByBuff": 0,
 		"defenseByBuff": 0,
@@ -1647,7 +1730,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301337,
@@ -1662,11 +1746,11 @@
 		"markingType": "None",
 		"craftAnimTrigger": "craftFood",
 		"stackable": 4,
-		"initialCount": 1,
+		"initialCount": 2,
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 301110,
 		"makeMaterial2": 502210,
@@ -1680,7 +1764,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301340,
@@ -1688,7 +1773,7 @@
 		"modeType": 0,
 		"itemType": "Consume",
 		"consumableType": "Food",
-		"consumableTag": "None",
+		"consumableTag": "Meat",
 		"itemGrade": "Rare",
 		"isCompletedItem": true,
 		"alertInSpectator": false,
@@ -1699,7 +1784,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 301337,
 		"makeMaterial2": 301111,
@@ -1713,7 +1798,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301346,
@@ -1721,7 +1807,7 @@
 		"modeType": 0,
 		"itemType": "Consume",
 		"consumableType": "Food",
-		"consumableTag": "None",
+		"consumableTag": "Meat",
 		"itemGrade": "Rare",
 		"isCompletedItem": true,
 		"alertInSpectator": false,
@@ -1732,7 +1818,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 301111,
 		"makeMaterial2": 502210,
@@ -1746,7 +1832,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301327,
@@ -1765,7 +1852,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 301113,
 		"makeMaterial2": 502210,
@@ -1779,7 +1866,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301326,
@@ -1798,7 +1886,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 301104,
 		"makeMaterial2": 502210,
@@ -1812,7 +1900,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301302,
@@ -1831,7 +1920,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 301102,
 		"makeMaterial2": 502210,
@@ -1845,7 +1934,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301338,
@@ -1864,7 +1954,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 301119,
 		"makeMaterial2": 502210,
@@ -1878,7 +1968,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301339,
@@ -1897,7 +1988,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 301106,
 		"makeMaterial2": 502210,
@@ -1911,7 +2002,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301314,
@@ -1930,7 +2022,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 301116,
 		"makeMaterial2": 502210,
@@ -1944,7 +2036,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301403,
@@ -1963,7 +2056,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 30,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 301302,
 		"makeMaterial2": 302209,
@@ -1977,7 +2070,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301401,
@@ -1996,7 +2090,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 301326,
 		"makeMaterial2": 301302,
@@ -2010,7 +2104,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301408,
@@ -2029,7 +2124,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 301218,
 		"makeMaterial2": 301237,
@@ -2043,7 +2138,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301405,
@@ -2062,7 +2158,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 0,
 		"makeMaterial2": 0,
@@ -2076,7 +2172,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301406,
@@ -2095,7 +2192,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 0,
 		"makeMaterial2": 0,
@@ -2109,7 +2206,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301407,
@@ -2128,7 +2226,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 0,
 		"makeMaterial2": 0,
@@ -2142,7 +2240,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301501,
@@ -2161,7 +2260,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 301405,
 		"makeMaterial2": 502210,
@@ -2175,7 +2274,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301502,
@@ -2194,7 +2294,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 301407,
 		"makeMaterial2": 502210,
@@ -2208,7 +2308,8 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	},
 	{
 		"code": 301503,
@@ -2227,7 +2328,7 @@
 		"itemUsableType": "ALL",
 		"itemUsableValueList": 0,
 		"exclusiveProducer": 0,
-		"canNotBeTakeItemFromCorpse": false,
+		"isRemovedFromPlayerCorpseInventoryWhenPlayerKilled": false,
 		"manufacturableType": 0,
 		"makeMaterial1": 301406,
 		"makeMaterial2": 502210,
@@ -2241,6 +2342,7 @@
 		"addStateCode": 0,
 		"isVPadQuickSlotItem": false,
 		"restoreItemWhenResurrected": true,
-		"creditValueWhenConvertedToBounty": 0
+		"creditValueWhenConvertedToBounty": 0,
+		"isReduceLootOnDeath": true
 	}
 ]
