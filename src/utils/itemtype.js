@@ -91,6 +91,7 @@ export const grade = (Grade) => {
     else if (Grade === 'Rare') return '희귀';
     else if (Grade === 'Epic') return '영웅';
     else if (Grade === 'Legend') return '전설';
+    else if (Grade === 'Mythic') return '신화';
     else return '일반';
 }
 export const backcolor = (a) => {
@@ -98,6 +99,7 @@ export const backcolor = (a) => {
     else if (a === 'Rare') return 'blue';
     else if (a === 'Epic') return 'purple';
     else if (a === 'Legend') return '#ffd700';
+    else if (a === 'Mythic') return 'red';
     else return 'gray';
 }
 export const backcolorrgba = (a) => {
@@ -105,6 +107,7 @@ export const backcolorrgba = (a) => {
     else if (a === 'Rare') return 'rgba(0,0,150,0) 0%, rgba(0,0,150,1) 100%)';
     else if (a === 'Epic') return 'rgba(150,0,150,0) 0%, rgba(150,0,150,1) 100%)';
     else if (a === 'Legend') return 'rgba(255,247,0,0) 0%, rgba(255,247,0,1) 100%)';
+    else if (a === 'Mythic') return 'rgba(255,0,0,0) 0%, rgba(255,0,0,1) 100%)';
     else return 'rgba(20,20,20,0) 0%, rgba(20,20,20,1) 150%)';
 }
 export const recover = (hp, sp) => {

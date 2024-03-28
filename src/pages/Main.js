@@ -46,7 +46,7 @@ export default function Main(props) {
 		];
 		for (let i = 0; i < Links.length; i++) {
 			arr.push(
-				<MuiLink key={i} href={Links[i].url} underline="none">
+				<MuiLink key={i} href={Links[i].url} underline="none" target="_blank">
 					{Links[i].text}
 				</MuiLink>
 			);
@@ -112,7 +112,7 @@ export default function Main(props) {
 				<Stack spacing={2}>
 					<div>- 최근 패치 노트</div>
 					<Stack direction="row" spacing={0.5}>
-						<MuiLink href="https://playeternalreturn.com/posts/news/1792" underline="none">
+						<MuiLink href="https://playeternalreturn.com/posts/news/1792" underline="none" target="_blank">
 							2024.03.14 - 1.17 패치노트
 						</MuiLink>
 						<FiberNewIcon style={{ height: "21px" }} />
