@@ -124,3 +124,9 @@
     align-items: center;
     gap: 4px;
 }
+.more {
+    width: 100%;
+    margin-top: 8px;
+    border: 1px #dbe0e4 solid;
+    text-align: center;
+}

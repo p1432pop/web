@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
+import { Api } from "../axios/axios";
 import { useDispatch, useSelector } from "react-redux";
-import { loadSeason, setPage } from "../app/rankSlice";
+import { getRanking1 } from "../app/rankSlice";
 
 import { getTierImg, getTierName } from "../utils/tier";
 
@@ -24,8 +24,32 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import styles from "../style/Ranking.module.css";
 
 export default function Ranking(props) {
-	const value = useSelector((state) => state.rank);
-	const dispatch = useDispatch();
+	const [seasonId, setSeasonId] = useState(23);
+	const [loading, setLoading] = useState(true);
+	const [page, setPage] = useState(1);
+	const [ranking, setRanking] = useState([]);
+	const [updated, setUpdated] = useState(new Date());
+	useEffect(() => {
+		const setup = async () => {
+			const result = await Api.getRanking(23, 1);
+			setRanking(result.data);
+			setUpdated(result.updated);
+		};
+		setup();
+	}, []);
+	const pageHandler = async (event, value) => {
+		const result = await Api.getRanking(seasonId, value);
+		setRanking(result.data);
+		setUpdated(result.updated);
+		setPage(value);
+	};
+	const seasonHandler = async (event) => {
+		const result = await Api.getRanking(event.target.value, 1);
+		setSeasonId(event.target.value);
+		setRanking(result.data);
+		setUpdated(result.updated);
+		setPage(1);
+	};
 	const StyledTableCell = styled(TableCell)(({ theme }) => ({
 		[`&.${tableCellClasses.head}`]: {
 			backgroundColor: theme.palette.common.black,
@@ -48,12 +72,6 @@ export default function Ranking(props) {
 		},
 	}));
 
-	const pageHandler = (event, value) => {
-		dispatch(setPage(value));
-	};
-	const seasonHandler = (event) => {
-		dispatch(loadSeason(event.target.value));
-	};
 	const avatarImage = (codes) => {
 		let arr = [];
 		codes.forEach((code, index) => {
@@ -92,7 +110,7 @@ export default function Ranking(props) {
 			<div>
 				<div className={styles.topContent}>
 					<div>
-						{title(value.season)} 랭킹 최근 업데이트 : {getTime(value.updated)}
+						{title(seasonId)} 랭킹 최근 업데이트 : {getTime(updated)}
 					</div>
 					<Box sx={{ width: 300 }}>
 						<FormControl fullWidth>
@@ -119,7 +137,7 @@ export default function Ranking(props) {
 							</TableRow>
 						</TableHead>
 						<TableBody>
-							{value.current.map((row, idx) => (
+							{ranking.map((row, idx) => (
 								<StyledTableRow
 									key={idx}
 									sx={{
@@ -128,7 +146,7 @@ export default function Ranking(props) {
 										},
 									}}
 								>
-									<StyledTableCell>{(value.page - 1) * 100 + 1 + idx}</StyledTableCell>
+									<StyledTableCell>{(page - 1) * 100 + 1 + idx}</StyledTableCell>
 									<StyledTableCell>
 										<Link style={{ textDecoration: "none" }} to={`/players/${row.nickname}`}>
 											{row.nickname}
@@ -136,8 +154,8 @@ export default function Ranking(props) {
 									</StyledTableCell>
 									<StyledTableCell>
 										<div className={styles.avatarBox}>
-											<Avatar className={styles.mx} src={getTierImg(row.mmr, (value.page - 1) * 100 + 1 + idx)} />
-											{getTierName(row.mmr, (value.page - 1) * 100 + 1 + idx)}
+											<Avatar className={styles.mx} src={getTierImg(row.mmr, (page - 1) * 100 + 1 + idx)} />
+											{getTierName(row.mmr, (page - 1) * 100 + 1 + idx)}
 										</div>
 									</StyledTableCell>
 									<StyledTableCell>{row.mmr >= 6000 ? row.mmr - 6000 : row.mmr % 250}</StyledTableCell>
@@ -154,7 +172,7 @@ export default function Ranking(props) {
 						</TableBody>
 					</Table>
 				</TableContainer>
-				<Pagination className={styles.flexCenter} count={10} variant="outlined" page={value.page} shape="rounded" size="large" onChange={pageHandler} />
+				<Pagination className={styles.flexCenter} count={10} variant="outlined" page={page} shape="rounded" size="large" onChange={pageHandler} />
 			</div>
 		</>
 	);

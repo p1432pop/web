@@ -1,14 +1,19 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const loadPlayer = createAsyncThunk("load/Player", (nickname) => {
-	return axios.get(`http://localhost:8080/player/${nickname}/23`);
+export const loadPlayer = createAsyncThunk("load/Player", async (nickname) => {
+	const response = await axios.get(`http://localhost:8080/player/recent/${nickname}/23`);
+	return response.data;
+});
+export const getMore = createAsyncThunk("load/More", async ({ userNum, next }) => {
+	const response = await axios.get(`http://localhost:8080/player/past/${userNum}?next=${next}`);
+	return response.data;
 });
 export const updatePlayer = createAsyncThunk("update/Player", (data) => {
 	return axios.post(`http://localhost:8080/player`, {
 		nickname: data.nickname,
 		userNum: data.userNum,
-		lastGameId: data.lastGameId,
+		next: data.next,
 	});
 });
 export const loadGame = createAsyncThunk("load/Game", (gameId) => {
@@ -18,53 +23,35 @@ function gameSetting(state, data) {
 	state.updated = new Date(data.updated);
 	state.userNum = data.userNum;
 	state.nickname = data.nickname;
-	state.lastGameId = data.lastGameId;
-	if (data.games.length !== 0) {
-		state.rank = data.rank;
-		state.mmr = data.games[0].mmrAfter;
-		state.level = data.games[0].accountLevel;
-		state.characterCode = data.games[0].characterNum;
-		state.games = data.games;
-		for (let game of state.games) {
-			let equip = [];
-			let obj = JSON.parse(game.equipment);
-			for (let i = 0; i < 5; i++) {
-				equip.push(obj[`${i}`]);
-			}
-			game.equipment = equip;
-			game.traitFirstSub = JSON.parse(game.traitFirstSub);
-			game.traitSecondSub = JSON.parse(game.traitSecondSub);
+	state.next = data.next;
+	state.rank = data.rank;
+	state.mmr = data.mmr;
+	state.accountLevel = data.accountLevel;
+	state.characterCode = data.characterCode;
+	state.games = data.games;
+	for (let game of state.games) {
+		let equip = [];
+		let obj = JSON.parse(game.equipment);
+		for (let i = 0; i < 5; i++) {
+			equip.push(obj[`${i}`]);
 		}
+		game.equipment = equip;
+		game.traitFirstSub = JSON.parse(game.traitFirstSub);
+		game.traitSecondSub = JSON.parse(game.traitSecondSub);
 	}
 }
 export const playerSlice = createSlice({
 	name: "player",
-	initialState: {
-		games: [],
-		view: 1,
-		status: 200,
-		onload: false,
-		updateLoading: false,
-		userNum: 0,
-		nickname: "",
-		lastGameId: 0,
-		characterCode: 0,
-		updated: undefined,
-		mmr: -1,
-		level: 0,
-		rank: 0,
-		userGames: [],
-		open: false,
-	},
+	initialState: {},
 	reducers: {
-		setOpen(state, action) {
+		setOpen(state) {
 			state.open = false;
 			state.userGames = [];
 		},
 	},
 	extraReducers: (builder) => {
 		builder
-			.addCase(loadPlayer.pending, (state, action) => {
+			.addCase(loadPlayer.pending, (state) => {
 				state.games = [];
 				state.view = 1;
 				state.onload = false;
@@ -73,13 +60,13 @@ export const playerSlice = createSlice({
 				state.characterCode = 0;
 				state.updated = undefined;
 				state.mmr = -1;
-				state.level = 0;
 				state.rank = 0;
 			})
 			.addCase(loadPlayer.fulfilled, (state, action) => {
-				state.status = action.payload.status;
+				state.status = 200;
 				state.onload = true;
-				let data = action.payload.data;
+				let data = action.payload.playerData;
+				state.playerStats = action.payload.playerStats;
 				state.view = data.view;
 				gameSetting(state, data);
 			})
@@ -122,7 +109,23 @@ export const playerSlice = createSlice({
 				state.userGames = result;
 				state.open = true;
 			})
-			.addCase(loadGame.rejected, (state, action) => {});
+			.addCase(loadGame.rejected, (state, action) => {})
+			.addCase(getMore.pending, (state, action) => {})
+			.addCase(getMore.fulfilled, (state, action) => {
+				for (let game of action.payload.games) {
+					let equip = [];
+					let obj = JSON.parse(game.equipment);
+					for (let i = 0; i < 5; i++) {
+						equip.push(obj[`${i}`]);
+					}
+					game.equipment = equip;
+					game.traitFirstSub = JSON.parse(game.traitFirstSub);
+					game.traitSecondSub = JSON.parse(game.traitSecondSub);
+				}
+				state.games.push(...action.payload.games);
+				state.next = action.payload.next;
+			})
+			.addCase(getMore.rejected, (state, action) => {});
 	},
 });
 

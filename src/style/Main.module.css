@@ -3,10 +3,13 @@
 }
 .topContent {
     background-image: url('../assets/1080.png');
+    width: 1080px;
     height: 608px;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    position: relative;
 }
 .searchBox {
     display: flex;
@@ -44,5 +47,20 @@
 .flexCenter {
     display: flex;
     justify-content: center;
+    align-items: center;
+}
+.drop {
+    position: absolute;
+    top: calc(100% - 270px);
+    margin-left: -42px;
+    padding: 16px;
+    width: 332px;
+    background-color: white;
+    z-index: 1000000;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 8px 12px 0px
+}
+.flexBetween {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
 }
