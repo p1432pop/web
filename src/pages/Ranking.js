@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Api } from "../axios/axios";
-import { useDispatch, useSelector } from "react-redux";
-import { getRanking1 } from "../app/rankSlice";
 
 import { getTierImg, getTierName } from "../utils/tier";
 

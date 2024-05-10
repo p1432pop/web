@@ -69,13 +69,6 @@ export default function Main(props) {
 		}
 		return arr;
 	};
-	const storageHandler = (name) => {
-		console.log(name);
-		if (!recentNickname.includes(name)) {
-			localStorage.setItem("nickname", JSON.stringify([...recentNickname, name]));
-			setRecentNickname([...recentNickname, name]);
-		}
-	};
 	const removeStorage = (idx) => {
 		const value = JSON.parse(localStorage.getItem("nickname"));
 		value.splice(idx, 1);
@@ -87,7 +80,6 @@ export default function Main(props) {
 			if (ev.target.value.trim().length === 0) {
 				alert("공백 없이 입력해주세요.");
 			} else {
-				storageHandler(nickname.current.value);
 				navigate(`/players/${ev.target.value}`);
 			}
 		}
@@ -96,7 +88,6 @@ export default function Main(props) {
 		if (nickname.current.value.trim().length === 0) {
 			alert("공백 없이 입력해주세요.");
 		} else {
-			storageHandler(nickname.current.value);
 			navigate(`/players/${nickname.current.value}`);
 		}
 	};

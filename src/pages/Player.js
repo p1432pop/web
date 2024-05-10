@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { loadPlayer, loadGame, updatePlayer, setOpen, getMore } from "../app/playerSlice";
 import Loading from "../components/Loading";
 import styles from "../style/Player.module.css";
 import "../App.css";
@@ -35,7 +33,6 @@ import { useDrawingArea } from "@mui/x-charts/hooks";
 import { Api } from "../axios/axios";
 
 export default function Player(props) {
-	const value = useSelector((state) => state.player);
 	const [loading, setLoading] = useState(true);
 	const [moreLoading, setMoreLoading] = useState(false);
 	const [updateLoading, setUpdateLoading] = useState(false);
@@ -43,13 +40,13 @@ export default function Player(props) {
 	const [page, setPage] = useState(1);
 	const [playerData, setPlayerData] = useState();
 	const [playerStats, setPlayerStats] = useState();
+	const [open, setOpen] = useState(false);
+	const [userGames, setUserGames] = useState([])
 	const params = useParams();
-	const dispatch = useDispatch();
 	useEffect(() => {
 		setLoading(true);
 		const setup = async () => {
 			const result = await Api.getPlayerRecentData(params.nickname);
-			await new Promise((resolve) => setTimeout(resolve, 1000));
 			setLoading(false);
 			setStatus(result.status);
 			if (result.status === 200) {
@@ -61,7 +58,6 @@ export default function Player(props) {
 	}, [params]);
 	const moreHandler = async () => {
 		const result = await Api.getPlayerPastData(playerData.userNum, playerData.next);
-		await new Promise((resolve) => setTimeout(resolve, 1000));
 		setMoreLoading(false);
 		setPlayerData({
 			...playerData,
@@ -89,11 +85,14 @@ export default function Player(props) {
 	const pageHandler = (event, newPage) => {
 		setPage(newPage);
 	};
-	const openModal = (gameId) => {
-		dispatch(loadGame(gameId));
+	const openModal = async (gameId) => {
+		const result = await Api.getGame(gameId);
+		setUserGames(result)
+		setOpen(true);
 	};
 	const closeModal = () => {
-		dispatch(setOpen());
+		setUserGames([])
+		setOpen(false);
 	};
 	const itemImg = (list) => {
 		let arr = [];
@@ -375,8 +374,8 @@ export default function Player(props) {
 									</StyledTableRow>
 								))}
 							</TableBody>
-							{value.open ? (
-								<Modal open={value.open} onClose={closeModal}>
+							{open ? (
+								<Modal open={open} onClose={closeModal}>
 									<Box className="modal">
 										<Table>
 											<TableHead>
@@ -384,7 +383,6 @@ export default function Player(props) {
 													<StyledTableCell>#</StyledTableCell>
 													<StyledTableCell>실험체</StyledTableCell>
 													<StyledTableCell>Trait/Tactical</StyledTableCell>
-													<StyledTableCell>플레이어</StyledTableCell>
 													<StyledTableCell>TK / K / A</StyledTableCell>
 													<StyledTableCell>딜량</StyledTableCell>
 													<StyledTableCell>크레딧</StyledTableCell>
@@ -392,7 +390,7 @@ export default function Player(props) {
 												</TableRow>
 											</TableHead>
 											<TableBody>
-												{value.userGames.map((team, idx) => (
+												{userGames.map((team, idx) => (
 													<StyledTableRow>
 														<StyledTableCell>#{team[0].gameRank}</StyledTableCell>
 														<StyledTableCell>
@@ -427,13 +425,6 @@ export default function Player(props) {
 																			<Avatar alt="img" src={`../image/Tactical/${player.tacticalSkillGroup}.png`} />
 																		</Badge>
 																	</div>
-																))}
-															</div>
-														</StyledTableCell>
-														<StyledTableCell>
-															<div className={styles.cellBox}>
-																{team.map((player, idx2) => (
-																	<div className={styles.cellItem}>{player.nickname}</div>
 																))}
 															</div>
 														</StyledTableCell>

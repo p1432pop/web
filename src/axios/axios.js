@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-	baseURL: "http://localhost:8080",
+	baseURL: "https://lumia.kr",
 });
 
 export const Api = {
@@ -30,6 +30,16 @@ export const Api = {
 			const res = await axiosInstance.get(`/player/recent/${nickname}/23`);
 			res.data.playerData.updated = new Date(res.data.playerData.updated);
 			gameSetting(res.data.playerData.games);
+			let nicknames = localStorage.getItem("nickname");
+			if(nicknames) {
+				nicknames = JSON.parse(nicknames)
+				if(!nicknames.includes(nickname)) {
+					localStorage.setItem("nickname", JSON.stringify([...nicknames, nickname]));
+				}
+			}
+			else {
+				localStorage.setItem('nickname', JSON.stringify([nickname]))
+			}
 			return {
 				status: 200,
 				data: res.data,
@@ -47,7 +57,20 @@ export const Api = {
 	},
 	getGame: async (gameId) => {
 		const res = await axiosInstance.get(`/game/${gameId}`);
-		return res.data;
+		for (let player of res.data) {
+			let equip = [];
+			player.equipment = JSON.parse(player.equipment)
+			for (let i = 0; i < 5; i++) {
+				equip.push(player.equipment[`${i}`]);
+			}
+			player.equipment = equip;
+		}
+		let result = [];
+		for (let i = 0; i < res.data.length; i += 3) {
+			const team = res.data.slice(i, i + 3);
+			result.push(team);
+		}
+		return result;
 	},
 };
 
