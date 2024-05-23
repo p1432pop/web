@@ -16,23 +16,26 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import Avatar from "@mui/material/Avatar";
 import SearchIcon from "@mui/icons-material/Search";
 import DeleteIcon from "@mui/icons-material/Delete";
-import FiberNewIcon from "@mui/icons-material/FiberNew";
 import AddIcon from "@mui/icons-material/Add";
 import Loading from "../components/Loading";
 import { getTierImg, getTierName } from "../utils/tier";
 
 import styles from "../style/Main.module.css";
+import { News } from "../axios/RO";
 
-export default function Main(props) {
+export default function Main() {
 	const [loading, setLoading] = useState(true);
 	const [drop, setDrop] = useState(false);
+	const [news, setNews] = useState<News[]>([]);
 	const [ranking, setRanking] = useState([]);
 	const [recentNickname, setRecentNickname] = useState([]);
 	useEffect(() => {
 		const setup = async () => {
 			const result = await Api.getMainRanking();
+			const result2 = await Api.getMainNews();
 			setLoading(false);
 			setRanking(result.data);
+			setNews(result2);
 			const value = localStorage.getItem("nickname");
 			if (value) {
 				setRecentNickname(JSON.parse(value));
@@ -44,31 +47,6 @@ export default function Main(props) {
 	}, []);
 	const navigate = useNavigate();
 	const nickname = useRef("");
-	const patchNotes = () => {
-		let arr = [];
-		let Links = [
-			{
-				url: "https://playeternalreturn.com/posts/news/1765",
-				text: "2024.02.29 - 1.16 패치노트",
-			},
-			{
-				url: "https://playeternalreturn.com/posts/news/1749",
-				text: "2024.02.22 - 1.15.1 패치노트",
-			},
-			{
-				url: "https://playeternalreturn.com/posts/news/1727",
-				text: "2024.02.15 - 1.15 패치노트",
-			},
-		];
-		for (let i = 0; i < Links.length; i++) {
-			arr.push(
-				<MuiLink key={i} href={Links[i].url} underline="none" target="_blank">
-					{Links[i].text}
-				</MuiLink>
-			);
-		}
-		return arr;
-	};
 	const removeStorage = (idx) => {
 		const value = JSON.parse(localStorage.getItem("nickname"));
 		value.splice(idx, 1);
@@ -151,13 +129,11 @@ export default function Main(props) {
 			<div className={styles.patchBox}>
 				<Stack spacing={2}>
 					<div>- 최근 패치 노트</div>
-					<Stack direction="row" spacing={0.5}>
-						<MuiLink href="https://playeternalreturn.com/posts/news/1792" underline="none" target="_blank">
-							2024.03.14 - 1.17 패치노트
+					{news.map((note, idx) => (
+						<MuiLink key={idx} href={note.url} underline="none" target="_blank">
+							{note.title}
 						</MuiLink>
-						<FiberNewIcon style={{ height: "21px" }} />
-					</Stack>
-					{patchNotes()}
+					))}
 				</Stack>
 			</div>
 			<div>

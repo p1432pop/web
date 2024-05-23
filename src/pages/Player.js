@@ -41,7 +41,7 @@ export default function Player(props) {
 	const [playerData, setPlayerData] = useState();
 	const [playerStats, setPlayerStats] = useState();
 	const [open, setOpen] = useState(false);
-	const [userGames, setUserGames] = useState([])
+	const [userGames, setUserGames] = useState([]);
 	const params = useParams();
 	useEffect(() => {
 		setLoading(true);
@@ -87,11 +87,11 @@ export default function Player(props) {
 	};
 	const openModal = async (gameId) => {
 		const result = await Api.getGame(gameId);
-		setUserGames(result)
+		setUserGames(result);
 		setOpen(true);
 	};
 	const closeModal = () => {
-		setUserGames([])
+		setUserGames([]);
 		setOpen(false);
 	};
 	const itemImg = (list) => {
@@ -495,4 +495,5 @@ export default function Player(props) {
 				</div>
 			</div>
 		);
+	return <></>;
 }

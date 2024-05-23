@@ -1,10 +1,27 @@
 import axios from "axios";
+import { News } from "./RO";
 
 const axiosInstance = axios.create({
-	baseURL: "https://lumia.kr",
+	baseURL: "http://localhost:8080",
 });
 
 export const Api = {
+	getMainNews: async (): Promise<News[]> => {
+		const res = await axiosInstance.get("/news");
+		return res.data;
+	},
+	getItemConsumable: async (consumableType) => {
+		const res = await axiosInstance.get("/item/consumable", { params: { consumableType } });
+		return res.data;
+	},
+	getItemWeapon: async (wearableType) => {
+		const res = await axiosInstance.get("/item/weapon", { params: { wearableType } });
+		return res.data;
+	},
+	getItemArmor: async (wearableType) => {
+		const res = await axiosInstance.get("/item/armor", { params: { wearableType } });
+		return res.data;
+	},
 	getMainRanking: async () => {
 		const res = await axiosInstance.get("/rank");
 		return res.data;
@@ -25,20 +42,19 @@ export const Api = {
 			data: res.data,
 		};
 	},
-	getPlayerRecentData: async (nickname) => {
+	getPlayerRecentData: async (nickname: string) => {
 		try {
 			const res = await axiosInstance.get(`/player/recent/${nickname}/23`);
 			res.data.playerData.updated = new Date(res.data.playerData.updated);
 			gameSetting(res.data.playerData.games);
 			let nicknames = localStorage.getItem("nickname");
-			if(nicknames) {
-				nicknames = JSON.parse(nicknames)
-				if(!nicknames.includes(nickname)) {
+			if (nicknames) {
+				nicknames = JSON.parse(nicknames);
+				if (!nicknames.includes(nickname)) {
 					localStorage.setItem("nickname", JSON.stringify([...nicknames, nickname]));
 				}
-			}
-			else {
-				localStorage.setItem('nickname', JSON.stringify([nickname]))
+			} else {
+				localStorage.setItem("nickname", JSON.stringify([nickname]));
 			}
 			return {
 				status: 200,
@@ -59,7 +75,7 @@ export const Api = {
 		const res = await axiosInstance.get(`/game/${gameId}`);
 		for (let player of res.data) {
 			let equip = [];
-			player.equipment = JSON.parse(player.equipment)
+			player.equipment = JSON.parse(player.equipment);
 			for (let i = 0; i < 5; i++) {
 				equip.push(player.equipment[`${i}`]);
 			}

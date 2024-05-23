@@ -1,10 +1,7 @@
 import React from "react";
-import { useState } from "react";
-
-import armor from "../assets/armor";
-import weapon from "../assets/weapon";
-import consume from "../assets/consume";
-
+import { useState, useEffect } from "react";
+import { Api } from "../axios/axios";
+import Loading from "../components/Loading";
 import { getItemType, radiodata, name, grade, backcolor, backcolorrgba, recover, consumeEffect, weaponArmor } from "../utils/itemtype";
 
 import Sheet from "@mui/joy/Sheet";
@@ -21,10 +18,36 @@ const CustomWidthTooltip = styled(({ className, ...props }) => <Tooltip {...prop
 		padding: 0,
 	},
 });
-export default function Guide(props) {
+export default function Guide() {
 	const [view, setView] = useState("Weapon");
-	const radioHandler = (ev) => {
+	const [item, setItem] = useState([]);
+	const [loading, setLoading] = useState(true);
+	useEffect(() => {
+		const setup = async () => {
+			const result = await Api.getItemWeapon();
+			setItem(result);
+			setLoading(false);
+		};
+		setup();
+	}, []);
+	const radioHandler = async (ev) => {
+		const type = ev.target.value;
 		setView(ev.target.value);
+		if (type === "Weapon") {
+			const result = await Api.getItemWeapon();
+			setItem(result);
+			return;
+		}
+		if (type === "Armor") {
+			const result = await Api.getItemArmor();
+			setItem(result);
+			return;
+		}
+		if (type === "Consume") {
+			const result = await Api.getItemConsumable();
+			setItem(result);
+			return;
+		}
 	};
 	const radiodatas = () => {
 		let arr = [];
@@ -57,66 +80,35 @@ export default function Guide(props) {
 	const items = () => {
 		const value = getItemType(view);
 		let arr = [];
-		if (value === "Weapon") {
-			weapon.forEach((it) => {
-				if (view === "Weapon" || view === it.weaponType) {
-					arr.push(
-						<CustomWidthTooltip
-							key={it.code}
-							title={
-								<>
-									<div style={{ display: "flex", background: `linear-gradient(90deg, ${backcolorrgba(it.itemGrade)}`, padding: "8px" }}>
-										<div>
-											<p className={styles.itemName}>{it.name}</p>
-											<p className={styles.itemEffect} style={{ color: backcolor(it.itemGrade) }}>
-												{grade(it.itemGrade)}
-											</p>
-										</div>
-										<img className={styles.imgmd} src={name(it.code)} alt="img" />
+		if (value === "Weapon" || value === "Armor") {
+			item.forEach((it) => {
+				arr.push(
+					<CustomWidthTooltip
+						key={it.code}
+						title={
+							<>
+								<div style={{ display: "flex", background: `linear-gradient(90deg, ${backcolorrgba(it.itemGrade)}`, padding: "8px" }}>
+									<div>
+										<p className={styles.itemName}>{it.name}</p>
+										<p className={styles.itemEffect} style={{ color: backcolor(it.itemGrade) }}>
+											{grade(it.itemGrade)}
+										</p>
 									</div>
-									<div className={styles.itemDetail}>{weaponArmor(it)}</div>
-								</>
-							}
-						>
-							<div className={styles.itemBox}>
-								<img className={styles.imgsm} src={name(it.code)} alt="img" style={{ backgroundColor: backcolor(it.itemGrade) }} />
-								{it.name}
-							</div>
-						</CustomWidthTooltip>
-					);
-				}
-			});
-		} else if (value === "Armor") {
-			armor.forEach((it) => {
-				if (view === "Armor" || view === it.armorType) {
-					arr.push(
-						<CustomWidthTooltip
-							key={it.code}
-							title={
-								<>
-									<div style={{ display: "flex", background: `linear-gradient(90deg, ${backcolorrgba(it.itemGrade)}`, padding: "8px" }}>
-										<div>
-											<p className={styles.itemName}>{it.name}</p>
-											<p className={styles.itemEffect} style={{ color: backcolor(it.itemGrade) }}>
-												{grade(it.itemGrade)}
-											</p>
-										</div>
-										<img className={styles.imgmd} src={name(it.code)} alt="img" />
-									</div>
-									<div className={styles.itemDetail}>{weaponArmor(it)}</div>
-								</>
-							}
-						>
-							<div className={styles.itemBox}>
-								<img className={styles.imgsm} src={name(it.code)} alt="img" style={{ backgroundColor: backcolor(it.itemGrade) }} />
-								{it.name}
-							</div>
-						</CustomWidthTooltip>
-					);
-				}
+									<img className={styles.imgmd} src={name(it.code)} alt="img" />
+								</div>
+								<div className={styles.itemDetail}>{weaponArmor(it)}</div>
+							</>
+						}
+					>
+						<div className={styles.itemBox}>
+							<img className={styles.imgsm} src={name(it.code)} alt="img" style={{ backgroundColor: backcolor(it.itemGrade) }} />
+							{it.name}
+						</div>
+					</CustomWidthTooltip>
+				);
 			});
 		} else if (value === "Consume") {
-			consume.forEach((it) => {
+			item.forEach((it) => {
 				if (view === "Consume" || view === it.consumableType) {
 					arr.push(
 						<CustomWidthTooltip
@@ -151,6 +143,9 @@ export default function Guide(props) {
 		}
 		return arr;
 	};
+	if (loading) {
+		return <Loading />;
+	}
 	return (
 		<div className={styles.content}>
 			<div style={{ margin: "16px" }}>최근 업데이트 : 2024/03/20</div>
