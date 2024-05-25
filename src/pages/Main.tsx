@@ -35,7 +35,7 @@ export default function Main() {
 			const result2 = await Api.getMainNews();
 			setLoading(false);
 			setRanking(result.data);
-			setNews(result2);
+			setNews(result2.news);
 			const value = localStorage.getItem("nickname");
 			if (value) {
 				setRecentNickname(JSON.parse(value));

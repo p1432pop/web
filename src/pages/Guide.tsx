@@ -8,11 +8,13 @@ import Sheet from "@mui/joy/Sheet";
 import Radio from "@mui/joy/Radio";
 import RadioGroup from "@mui/joy/RadioGroup";
 import { styled } from "@mui/material/styles";
-import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
+import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 
 import styles from "../style/Guide.module.css";
 
-const CustomWidthTooltip = styled(({ className, ...props }) => <Tooltip {...props} classes={{ popper: className }} />)({
+const CustomWidthTooltip = styled(({ className, ...props }: TooltipProps) => (
+	<Tooltip {...props} classes={{ popper: className }} />
+  ))({
 	[`& .${tooltipClasses.tooltip}`]: {
 		maxWidth: 600,
 		padding: 0,
@@ -30,9 +32,9 @@ export default function Guide() {
 		};
 		setup();
 	}, []);
-	const radioHandler = async (ev) => {
-		const type = ev.target.value;
-		setView(ev.target.value);
+	const radioHandler = async (ev: React.ChangeEvent<HTMLInputElement>) => {
+		const type = (ev.target as HTMLInputElement).value
+		setView(type);
 		if (type === "Weapon") {
 			const result = await Api.getItemWeapon();
 			setItem(result);
