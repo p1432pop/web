@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Api } from "../axios/axios";
 
@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import Paper from "@mui/material/Paper";
 import Avatar from "@mui/material/Avatar";
-import Select from "@mui/material/Select";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { styled } from "@mui/material/styles";
 import MenuItem from "@mui/material/MenuItem";
 import TableRow from "@mui/material/TableRow";
@@ -20,32 +20,36 @@ import TableContainer from "@mui/material/TableContainer";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 
 import styles from "../style/Ranking.module.css";
+import { JSX } from "react/jsx-runtime";
+import Loading from "../components/Loading";
+import { topRank } from "../axios/dto/rank/rank.dto";
 
-export default function Ranking(props) {
+export default function Ranking() {
 	const [seasonId, setSeasonId] = useState(23);
 	const [loading, setLoading] = useState(true);
 	const [page, setPage] = useState(1);
-	const [ranking, setRanking] = useState([]);
+	const [ranking, setRanking] = useState<topRank[]>([]);
 	const [updated, setUpdated] = useState(new Date());
 	useEffect(() => {
 		const setup = async () => {
 			const result = await Api.getRanking(23, 1);
-			setRanking(result.data);
-			setUpdated(result.updated);
+			setRanking(result.topRanks);
+			setUpdated(new Date(result.updated));
+			setLoading(false);
 		};
 		setup();
 	}, []);
-	const pageHandler = async (event, value) => {
+	const pageHandler = async (event: React.ChangeEvent<unknown>, value: number) => {
 		const result = await Api.getRanking(seasonId, value);
-		setRanking(result.data);
-		setUpdated(result.updated);
+		setRanking(result.topRanks);
+		setUpdated(new Date(result.updated));
 		setPage(value);
 	};
-	const seasonHandler = async (event) => {
-		const result = await Api.getRanking(event.target.value, 1);
-		setSeasonId(event.target.value);
-		setRanking(result.data);
-		setUpdated(result.updated);
+	const seasonHandler = async (event: SelectChangeEvent<number>) => {
+		const result = await Api.getRanking(event.target.value as number, 1);
+		setSeasonId(event.target.value as number);
+		setRanking(result.topRanks);
+		setUpdated(new Date(result.updated));
 		setPage(1);
 	};
 	const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -70,8 +74,8 @@ export default function Ranking(props) {
 		},
 	}));
 
-	const avatarImage = (codes) => {
-		let arr = [];
+	const avatarImage = (codes: (number | null)[]) => {
+		let arr: JSX.Element[] = [];
 		codes.forEach((code, index) => {
 			if (code) {
 				arr.push(<Avatar key={index} className={styles.mx} src={`image/CharacterIcon/${code}.png`} />);
@@ -79,11 +83,8 @@ export default function Ranking(props) {
 		});
 		return arr;
 	};
-	const getTime = (time) => {
-		let date = new Date(time);
-		let time_zone = 9 * 60 * 60 * 1000;
-		date.setTime(date.getTime() + time_zone);
-		return date.toISOString().replace("T", " ").slice(0, -5);
+	const getTime = (time: Date) => {
+		return time.toLocaleString();
 	};
 	const seasonMenu = () => {
 		let arr = [];
@@ -96,13 +97,14 @@ export default function Ranking(props) {
 		}
 		return arr;
 	};
-	const title = (season) => {
+	const title = (season: number) => {
 		if (season >= 19) {
 			return `정규 시즌 ${Math.floor(season / 2) - 8}`;
 		} else {
 			return `EA 시즌 ${Math.floor(season / 2) + 1}`;
 		}
 	};
+	if (loading) return <Loading />;
 	return (
 		<>
 			<div>

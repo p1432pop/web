@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Button from "@mui/material/Button";
 import InputBase from "@mui/material/InputBase";
@@ -8,8 +8,8 @@ import SearchIcon from "@mui/icons-material/Search";
 
 import styles from "../style/Header.module.css";
 
-export default function Header(props) {
-	const nickname = useRef("");
+export default function Header() {
+	const [nickname, setNickname] = useState("");
 	const navigate = useNavigate();
 	const headerButtons = () => {
 		let arr = [];
@@ -21,27 +21,29 @@ export default function Header(props) {
 		];
 		for (let i = 0; i < Links.length; i++) {
 			arr.push(
-				<Button className={styles.buttonContent} key={i} LinkComponent={Link} to={Links[i].to} size="large">
+				<Button className={styles.buttonContent} onClick={() => linkHandler(Links[i].to)} key={i} size="large">
 					{Links[i].text}
 				</Button>
 			);
 		}
 		return arr;
 	};
-	const inputBaseHandler = (ev) => {
+	const linkHandler = (to: string) => {
+		navigate(to);
+	};
+	const keyDownHandler = (ev: React.KeyboardEvent<HTMLInputElement>) => {
 		if (ev.key === "Enter") {
-			if (ev.target.value.trim().length === 0) {
-				alert("공백 없이 입력해주세요.");
-			} else {
-				navigate(`/players/${ev.target.value}`);
-			}
+			buttonHandler();
 		}
 	};
+	const inputChangeHandler = (ev: React.ChangeEvent<HTMLInputElement>) => {
+		setNickname(ev.target.value);
+	};
 	const buttonHandler = () => {
-		if (nickname.current.value.trim().length === 0) {
+		if (nickname.trim().length === 0) {
 			alert("공백 없이 입력해주세요.");
 		} else {
-			navigate(`/players/${nickname.current.value}`);
+			navigate(`/players/${nickname}`);
 		}
 	};
 	return (
@@ -49,7 +51,7 @@ export default function Header(props) {
 			<div className={styles.containerContent}>
 				<div className={styles.buttonBox}>{headerButtons()}</div>
 				<div className={styles.searchBox}>
-					<InputBase className={styles.input} placeholder="플레이어 검색" onKeyDown={(ev) => inputBaseHandler(ev)} inputRef={nickname} />
+					<InputBase className={styles.input} placeholder="플레이어 검색" onKeyDown={keyDownHandler} onChange={inputChangeHandler} />
 					<IconButton type="submit" onClick={buttonHandler}>
 						<SearchIcon sx={{ color: "black" }} />
 					</IconButton>

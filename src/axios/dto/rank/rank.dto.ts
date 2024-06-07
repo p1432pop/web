@@ -1,16 +1,5 @@
-export interface News {
-	url: string;
-	title: string;
-}
-
-export interface RankRO {
-	data: Ranking[];
-	updated: Date;
-}
-
-interface Ranking {
+export class topRank {
 	userNum: number;
-	seasonId: number;
 	nickname: string;
 	mmr: number;
 	totalGames: number;
@@ -24,4 +13,9 @@ interface Ranking {
 	charTotal2: number | null;
 	characterCode3: number | null;
 	charTotal3: number | null;
+}
+
+export class RankDTO {
+	topRanks: topRank[];
+	updated: string;
 }

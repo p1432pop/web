@@ -31,61 +31,71 @@ import Pagination from "@mui/material/Pagination";
 import { PieChart } from "@mui/x-charts/PieChart";
 import { useDrawingArea } from "@mui/x-charts/hooks";
 import { Api } from "../axios/axios";
+import { Equipment, GameDTO } from "../axios/dto/game/game.dto";
+import { CharacterStats, PlayerData } from "../axios/dto/player/player.dto";
+import { JSX } from "react/jsx-runtime";
 
-export default function Player(props) {
+export default function Player() {
 	const [loading, setLoading] = useState(true);
 	const [moreLoading, setMoreLoading] = useState(false);
 	const [updateLoading, setUpdateLoading] = useState(false);
-	const [status, setStatus] = useState();
+	const [status, setStatus] = useState(404);
 	const [page, setPage] = useState(1);
-	const [playerData, setPlayerData] = useState();
-	const [playerStats, setPlayerStats] = useState();
+	const [playerData, setPlayerData] = useState<PlayerData>();
+	const [playerStats, setPlayerStats] = useState<CharacterStats[]>();
 	const [open, setOpen] = useState(false);
-	const [userGames, setUserGames] = useState([]);
+	const [userGames, setUserGames] = useState<GameDTO[][]>([]);
 	const params = useParams();
 	useEffect(() => {
 		setLoading(true);
 		const setup = async () => {
-			const result = await Api.getPlayerRecentData(params.nickname);
-			setLoading(false);
-			setStatus(result.status);
-			if (result.status === 200) {
-				setPlayerData(result.data.playerData);
-				setPlayerStats(result.data.playerStats);
+			if (params.nickname) {
+				const result = await Api.getPlayerRecentData(params.nickname);
+				setLoading(false);
+				setStatus(result.status);
+				if (result.status === 200) {
+					setPlayerData(result.data?.playerData);
+					setPlayerStats(result.data?.playerStats);
+				}
 			}
 		};
 		setup();
 	}, [params]);
 	const moreHandler = async () => {
-		const result = await Api.getPlayerPastData(playerData.userNum, playerData.next);
-		setMoreLoading(false);
-		setPlayerData({
-			...playerData,
-			games: [...playerData.games, ...result.games],
-			next: result.next,
-		});
+		if (playerData && playerData.next) {
+			const result = await Api.getPlayerPastData(playerData.userNum, playerData.next);
+			console.log(result);
+			setMoreLoading(false);
+			setPlayerData({
+				...playerData,
+				games: [...playerData.games, ...result.games],
+				next: result.next,
+			});
+		}
 	};
 	const moreHandler2 = () => {
 		setMoreLoading(true);
 		moreHandler();
 	};
 	const updateHanlder = async () => {
-		const result = await Api.updatedPlayer(playerData.userNum, playerData.nickname);
-		setUpdateLoading(false);
-		setStatus(result.status);
-		if (result.status === 200) {
-			setPlayerData(result.data.playerData);
-			setPlayerStats(result.data.playerStats);
+		if (playerData) {
+			const result = await Api.updatedPlayer(playerData.userNum, playerData.nickname);
+			setUpdateLoading(false);
+			setStatus(result.status);
+			if (result.status === 200) {
+				setPlayerData(result.data.playerData);
+				setPlayerStats(result.data.playerStats);
+			}
 		}
 	};
 	const updateHandler2 = () => {
 		setUpdateLoading(true);
 		updateHanlder();
 	};
-	const pageHandler = (event, newPage) => {
+	const pageHandler = (event: React.ChangeEvent<unknown>, newPage: number) => {
 		setPage(newPage);
 	};
-	const openModal = async (gameId) => {
+	const openModal = async (gameId: number) => {
 		const result = await Api.getGame(gameId);
 		setUserGames(result);
 		setOpen(true);
@@ -94,48 +104,56 @@ export default function Player(props) {
 		setUserGames([]);
 		setOpen(false);
 	};
-	const itemImg = (list) => {
-		let arr = [];
-		list.forEach((item) => {
-			arr.push(<img className={styles.itemImg} alt="img" src={`../image/Icon/${item}.png`} />);
+	const itemImg = (equipment: Equipment) => {
+		let codes: (number | undefined)[] = [];
+		let imgs: JSX.Element[] = [];
+		for (let i = 0; i < 5; i++) {
+			codes.push(equipment[i]);
+		}
+		codes.forEach((item) => {
+			if (item) {
+				imgs.push(<img className={styles.itemImg} alt="img" src={`../image/Icon/${item}.png`} />);
+			} else {
+				imgs.push(<img alt="img" />);
+			}
 		});
-		return arr;
+		return imgs;
 	};
-	const calTime = (startDtm, duration) => {
+	const calTime = (startDtm: string, duration: number) => {
 		let now = new Date();
 		now.setTime(now.getTime() + 1000);
 		let start = new Date(startDtm);
-		let time = now - start - duration * 1000;
+		let time = now.getTime() - start.getTime() - duration * 1000;
 		if (time < 60 * 1000) {
-			return `${parseInt(time / 1000)}초 전`;
+			return `${Math.floor(time / 1000)}초 전`;
 		}
 		if (time < 60 * 60 * 1000) {
-			return `${parseInt(time / 1000 / 60)}분 전`;
+			return `${Math.floor(time / 1000 / 60)}분 전`;
 		}
 		if (time < 24 * 60 * 60 * 1000) {
-			return `${parseInt(time / 1000 / 60 / 60)}시간 전`;
+			return `${Math.floor(time / 1000 / 60 / 60)}시간 전`;
 		}
-		return `${parseInt(time / 1000 / 60 / 60 / 24)}일 전`;
+		return `${Math.floor(time / 1000 / 60 / 60 / 24)}일 전`;
 	};
 	const calTime2 = () => {
-		if (playerData.updated instanceof Date && !isNaN(playerData.updated)) {
+		if (playerData?.updated) {
 			let now = new Date();
-			now.setTime(now.getTime() + 1000);
-			let time = now - playerData.updated;
+			let updated = new Date(playerData.updated);
+			let time = now.getTime() - updated.getTime();
 			if (time < 60 * 1000) {
-				return `${parseInt(time / 1000)}초 전`;
+				return `${Math.floor(time / 1000)}초 전`;
 			}
 			if (time < 60 * 60 * 1000) {
-				return `${parseInt(time / 1000 / 60)}분 전`;
+				return `${Math.floor(time / 1000 / 60)}분 전`;
 			}
 			if (time < 24 * 60 * 60 * 1000) {
-				return `${parseInt(time / 1000 / 60 / 60)}시간 전`;
+				return `${Math.floor(time / 1000 / 60 / 60)}시간 전`;
 			}
-			return `${parseInt(time / 1000 / 60 / 60 / 24)}일 전`;
+			return `${Math.floor(time / 1000 / 60 / 60 / 24)}일 전`;
 		}
 		return "기록 없음";
 	};
-	const getTime = (startDtm, duration) => {
+	const getTime = (startDtm: string, duration: number) => {
 		let date = new Date(startDtm);
 		let time_zone = 9 * 60 * 60 * 1000;
 		date.setTime(date.getTime() + duration * 1000 + time_zone);
@@ -154,29 +172,29 @@ export default function Player(props) {
 			fontWeight: 600,
 		},
 	}));
-	const winRate = () => {
+	const winRate = (games: GameDTO[]): number => {
 		let count = 0;
-		for (let game of playerData.games) {
+		for (let game of games) {
 			if (game.victory === 1) {
 				count++;
 			}
 		}
-		return parseInt((count / playerData.games.length) * 100);
+		return Math.floor((count / games.length) * 100);
 	};
-	const totalGame = () => {
+	const totalGame = (games: GameDTO[]) => {
 		let count = 0;
-		let total = playerData.games.length;
-		for (let game of playerData.games) {
+		let total = games.length;
+		for (let game of games) {
 			if (game.victory === 1) {
 				count++;
 			}
 		}
 		return `${total}전 ${count}승 ${total - count}패`;
 	};
-	const winLose = () => {
-		let count = 0;
-		if (playerData.games) {
-			for (let game of playerData.games) {
+	const winLose = (games: GameDTO[]) => {
+		if (games.length > 0) {
+			let count = 0;
+			for (let game of games) {
 				if (game.victory === 1) {
 					count++;
 				}
@@ -186,7 +204,7 @@ export default function Player(props) {
 					value: count,
 					color: "blue",
 				},
-				{ value: playerData.games.length - count, color: "red" },
+				{ value: games.length - count, color: "red" },
 			];
 		}
 		return [];
@@ -213,7 +231,7 @@ export default function Player(props) {
 		fontSize: 20,
 	}));
 
-	function PieCenterLabel({ children }) {
+	function PieCenterLabel({ children }: { children: React.ReactNode }) {
 		const { width, height, left, top } = useDrawingArea();
 		return (
 			<StyledText x={left + width / 2} y={top + height / 2}>
@@ -222,13 +240,13 @@ export default function Player(props) {
 		);
 	}
 	if (loading) return <Loading />;
-	if (status === 200)
+	if (status === 200 && playerData)
 		return (
 			<div>
 				<div className={styles.profile}>
 					{playerData.characterCode ? <img alt="img" src={`../image/CharacterIcon/${playerData.characterCode}.png`} /> : <AccountCircleIcon style={{ fontSize: "160px" }}></AccountCircleIcon>}
 					<div className={styles.profileContent}>
-						<Chip label={`레벨 : ${playerData.accountLevel | 0}`} variant="outlined" />
+						<Chip label={`레벨 : ${playerData.accountLevel || 0}`} variant="outlined" />
 						<div className={styles.nickname}>{params.nickname}</div>
 						{playerData.view === "OLD" ? (
 							updateLoading ? (
@@ -248,53 +266,57 @@ export default function Player(props) {
 					<div style={{ margin: "auto" }}>정규 시즌 3에 대한 정보만 제공합니다.</div>
 					<img className={styles.avatarTier} src={"../" + getTierImg(playerData.mmr, playerData.rank)} alt="img" />
 					<div className={styles.dataBox}>
-						<div>{playerData.mmr >= 0 ? `${playerData.mmr}RP` : "기록 없음"}</div>
+						<div>{playerData.mmr ? `${playerData.mmr}RP` : "기록 없음"}</div>
 						<div>{getTierName(playerData.mmr, playerData.rank)}</div>
 					</div>
 				</div>
 				<div className={styles.flexCenter}>
-					{totalGame()}
-					<PieChart series={[{ data: [...winLose()], innerRadius: 60 }]} {...size}>
-						<PieCenterLabel>{winRate() + "%"}</PieCenterLabel>
+					{totalGame(playerData.games)}
+					<PieChart series={[{ data: [...winLose(playerData.games)], innerRadius: 60 }]} {...size}>
+						<PieCenterLabel>{winRate(playerData.games) + "%"}</PieCenterLabel>
 					</PieChart>
 				</div>
-				<TableContainer component={Paper}>
-					<Table sx={{ minWidth: 650 }} size="" aria-label="simple table">
-						<TableHead>
-							<TableRow>
-								<TableCell>실험체</TableCell>
-								<TableCell align="left">게임수</TableCell>
-								<TableCell align="left">승률</TableCell>
-								<TableCell align="left">top3</TableCell>
-								<TableCell align="left">TK</TableCell>
-								<TableCell align="left">K</TableCell>
-								<TableCell align="left">A</TableCell>
-								<TableCell align="left">야생동물</TableCell>
-								<TableCell align="left">평균 순위</TableCell>
-								<TableCell align="left">크레딧</TableCell>
-							</TableRow>
-						</TableHead>
-						<TableBody>
-							{playerStats.slice((page - 1) * 5, page * 5).map((row) => (
-								<TableRow key={row.characterCode} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-									<TableCell>
-										<Avatar style={{ border: "1px solid black" }} src={`../image/CharacterIcon/${row.characterCode}.png`} />
-									</TableCell>
-									<TableCell align="left">{row.totalGames}</TableCell>
-									<TableCell align="left">{((row.wins / row.totalGames) * 100).toFixed(2)}%</TableCell>
-									<TableCell align="left">{((row.top3 / row.totalGames) * 100).toFixed(2)}%</TableCell>
-									<TableCell align="left">{row.averageTeamKills}</TableCell>
-									<TableCell align="left">{row.averageKills}</TableCell>
-									<TableCell align="left">{row.averageAssistants}</TableCell>
-									<TableCell align="left">{row.averageHunts}</TableCell>
-									<TableCell align="left">#{row.averageRank}</TableCell>
-									<TableCell align="left">{row.averageGainVFCredit}</TableCell>
-								</TableRow>
-							))}
-						</TableBody>
-					</Table>
-				</TableContainer>
-				<Pagination className={styles.flexCenter} count={Math.ceil(playerStats.length / 5)} variant="outlined" page={page} shape="rounded" size="large" onChange={pageHandler} />
+				{playerStats ? (
+					<div>
+						<TableContainer component={Paper}>
+							<Table sx={{ minWidth: 650 }} aria-label="simple table">
+								<TableHead>
+									<TableRow>
+										<TableCell>실험체</TableCell>
+										<TableCell align="left">게임수</TableCell>
+										<TableCell align="left">승률</TableCell>
+										<TableCell align="left">top3</TableCell>
+										<TableCell align="left">TK</TableCell>
+										<TableCell align="left">K</TableCell>
+										<TableCell align="left">A</TableCell>
+										<TableCell align="left">야생동물</TableCell>
+										<TableCell align="left">평균 순위</TableCell>
+										<TableCell align="left">크레딧</TableCell>
+									</TableRow>
+								</TableHead>
+								<TableBody>
+									{playerStats.slice((page - 1) * 5, page * 5).map((row) => (
+										<TableRow key={row.characterCode} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+											<TableCell>
+												<Avatar style={{ border: "1px solid black" }} src={`../image/CharacterIcon/${row.characterCode}.png`} />
+											</TableCell>
+											<TableCell align="left">{row.totalGames}</TableCell>
+											<TableCell align="left">{((row.wins / row.totalGames) * 100).toFixed(2)}%</TableCell>
+											<TableCell align="left">{((row.top3 / row.totalGames) * 100).toFixed(2)}%</TableCell>
+											<TableCell align="left">{row.averageTeamKills}</TableCell>
+											<TableCell align="left">{row.averageKills}</TableCell>
+											<TableCell align="left">{row.averageAssistants}</TableCell>
+											<TableCell align="left">{row.averageHunts}</TableCell>
+											<TableCell align="left">#{row.averageRank}</TableCell>
+											<TableCell align="left">{row.averageGainVFCredit}</TableCell>
+										</TableRow>
+									))}
+								</TableBody>
+							</Table>
+						</TableContainer>
+						<Pagination className={styles.flexCenter} count={Math.ceil(playerStats.length / 5)} variant="outlined" page={page} shape="rounded" size="large" onChange={pageHandler} />
+					</div>
+				) : null}
 				<div>
 					<TableContainer component={Paper}>
 						<Table>
@@ -366,9 +388,11 @@ export default function Player(props) {
 											<div className={styles.itemBox}>{itemImg(game.equipment)}</div>
 										</StyledTableCell>
 										<StyledTableCell>
-											{parseInt(game.duration / 60)}:{game.duration % 60}
+											{Math.floor(game.duration / 60)}:{game.duration % 60}
 											<br />
-											<Tooltip title={getTime(game.startDtm, game.duration)}>{calTime(game.startDtm, game.duration)}</Tooltip>
+											<Tooltip title={getTime(game.startDtm, game.duration)}>
+												<div>{calTime(game.startDtm, game.duration)}</div>
+											</Tooltip>
 										</StyledTableCell>
 										<StyledTableCell onClick={() => openModal(game.gameId)}>+</StyledTableCell>
 									</StyledTableRow>

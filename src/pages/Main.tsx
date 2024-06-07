@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { Api } from "../axios/axios";
 import IconButton from "@mui/material/IconButton";
@@ -21,21 +21,21 @@ import Loading from "../components/Loading";
 import { getTierImg, getTierName } from "../utils/tier";
 
 import styles from "../style/Main.module.css";
-import { News } from "../axios/RO";
+import { topRank } from "../axios/dto/rank/rank.dto";
+import { NewsDTO } from "../axios/dto/news/news.dto";
+import { JSX } from "react/jsx-runtime";
 
 export default function Main() {
 	const [loading, setLoading] = useState(true);
 	const [drop, setDrop] = useState(false);
-	const [news, setNews] = useState<News[]>([]);
-	const [ranking, setRanking] = useState([]);
-	const [recentNickname, setRecentNickname] = useState([]);
+	const [news, setNews] = useState<NewsDTO[]>([]);
+	const [ranking, setRanking] = useState<topRank[]>([]);
+	const [recentNickname, setRecentNickname] = useState<string[]>([]);
 	useEffect(() => {
 		const setup = async () => {
-			const result = await Api.getMainRanking();
-			const result2 = await Api.getMainNews();
 			setLoading(false);
-			setRanking(result.data);
-			setNews(result2.news);
+			setRanking((await Api.getMainRanking()).topRanks);
+			setNews(await Api.getMainNews());
 			const value = localStorage.getItem("nickname");
 			if (value) {
 				setRecentNickname(JSON.parse(value));
@@ -46,34 +46,36 @@ export default function Main() {
 		setup();
 	}, []);
 	const navigate = useNavigate();
-	const nickname = useRef("");
-	const removeStorage = (idx) => {
-		const value = JSON.parse(localStorage.getItem("nickname"));
-		value.splice(idx, 1);
-		localStorage.setItem("nickname", JSON.stringify([...value]));
-		setRecentNickname([...value]);
-	};
-	const inputBaseHandler = (ev) => {
-		if (ev.key === "Enter") {
-			if (ev.target.value.trim().length === 0) {
-				alert("공백 없이 입력해주세요.");
-			} else {
-				navigate(`/players/${ev.target.value}`);
-			}
+	const [nickname, setNickname] = useState("");
+	const removeStorage = (idx: number) => {
+		const nicknames = localStorage.getItem("nickname")
+		if(nicknames) {
+			const nicknamesArr: string[] = JSON.parse(nicknames);
+			nicknamesArr.splice(idx, 1)
+			localStorage.setItem("nickname", JSON.stringify([...nicknamesArr]));
+			setRecentNickname([...nicknamesArr]);
 		}
 	};
+	const keyDownHandler = (ev: React.KeyboardEvent<HTMLInputElement>) => {
+		if(ev.key === 'Enter') {
+			buttonHandler()
+		}
+	}
+	const inputChangeHandler = (ev: React.ChangeEvent<HTMLInputElement>) => {
+		setNickname(ev.target.value)
+	};
 	const buttonHandler = () => {
-		if (nickname.current.value.trim().length === 0) {
+		if (nickname.trim().length === 0) {
 			alert("공백 없이 입력해주세요.");
 		} else {
-			navigate(`/players/${nickname.current.value}`);
+			navigate(`/players/${nickname}`);
 		}
 	};
 	const rankingButtonHandler = () => {
 		navigate("/ranking");
 	};
-	const avatarImage = (codes) => {
-		let arr = [];
+	const avatarImage = (codes: (number | null)[]) => {
+		let arr: JSX.Element[] = [];
 		codes.forEach((code, index) => {
 			if (code) {
 				arr.push(<Avatar key={index} className={styles.mx} src={`image/CharacterIcon/${code}.png`} />);
@@ -98,14 +100,12 @@ export default function Main() {
 			backgroundColor: theme.palette.action.hover,
 		},
 	}));
-	if (loading) {
-		return <Loading />;
-	}
+	if(loading) return <Loading />;
 	return (
 		<>
 			<div className={styles.topContent}>
 				<div className={styles.searchBox}>
-					<InputBase className={styles.input} placeholder="플레이어 검색" onKeyDown={(ev) => inputBaseHandler(ev)} inputRef={nickname} onFocus={() => setDrop(true)} onBlur={() => setDrop(false)} />
+					<InputBase className={styles.input} placeholder="플레이어 검색" onKeyDown={keyDownHandler} onChange={inputChangeHandler} onFocus={() => setDrop(true)} onBlur={() => setDrop(false)} />
 					<IconButton type="submit" onClick={buttonHandler}>
 						<SearchIcon sx={{ color: "black" }} />
 					</IconButton>
