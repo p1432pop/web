@@ -25,14 +25,14 @@ import Loading from "../components/Loading";
 import { topRank } from "../axios/dto/rank/rank.dto";
 
 export default function Ranking() {
-	const [seasonId, setSeasonId] = useState(23);
+	const [seasonId, setSeasonId] = useState(25);
 	const [loading, setLoading] = useState(true);
 	const [page, setPage] = useState(1);
 	const [ranking, setRanking] = useState<topRank[]>([]);
 	const [updated, setUpdated] = useState(new Date());
 	useEffect(() => {
 		const setup = async () => {
-			const result = await Api.getRanking(23, 1);
+			const result = await Api.getRanking(25, 1);
 			setRanking(result.topRanks);
 			setUpdated(new Date(result.updated));
 			setLoading(false);
@@ -88,7 +88,7 @@ export default function Ranking() {
 	};
 	const seasonMenu = () => {
 		let arr = [];
-		for (let i = 11; i >= 0; i--) {
+		for (let i = 12; i >= 0; i--) {
 			if (i >= 9) {
 				arr.push(<MenuItem key={i} value={i * 2 + 1}>{`정규 시즌 ${i - 8}`}</MenuItem>);
 			} else {
@@ -114,7 +114,7 @@ export default function Ranking() {
 					</div>
 					<Box sx={{ width: 300 }}>
 						<FormControl fullWidth>
-							<Select defaultValue={23} onChange={seasonHandler}>
+							<Select defaultValue={25} onChange={seasonHandler}>
 								{seasonMenu()}
 							</Select>
 						</FormControl>

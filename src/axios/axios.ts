@@ -22,13 +22,13 @@ export const Api = {
 	},
 	getItemWeapon: async (wearableType?: string): Promise<ItemWearableDTO[]> => {
 		const res = await axiosInstance.get<ItemWearableDTO[]>("/item/weapon", {
-			params: { wearableType },
+			params: { weaponType: wearableType },
 		});
 		return res.data;
 	},
 	getItemArmor: async (wearableType?: string): Promise<ItemWearableDTO[]> => {
 		const res = await axiosInstance.get<ItemWearableDTO[]>("/item/armor", {
-			params: { wearableType },
+			params: { armorType: wearableType },
 		});
 		return res.data;
 	},
@@ -72,6 +72,7 @@ export const Api = {
 				data: res.data,
 			};
 		} catch (err) {
+			console.log(err);
 			return {
 				status: 404,
 			};
