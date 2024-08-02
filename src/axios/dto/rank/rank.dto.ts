@@ -7,12 +7,14 @@ export class topRank {
 	top3: number;
 	averageRank: number;
 	averageKills: number;
-	characterCode1: number;
-	charTotal1: number;
-	characterCode2: number | null;
-	charTotal2: number | null;
-	characterCode3: number | null;
-	charTotal3: number | null;
+	characterStats: CharacterStat[];
+}
+
+export class CharacterStat {
+	characterCode: number;
+	totalGames: number;
+	wins: number;
+	top3: number;
 }
 
 export class RankDTO {

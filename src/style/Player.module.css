@@ -21,11 +21,6 @@
     margin-bottom: 16px;
     background-color: antiquewhite;
 }
-.profile {
-    background-color: white;
-    display: flex;
-    
-}
 .profileContent {
     display: flex;
     flex-direction: column;
@@ -42,15 +37,15 @@
     height: 160px
 }
 .avatarChar {
-    height: 64px;
-    width: 64px;
+    height: 48px;
+    width: 48px;
     border: 1px solid black;
 }
 .smallAvatar {
-    width: 22px;
-    height: 22px;
+    width: 16px;
+    height: 16px;
     border: 1px solid black;
-    font-size: 14px;
+    font-size: 12px;
     color: black;
     background-color: white;
 }
@@ -71,8 +66,8 @@
 .traitBox {
     display: flex;
     flex-wrap: wrap;
-    width: 140px;
-    gap: 4px;
+    width: 100px;
+    gap: 2px;
     justify-content: space-between;
     margin-left: 16px;
 }
@@ -90,15 +85,12 @@
 }
 .itemBox {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    width: 138px;
     gap: 6px;
-    margin-left: 16px;
 }
 .itemImg {
     border: 1px solid black;
-    width: 40px
+    height: 22px
 }
 .nickname {
     font-weight: 800;

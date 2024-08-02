@@ -7,6 +7,7 @@
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.18",
     "@mui/joy": "^5.0.0-beta.36",
+    "@mui/lab": "^5.0.0-alpha.170",
     "@mui/material": "^5.15.18",
     "@mui/x-charts": "^7.5.0",
     "@testing-library/jest-dom": "^5.17.0",
@@ -27,7 +28,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "set \"GENERATE_SOURCEMAP=false\" && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

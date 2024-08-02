@@ -1,7 +1,7 @@
 .avatarBox {
-    display: flex;
-    justify-content: left;
-    align-items: center;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 .flexCenter {
     display: flex;

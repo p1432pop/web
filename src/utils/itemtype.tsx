@@ -49,7 +49,7 @@ export const getItemType = (value: string) => {
 };
 
 export const name = (code: number) => {
-	return `/image/Icon/${code}.png`;
+	return `https://lumia.kr/image/Icon/${code}.png`;
 };
 export const grade = (grade: ItemGrade) => {
 	if (grade === "Uncommon") return "고급";

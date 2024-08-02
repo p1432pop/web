@@ -21,16 +21,20 @@ import Loading from "../components/Loading";
 import { getTierImg, getTierName } from "../utils/tier";
 
 import styles from "../style/Main.module.css";
-import { topRank } from "../axios/dto/rank/rank.dto";
+import { CharacterStat, topRank } from "../axios/dto/rank/rank.dto";
 import { NewsDTO } from "../axios/dto/news/news.dto";
 import { JSX } from "react/jsx-runtime";
+import { Card, CardContent, CardCover, Typography } from "@mui/joy";
 
 export default function Main() {
+	const [display, setDisplay] = useState("none");
 	const [loading, setLoading] = useState(true);
-	const [drop, setDrop] = useState(false);
 	const [news, setNews] = useState<NewsDTO[]>([]);
 	const [ranking, setRanking] = useState<topRank[]>([]);
+	const [nickname, setNickname] = useState("");
 	const [recentNickname, setRecentNickname] = useState<string[]>([]);
+	const navigate = useNavigate();
+
 	useEffect(() => {
 		const setup = async () => {
 			setLoading(false);
@@ -45,25 +49,27 @@ export default function Main() {
 		};
 		setup();
 	}, []);
-	const navigate = useNavigate();
-	const [nickname, setNickname] = useState("");
+
 	const removeStorage = (idx: number) => {
-		const nicknames = localStorage.getItem("nickname")
-		if(nicknames) {
+		const nicknames = localStorage.getItem("nickname");
+		if (nicknames) {
 			const nicknamesArr: string[] = JSON.parse(nicknames);
-			nicknamesArr.splice(idx, 1)
+			nicknamesArr.splice(idx, 1);
 			localStorage.setItem("nickname", JSON.stringify([...nicknamesArr]));
 			setRecentNickname([...nicknamesArr]);
 		}
 	};
+
 	const keyDownHandler = (ev: React.KeyboardEvent<HTMLInputElement>) => {
-		if(ev.key === 'Enter') {
-			buttonHandler()
+		if (ev.key === "Enter") {
+			buttonHandler();
 		}
-	}
-	const inputChangeHandler = (ev: React.ChangeEvent<HTMLInputElement>) => {
-		setNickname(ev.target.value)
 	};
+
+	const inputChangeHandler = (ev: React.ChangeEvent<HTMLInputElement>) => {
+		setNickname(ev.target.value);
+	};
+
 	const buttonHandler = () => {
 		if (nickname.trim().length === 0) {
 			alert("공백 없이 입력해주세요.");
@@ -71,18 +77,19 @@ export default function Main() {
 			navigate(`/players/${nickname}`);
 		}
 	};
+
 	const rankingButtonHandler = () => {
 		navigate("/ranking");
 	};
-	const avatarImage = (codes: (number | null)[]) => {
+
+	const avatarImage = (characterStats: CharacterStat[]) => {
 		let arr: JSX.Element[] = [];
-		codes.forEach((code, index) => {
-			if (code) {
-				arr.push(<Avatar key={index} className={styles.mx} src={`image/CharacterIcon/${code}.png`} />);
-			}
+		characterStats.forEach((characterStat, index) => {
+			arr.push(<Avatar key={index} className={styles.mx} src={`https://lumia.kr/image/CharacterIcon/${characterStat.characterCode}.png`} />);
 		});
 		return arr;
 	};
+
 	const StyledTableCell = styled(TableCell)(({ theme }) => ({
 		[`&.${tableCellClasses.head}`]: {
 			backgroundColor: theme.palette.common.black,
@@ -100,18 +107,23 @@ export default function Main() {
 			backgroundColor: theme.palette.action.hover,
 		},
 	}));
-	if(loading) return <Loading />;
+
+	if (loading) return <Loading />;
+
 	return (
 		<>
-			<div className={styles.topContent}>
-				<div className={styles.searchBox}>
-					<InputBase className={styles.input} placeholder="플레이어 검색" onKeyDown={keyDownHandler} onChange={inputChangeHandler} onFocus={() => setDrop(true)} onBlur={() => setDrop(false)} />
-					<IconButton type="submit" onClick={buttonHandler}>
-						<SearchIcon sx={{ color: "black" }} />
-					</IconButton>
-				</div>
-				{drop ? (
-					<div className={styles.drop} onMouseDown={(event) => event.preventDefault()}>
+			<Card sx={{ height: "608px", "--CardCover-radius": "0px", border: "0px" }}>
+				<CardCover>
+					<img src="https://lumia.kr/image/background.png"></img>
+				</CardCover>
+				<CardContent sx={{ display: "flex", justifyContent: "center", alignItems: "center", position: "relative" }}>
+					<div className={styles.searchBox}>
+						<InputBase className={styles.input} placeholder="플레이어 검색" onKeyDown={keyDownHandler} onChange={inputChangeHandler} onFocus={() => setDisplay("block")} onBlur={() => setDisplay("none")} />
+						<IconButton type="submit" onClick={buttonHandler}>
+							<SearchIcon sx={{ color: "black" }} />
+						</IconButton>
+					</div>
+					<div className={styles.drop} onMouseDown={(event) => event.preventDefault()} style={{ display }}>
 						<div>최근 검색</div>
 						{recentNickname.map((row, idx) => (
 							<div className={styles.flexBetween} key={idx}>
@@ -124,70 +136,89 @@ export default function Main() {
 							</div>
 						))}
 					</div>
-				) : null}
-			</div>
-			<div className={styles.patchBox}>
-				<Stack spacing={2}>
-					<div>- 최근 패치 노트</div>
-					{news.map((note, idx) => (
-						<MuiLink key={idx} href={note.url} underline="none" target="_blank">
-							{note.title}
-						</MuiLink>
-					))}
-				</Stack>
+				</CardContent>
+			</Card>
+			<div style={{ display: "flex" }}>
+				<Card sx={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
+					<Typography fontWeight="bold">Front-End</Typography>
+					<MuiLink href="https://github.com/p1432pop/web" target="_blank">
+						<img alt="GitHub" src="https://img.shields.io/badge/GitHub-181717.svg?&style=for-the-badge&logo=GitHub&logoColor=white" />
+					</MuiLink>
+					<Typography fontWeight="bold">Back-End</Typography>
+					<MuiLink href="https://github.com/p1432pop/lumia-server" target="_blank">
+						<img alt="GitHub" src="https://img.shields.io/badge/GitHub-181717.svg?&style=for-the-badge&logo=GitHub&logoColor=white" />
+					</MuiLink>
+					<Typography fontWeight="bold">API-DOCS</Typography>
+					<MuiLink href="http://localhost:8080/api" target="_blank">
+						<img alt="GitHub" src="https://img.shields.io/badge/swagger-85EA2D.svg?&style=for-the-badge&logo=swagger&logoColor=white" />
+					</MuiLink>
+				</Card>
+				<Card sx={{ width: "480px", height: "270px" }}>
+					<CardCover>
+						<iframe style={{ border: "0px" }} src="https://www.youtube.com/embed/8Y_-uXboU9E?&wmode=opaque" allowFullScreen></iframe>
+					</CardCover>
+				</Card>
+				<Card sx={{ flex: 1 }}>
+					<Stack spacing={2}>
+						<Typography>최근 패치 노트</Typography>
+						{news.map((note, idx) => (
+							<MuiLink key={idx} href={note.url} underline="none" target="_blank">
+								· {note.title}
+							</MuiLink>
+						))}
+					</Stack>
+				</Card>
 			</div>
 			<div>
-				{
-					<TableContainer className={styles.my} component={Paper}>
-						<Table>
-							<caption>
-								<div className={styles.flexCenter}>
-									<IconButton onClick={rankingButtonHandler}>
-										<AddIcon />
-									</IconButton>
-									더 보기
-								</div>
-							</caption>
-							<TableHead>
-								<TableRow>
-									<StyledTableCell>순위</StyledTableCell>
-									<StyledTableCell>플레이어</StyledTableCell>
-									<StyledTableCell>티어</StyledTableCell>
-									<StyledTableCell>RP</StyledTableCell>
-									<StyledTableCell>승률</StyledTableCell>
-									<StyledTableCell>평균 순위</StyledTableCell>
-									<StyledTableCell>평균 킬</StyledTableCell>
-									<StyledTableCell>모스트 실험체</StyledTableCell>
-								</TableRow>
-							</TableHead>
-							<TableBody>
-								{ranking.map((row, idx) => (
-									<StyledTableRow key={idx}>
-										<StyledTableCell>{idx + 1}</StyledTableCell>
-										<StyledTableCell>
-											<RouterLink style={{ textDecoration: "none" }} to={`/players/${row.nickname}`}>
-												{row.nickname}
-											</RouterLink>
-										</StyledTableCell>
-										<StyledTableCell>
-											<div className={styles.avatarBox}>
-												<Avatar className={styles.mx} src={getTierImg(row.mmr, 1 + idx)} />
-												{getTierName(row.mmr, 1 + idx)}
-											</div>
-										</StyledTableCell>
-										<StyledTableCell>{row.mmr >= 6000 ? row.mmr - 6000 : row.mmr % 250}</StyledTableCell>
-										<StyledTableCell>{(row.top1 * 100).toFixed(1)}%</StyledTableCell>
-										<StyledTableCell>#{row.averageRank.toFixed(1)}</StyledTableCell>
-										<StyledTableCell>{row.averageKills.toFixed(2)}</StyledTableCell>
-										<StyledTableCell>
-											<div className={styles.avatarBox}>{avatarImage([row.characterCode1, row.characterCode2, row.characterCode3])}</div>
-										</StyledTableCell>
-									</StyledTableRow>
-								))}
-							</TableBody>
-						</Table>
-					</TableContainer>
-				}
+				<TableContainer className={styles.my} component={Paper}>
+					<Table>
+						<caption>
+							<div className={styles.flexCenter}>
+								<IconButton onClick={rankingButtonHandler}>
+									<AddIcon />
+								</IconButton>
+								더 보기
+							</div>
+						</caption>
+						<TableHead>
+							<TableRow>
+								<StyledTableCell>순위</StyledTableCell>
+								<StyledTableCell>플레이어</StyledTableCell>
+								<StyledTableCell>티어</StyledTableCell>
+								<StyledTableCell>RP</StyledTableCell>
+								<StyledTableCell>승률</StyledTableCell>
+								<StyledTableCell>평균 순위</StyledTableCell>
+								<StyledTableCell>평균 킬</StyledTableCell>
+								<StyledTableCell>모스트 실험체</StyledTableCell>
+							</TableRow>
+						</TableHead>
+						<TableBody>
+							{ranking.map((row, idx) => (
+								<StyledTableRow key={idx}>
+									<StyledTableCell>{idx + 1}</StyledTableCell>
+									<StyledTableCell>
+										<RouterLink style={{ textDecoration: "none" }} to={`/players/${row.nickname}`}>
+											{row.nickname}
+										</RouterLink>
+									</StyledTableCell>
+									<StyledTableCell>
+										<div style={{ display: "flex", alignItems: "center", gap: "8px", justifyContent: "center" }}>
+											<Avatar className={styles.mx} src={getTierImg(row.mmr, 1 + idx)} />
+											{getTierName(row.mmr, 1 + idx)}
+										</div>
+									</StyledTableCell>
+									<StyledTableCell>{row.mmr >= 6000 ? row.mmr - 6000 : row.mmr % 250}</StyledTableCell>
+									<StyledTableCell>{(row.top1 * 100).toFixed(1)}%</StyledTableCell>
+									<StyledTableCell>#{row.averageRank.toFixed(1)}</StyledTableCell>
+									<StyledTableCell>{row.averageKills.toFixed(2)}</StyledTableCell>
+									<StyledTableCell>
+										<div className={styles.avatarBox}>{avatarImage(row.characterStats)}</div>
+									</StyledTableCell>
+								</StyledTableRow>
+							))}
+						</TableBody>
+					</Table>
+				</TableContainer>
 			</div>
 		</>
 	);

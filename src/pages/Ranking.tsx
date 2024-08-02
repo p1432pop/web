@@ -9,7 +9,6 @@ import Table from "@mui/material/Table";
 import Paper from "@mui/material/Paper";
 import Avatar from "@mui/material/Avatar";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { styled } from "@mui/material/styles";
 import MenuItem from "@mui/material/MenuItem";
 import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
@@ -17,12 +16,12 @@ import TableHead from "@mui/material/TableHead";
 import Pagination from "@mui/material/Pagination";
 import FormControl from "@mui/material/FormControl";
 import TableContainer from "@mui/material/TableContainer";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 
 import styles from "../style/Ranking.module.css";
 import { JSX } from "react/jsx-runtime";
 import Loading from "../components/Loading";
-import { topRank } from "../axios/dto/rank/rank.dto";
+import { CharacterStat, topRank } from "../axios/dto/rank/rank.dto";
+import { StyledTableCell, StyledTableRow } from "../components/CustomTable";
 
 export default function Ranking() {
 	const [seasonId, setSeasonId] = useState(25);
@@ -52,34 +51,11 @@ export default function Ranking() {
 		setUpdated(new Date(result.updated));
 		setPage(1);
 	};
-	const StyledTableCell = styled(TableCell)(({ theme }) => ({
-		[`&.${tableCellClasses.head}`]: {
-			backgroundColor: theme.palette.common.black,
-			color: theme.palette.common.white,
-			textAlign: "center",
-		},
-		[`&.${tableCellClasses.body}`]: {
-			fontSize: 16,
-			textAlign: "center",
-		},
-	}));
 
-	const StyledTableRow = styled(TableRow)(({ theme }) => ({
-		"&:nth-of-type(odd)": {
-			backgroundColor: theme.palette.action.hover,
-		},
-		// hide last border
-		"&:last-child td, &:last-child th": {
-			border: 0,
-		},
-	}));
-
-	const avatarImage = (codes: (number | null)[]) => {
+	const avatarImage = (characterStats: CharacterStat[]) => {
 		let arr: JSX.Element[] = [];
-		codes.forEach((code, index) => {
-			if (code) {
-				arr.push(<Avatar key={index} className={styles.mx} src={`image/CharacterIcon/${code}.png`} />);
-			}
+		characterStats.forEach((characterStat, index) => {
+			arr.push(<Avatar key={index} className={styles.mx} src={`https://lumia.kr/image/CharacterIcon/${characterStat.characterCode}.png`} />);
 		});
 		return arr;
 	};
@@ -138,14 +114,7 @@ export default function Ranking() {
 						</TableHead>
 						<TableBody>
 							{ranking.map((row, idx) => (
-								<StyledTableRow
-									key={idx}
-									sx={{
-										"&:last-child td, &:last-child th": {
-											border: 0,
-										},
-									}}
-								>
+								<StyledTableRow key={idx}>
 									<StyledTableCell>{(page - 1) * 100 + 1 + idx}</StyledTableCell>
 									<StyledTableCell>
 										<Link style={{ textDecoration: "none" }} to={`/players/${row.nickname}`}>
@@ -153,7 +122,7 @@ export default function Ranking() {
 										</Link>
 									</StyledTableCell>
 									<StyledTableCell>
-										<div className={styles.avatarBox}>
+										<div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
 											<Avatar className={styles.mx} src={getTierImg(row.mmr, (page - 1) * 100 + 1 + idx)} />
 											{getTierName(row.mmr, (page - 1) * 100 + 1 + idx)}
 										</div>
@@ -165,7 +134,7 @@ export default function Ranking() {
 									<StyledTableCell>#{row.averageRank.toFixed(1)}</StyledTableCell>
 									<StyledTableCell>{row.averageKills.toFixed(2)}</StyledTableCell>
 									<StyledTableCell>
-										<div className={styles.avatarBox}>{avatarImage([row.characterCode1, row.characterCode2, row.characterCode3])}</div>
+										<div className={styles.avatarBox}>{avatarImage(row.characterStats)}</div>
 									</StyledTableCell>
 								</StyledTableRow>
 							))}

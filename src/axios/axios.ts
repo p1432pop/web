@@ -3,7 +3,9 @@ import { ItemConsumableDTO, ItemWearableDTO } from "./dto/item/item.dto";
 import { NewsDTO } from "./dto/news/news.dto";
 import { RankDTO } from "./dto/rank/rank.dto";
 import { GameDTO } from "./dto/game/game.dto";
-import { PlayerDTO } from "./dto/player/player.dto";
+import { userGamesQuery } from "./interface/player.interface";
+import { UserResponseDTO } from "./dto/user/userResponse.dto";
+import { UserGamesDTO } from "./dto/user/userGames.dto";
 
 const axiosInstance = axios.create({
 	baseURL: "http://localhost:8080",
@@ -42,22 +44,17 @@ export const Api = {
 		});
 		return res.data;
 	},
-	updatedPlayer: async (userNum: number, nickname: string) => {
-		const res = await axiosInstance.post("/player", {
+	updatedPlayer: async (userNum: number, nickname: string, updated: string | null): Promise<UserResponseDTO> => {
+		const res = await axiosInstance.post("/user", {
 			userNum,
 			nickname,
+			updated,
 		});
-		console.log(res);
-		res.data.playerData.updated = new Date(res.data.playerData.updated);
-		gameSetting(res.data.playerData.games);
-		return {
-			status: 200,
-			data: res.data,
-		};
+		return res.data;
 	},
-	getPlayerRecentData: async (nickname: string): Promise<{ status: number; data?: PlayerDTO }> => {
-		try {
-			const res = await axiosInstance.get<PlayerDTO>(`/player/recent/${nickname}/23`);
+	getUserProfile: async (nickname: string): Promise<UserResponseDTO> => {
+		const res = await axiosInstance.get<UserResponseDTO>(`/user/profile/${nickname}`);
+		if (res.data.code === 200) {
 			const nicknames = localStorage.getItem("nickname");
 			if (nicknames) {
 				const nicknamesArr: string[] = JSON.parse(nicknames);
@@ -67,20 +64,13 @@ export const Api = {
 			} else {
 				localStorage.setItem("nickname", JSON.stringify([nickname]));
 			}
-			return {
-				status: 200,
-				data: res.data,
-			};
-		} catch (err) {
-			console.log(err);
-			return {
-				status: 404,
-			};
 		}
+		return res.data;
 	},
-	getPlayerPastData: async (userNum: number, next: number) => {
-		const res = await axiosInstance.get(`/player/past/${userNum}`, {
-			params: { next },
+	getUserGames: async (query: userGamesQuery): Promise<UserGamesDTO> => {
+		const { userNum, next, isRank } = query;
+		const res = await axiosInstance.get<UserGamesDTO>(`/user/games`, {
+			params: { userNum, next, isRank },
 		});
 		return res.data;
 	},
@@ -94,10 +84,3 @@ export const Api = {
 		return result;
 	},
 };
-
-function gameSetting(games: GameDTO[]) {
-	for (let game of games) {
-		const equipment: (number | undefined)[] = [game.equipment[0], game.equipment[1], game.equipment[2], game.equipment[3], game.equipment[4]];
-		game.equipment = equipment;
-	}
-}

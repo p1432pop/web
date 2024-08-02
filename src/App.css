@@ -4,9 +4,9 @@
 }
 .Page {
     max-width: 1080px;
+    min-width: 1080px;
     width: 100%;
     margin: auto;
-    background-color: white;
 }
 .modal {
     position: absolute;

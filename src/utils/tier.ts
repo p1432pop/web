@@ -44,6 +44,11 @@ export const getTierName = (mmr: number = -1, idx: number = -1) => {
 };
 
 export const getTierImg = (mmr: number = -1, idx: number = -1) => {
+	let url = getTierImg2(mmr, idx);
+	return "https://lumia.kr/" + url;
+};
+
+export const getTierImg2 = (mmr: number = -1, idx: number = -1) => {
 	if (mmr >= 7000 && idx <= 200) {
 		return "image/tier/Immortal.png";
 	}

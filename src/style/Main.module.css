@@ -24,12 +24,8 @@
     margin-left: 24px;
 }
 .patchBox {
-    width: 100%;
     height: 100%;
-    background-color: white;
-    border: 1px solid;
     display: flex;
-    justify-content: space-between;
 }
 .mx {
     margin-right: 4px;
@@ -40,9 +36,9 @@
     margin-bottom: 16px;
 }
 .avatarBox {
-    display: flex;
-    justify-content: left;
-    align-items: center;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 .flexCenter {
     display: flex;

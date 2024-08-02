@@ -9,9 +9,11 @@ export class Equipment {
 
 export class GameDTO {
 	userNum: number;
+	nickname: string;
 	gameId: number;
 	versionMajor: number;
 	versionMinor: number;
+	isRank: boolean;
 	characterNum: number;
 	characterLevel: number;
 	gameRank: number;
@@ -21,15 +23,12 @@ export class GameDTO {
 	equipment: Equipment;
 	startDtm: string;
 	duration: number;
-	mmrBefore: number;
-	mmrGain: number;
-	mmrAfter: number;
-	victory: number;
+	mmrBefore: number | null;
+	mmrGain: number | null;
+	mmrAfter: number | null;
 	damageToPlayer: number;
-	giveUp: number;
 	matchSize: number;
 	teamKill: number;
-	accountLevel: number;
 	traitFirstCore: number;
 	traitFirstSub: number[];
 	traitSecondSub: number[];
