@@ -1,10 +1,21 @@
-import CircularProgress from "@mui/material/CircularProgress";
+import { Box, styled, CircularProgress } from "@mui/material";
+
+const LoadingContainer = styled(Box)(() => ({
+	display: "flex",
+	flexDirection: "column",
+	alignItems: "center",
+	padding: "16px 0px 16px 0px",
+}));
+
+const LoadingContent = styled(Box)(() => ({
+	marginBottom: "16px",
+}));
 
 export default function Loading() {
 	return (
-		<div style={{ paddingTop: "16px", paddingBottom: "16px", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
-			<div style={{ marginBottom: "16px" }}>잠시만 기다려 주세요.</div>
+		<LoadingContainer>
+			<LoadingContent>잠시만 기다려 주세요.</LoadingContent>
 			<CircularProgress />
-		</div>
+		</LoadingContainer>
 	);
 }

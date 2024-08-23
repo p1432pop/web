@@ -6,9 +6,15 @@ import { GameDTO } from "./dto/game/game.dto";
 import { userGamesQuery } from "./interface/player.interface";
 import { UserResponseDTO } from "./dto/user/userResponse.dto";
 import { UserGamesDTO } from "./dto/user/userGames.dto";
+import { UserRank } from "./dto/user/userRank.dto";
+import { UserCharacterStat } from "./dto/user/userCharacterStat.dto";
+import { MatchingMode } from "./dto/user/user.enum";
+import { StatisticsQuery } from "./interface/statistics.interface";
+import { VersionStat } from "./dto/statistics/versionStat.dto";
+import { VersionMap } from "../utils/Version";
 
 const axiosInstance = axios.create({
-	baseURL: "http://localhost:8080",
+	baseURL: "https://lumia.kr/api",
 });
 
 export const Api = {
@@ -44,11 +50,9 @@ export const Api = {
 		});
 		return res.data;
 	},
-	updatedPlayer: async (userNum: number, nickname: string, updated: string | null): Promise<UserResponseDTO> => {
+	updatedPlayer: async (userNum: number): Promise<UserResponseDTO> => {
 		const res = await axiosInstance.post("/user", {
 			userNum,
-			nickname,
-			updated,
 		});
 		return res.data;
 	},
@@ -74,6 +78,18 @@ export const Api = {
 		});
 		return res.data;
 	},
+	getUserRank: async (userNum: number): Promise<UserRank> => {
+		try {
+			const res = await axiosInstance.get<UserRank>(`/user/rank/${userNum}`);
+			return res.data;
+		} catch (err) {
+			return { rank: 0, rankSize: 0 };
+		}
+	},
+	getUserCharacterStat: async (userNum: number): Promise<UserCharacterStat[]> => {
+		const res = await axiosInstance.get<UserCharacterStat[]>(`/statistics/user/${userNum}`);
+		return res.data;
+	},
 	getGame: async (gameId: number): Promise<GameDTO[][]> => {
 		const res = await axiosInstance.get<GameDTO[]>(`/game/${gameId}`);
 		let result = [];
@@ -82,5 +98,18 @@ export const Api = {
 			result.push(team);
 		}
 		return result;
+	},
+	getStatistics: async (query: StatisticsQuery): Promise<VersionStat[]> => {
+		const { version, matchingMode, tier } = query;
+		const { versionMajor, versionMinor } = VersionMap.get(version)!;
+		const res = await axiosInstance.get<VersionStat[]>("/statistics/game", {
+			params: {
+				versionMajor,
+				versionMinor,
+				isRank: matchingMode === MatchingMode.RANK ? true : false,
+				tier: matchingMode === MatchingMode.RANK ? tier : "Iron",
+			},
+		});
+		return res.data;
 	},
 };

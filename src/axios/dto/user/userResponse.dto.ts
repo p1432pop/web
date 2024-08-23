@@ -1,6 +1,6 @@
-import { UserProfileDTO } from "./userProfile.dto";
+import { UserDTO } from "./user.dto";
 
 export class UserResponseDTO {
 	code: number;
-	data?: UserProfileDTO;
+	user?: UserDTO;
 }
