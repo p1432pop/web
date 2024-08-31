@@ -27,8 +27,8 @@ export default function Player() {
 				if (profile.code === 200 && profile.user) {
 					const userStat = await Api.getUserCharacterStat(profile.user.userNum);
 					setStat(userStat);
-					setLoading(false);
 				}
+				setLoading(false);
 			}
 		};
 		setup();
